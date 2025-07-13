@@ -4,6 +4,7 @@ import {
   Condition,
   Constraint,
   WithRequired,
+  RegexPattern,
   ConditionType,
 } from "../types";
 
@@ -185,6 +186,20 @@ export class Evaluator {
   }
 
   /**
+   * Creates a RegExp from a constraint value, supporting both string patterns and RegexPattern objects.
+   * @param value The constraint value which can be a string or RegexPattern object.
+   */
+  #createRegExp(value: string | RegexPattern): RegExp {
+    if (typeof value === "string") {
+      return new RegExp(value);
+    }
+    if (value && typeof value === "object" && "regex" in value) {
+      return new RegExp(value.regex, value.flags || "");
+    }
+    throw new Error("Invalid regex pattern format");
+  }
+
+  /**
    * Checks a constraint against a set of criteria and returns true whenever the constraint passes.
    * @param constraint The constraint to evaluate.
    * @param criteria The criteria to evaluate the constraint with.
@@ -241,9 +256,13 @@ export class Evaluator {
           !constraint.value.some((x) => criterion.includes(x))
         );
       case "matches":
-        return new RegExp(criterion).test(`${constraint.value}`);
+        return this.#createRegExp(
+          constraint.value as string | RegexPattern
+        ).test(`${criterion}`);
       case "not matches":
-        return !new RegExp(criterion).test(`${constraint.value}`);
+        return !this.#createRegExp(
+          constraint.value as string | RegexPattern
+        ).test(`${criterion}`);
       default:
         return false;
     }

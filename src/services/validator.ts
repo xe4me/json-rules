@@ -1,5 +1,5 @@
 import { ObjectDiscovery } from "./object-discovery";
-import { Rule, Operator, Condition, Constraint } from "../types";
+import { Rule, Operator, Condition, Constraint, RegexPattern } from "../types";
 
 export interface ValidationResult {
   isValid: boolean;
@@ -134,6 +134,40 @@ export class Validator {
   }
 
   /**
+   * Validates a regex pattern value, supporting both string patterns and RegexPattern objects.
+   * @param value The value to validate as a regex pattern.
+   */
+  #validateRegexPattern(value: any): { isValid: boolean; error?: string } {
+    if (typeof value === 'string') {
+      try {
+        new RegExp(value);
+        return { isValid: true };
+      } catch (e) {
+        return { isValid: false, error: 'Invalid regular expression pattern' };
+      }
+    }
+    
+    if (value && typeof value === 'object' && 'regex' in value) {
+      if (typeof value.regex !== 'string') {
+        return { isValid: false, error: 'RegexPattern.regex must be a string' };
+      }
+      
+      if (value.flags !== undefined && typeof value.flags !== 'string') {
+        return { isValid: false, error: 'RegexPattern.flags must be a string' };
+      }
+      
+      try {
+        new RegExp(value.regex, value.flags || '');
+        return { isValid: true };
+      } catch (e) {
+        return { isValid: false, error: 'Invalid regular expression pattern or flags' };
+      }
+    }
+    
+    return { isValid: false, error: 'Value must be a string or RegexPattern object' };
+  }
+
+  /**
    * Checks a constraint to ensure it is syntactically correct.
    * @param constraint The constraint to validate.
    */
@@ -206,14 +240,12 @@ export class Validator {
     }
 
     if (["matches", "not matches"].includes(constraint.operator)) {
-      try {
-        new RegExp(constraint.value as string);
-      } catch (e) {
+      const regexValidation = this.#validateRegexPattern(constraint.value);
+      if (!regexValidation.isValid) {
         return {
           isValid: false,
           error: {
-            message:
-              'Constraint "value" must be a valid regular expression if the "operator" is in ["matches", "not matches"]',
+            message: `Constraint "value" must be a valid regular expression or RegexPattern object if the "operator" is in ["matches", "not matches"]. ${regexValidation.error}`,
             element: constraint,
           },
         };

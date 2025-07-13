@@ -375,8 +375,103 @@ These are the operators available for a constraint and how they are used:
 - `contains any`: Tests if any element in the constraint value is an element of the criterion (criterion and constraint value must be an array)
 - `not contains`: Tests if the constraint value is not an element of the criterion (criterion must be an array)
 - `not contains any`: Tests if any element in the constraint value is bot an element of the criterion (criterion and constraint value must be an array)
-- `matches`: Tests if the constraint value matches a regular expression (criterion must be a valid regex)
-- `not matches`: Tests if the constraint value does not match a regular expression (criterion must be a valid regex)
+- `matches`: Tests if the criterion matches a regular expression pattern (constraint value must be a valid regex pattern)
+- `not matches`: Tests if the criterion does not match a regular expression pattern (constraint value must be a valid regex pattern)
+
+#### Regular Expression Patterns with Flags
+
+The `matches` and `not matches` operators support both simple string patterns and advanced `RegexPattern` objects with flags for more complex matching scenarios.
+
+**String Patterns (Backward Compatible):**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+const rule: Rule = {
+  conditions: {
+    all: [
+      { field: "email", operator: "matches", value: ".*@example\\.com$" },
+    ],
+  },
+};
+
+const criteria = { email: "user@example.com" };
+const result = await RulePilot.evaluate(rule, criteria); // result = true
+```
+
+**RegexPattern Objects with Flags:**
+
+```typescript
+import { RulePilot, Rule, RegexPattern } from "rulepilot";
+
+// Case-insensitive email validation
+const emailPattern: RegexPattern = {
+  regex: ".*@EXAMPLE\\.COM$",
+  flags: "i"
+};
+
+const rule: Rule = {
+  conditions: {
+    all: [
+      { field: "email", operator: "matches", value: emailPattern },
+    ],
+  },
+};
+
+const criteria = { email: "user@example.com" };
+const result = await RulePilot.evaluate(rule, criteria); // result = true
+```
+
+**Advanced Examples with Multiple Flags:**
+
+```typescript
+import { RulePilot, Rule, RegexPattern } from "rulepilot";
+
+// Multiline text validation with case-insensitive and multiline flags
+const textPattern: RegexPattern = {
+  regex: "^hello.*world$",
+  flags: "im"
+};
+
+const rule: Rule = {
+  conditions: {
+    all: [
+      { field: "content", operator: "matches", value: textPattern },
+    ],
+  },
+};
+
+const criteria = { content: "HELLO BEAUTIFUL\nWORLD" };
+const result = await RulePilot.evaluate(rule, criteria); // result = true
+
+// Global flag for multiple matches
+const numberPattern: RegexPattern = {
+  regex: "\\d+",
+  flags: "g"
+};
+
+const numberRule: Rule = {
+  conditions: {
+    all: [
+      { field: "text", operator: "matches", value: numberPattern },
+    ],
+  },
+};
+
+const numberCriteria = { text: "There are 123 items and 456 reviews" };
+const numberResult = await RulePilot.evaluate(numberRule, numberCriteria); // result = true
+```
+
+**Available Regex Flags:**
+
+- `i`: Case-insensitive matching
+- `g`: Global matching (find all matches)
+- `m`: Multiline mode (^ and $ match line boundaries)
+- `s`: Dotall mode (. matches newlines)
+- `u`: Unicode mode
+- `y`: Sticky matching
+
+**Note:** The `RegexPattern` object provides more flexibility and is recommended for complex regex operations, while string patterns remain fully supported for backward compatibility.
 
 ### Criteria With Nested Properties
 

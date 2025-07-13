@@ -18,6 +18,11 @@ export type Operator =
   | "matches"
   | "not matches";
 
+export interface RegexPattern {
+  regex: string;
+  flags?: string;
+}
+
 export interface Constraint {
   field: string;
   operator: Operator;
@@ -27,6 +32,7 @@ export interface Constraint {
     | boolean
     | Record<string, unknown>
     | (string | number | boolean | Record<string, unknown>)[]
+    | RegexPattern
     | null;
 }
 
