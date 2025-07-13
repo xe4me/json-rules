@@ -324,8 +324,8 @@ export class Evaluator {
         );
       case "not contains":
         return (
-          typeof criterion !== "string" ||
-          typeof constraint.value !== "string" ||
+          typeof criterion === "string" &&
+          typeof constraint.value === "string" &&
           !criterion.includes(constraint.value)
         );
       case "contains any":
@@ -338,8 +338,8 @@ export class Evaluator {
         );
       case "not contains any":
         return (
-          typeof criterion !== "string" ||
-          !Array.isArray(constraint.value) ||
+          typeof criterion === "string" &&
+          Array.isArray(constraint.value) &&
           !constraint.value.some((x) => 
             typeof x === "string" && criterion.includes(x)
           )
