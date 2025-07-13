@@ -140,15 +140,6 @@ export class Validator {
    * @param value The value to validate as a regex pattern.
    */
   #validateRegexPattern(value: any): { isValid: boolean; error?: string } {
-    if (typeof value === "string") {
-      try {
-        new RegExp(value);
-        return { isValid: true };
-      } catch (e) {
-        return { isValid: false, error: "Invalid regular expression pattern" };
-      }
-    }
-
     if (value && typeof value === "object" && "regex" in value) {
       if (typeof value.regex !== "string") {
         return { isValid: false, error: "RegexPattern.regex must be a string" };
@@ -171,7 +162,7 @@ export class Validator {
 
     return {
       isValid: false,
-      error: "Value must be a string or RegexPattern object",
+      error: "Value must be a RegexPattern object with regex and optional flags properties",
     };
   }
 
@@ -274,7 +265,7 @@ export class Validator {
         return {
           isValid: false,
           error: {
-            message: `Constraint "value" must be a valid regular expression or RegexPattern object if the "operator" is in ["matches", "not matches"]. ${regexValidation.error}`,
+            message: `Constraint "value" must be a valid RegexPattern object if the "operator" is in ["matches", "not matches"]. ${regexValidation.error}`,
             element: constraint,
           },
         };

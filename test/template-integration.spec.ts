@@ -146,26 +146,7 @@ describe("Template Integration Tests", () => {
       expect(await RulePilot.evaluate(rule, data)).toBe(true);
     });
 
-    it("should handle regex matches with templates", async () => {
-      const rule: Rule = {
-        conditions: {
-          all: [
-            {
-              field: "phoneNumber",
-              operator: "matches",
-              value: "{phonePattern}",
-            },
-          ],
-        },
-      };
 
-      const data = {
-        phoneNumber: "123-456-7890",
-        phonePattern: "\\d{3}-\\d{3}-\\d{4}",
-      };
-
-      expect(await RulePilot.evaluate(rule, data)).toBe(true);
-    });
   });
 
   describe("Date Comparisons with Templates", () => {

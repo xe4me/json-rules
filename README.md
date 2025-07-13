@@ -389,8 +389,8 @@ These are the operators available for a constraint and how they are used:
 - `arrayNotContains`: Tests if the criterion (array) does not contain the constraint value
 
 **Regular Expression Operators:**
-- `matches`: Tests if the criterion matches a regular expression pattern (constraint value must be a valid regex pattern)
-- `not matches`: Tests if the criterion does not match a regular expression pattern (constraint value must be a valid regex pattern)
+- `matches`: Tests if the criterion matches a regular expression pattern (constraint value must be a RegexPattern object with regex and optional flags properties)
+- `not matches`: Tests if the criterion does not match a regular expression pattern (constraint value must be a RegexPattern object with regex and optional flags properties)
 
 **Range Operators:**
 - `isBetween`: Tests if the criterion (number) is between the constraint values (array of two numbers, inclusive)
@@ -414,7 +414,7 @@ import { RulePilot, Rule } from "rulepilot";
 const rule: Rule = {
   conditions: {
     all: [
-      { field: "email", operator: "matches", value: ".*@example\\.com$" },
+      { field: "email", operator: "matches", value: { regex: ".*@example\\.com$" } },
     ],
   },
 };

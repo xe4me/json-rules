@@ -74,8 +74,8 @@ export type OperatorValueMap<TData = any> = {
   "not contains": TemplateValue<string, TData>;
   "contains any": string[] | TemplateValue<string[], TData>;
   "not contains any": string[] | TemplateValue<string[], TData>;
-  matches: TemplateValue<string | RegexPattern, TData>;
-  "not matches": TemplateValue<string | RegexPattern, TData>;
+  matches: TemplateValue<RegexPattern, TData>;
+  "not matches": TemplateValue<RegexPattern, TData>;
   "is between":
     | [number, number]
     | [Date, Date]

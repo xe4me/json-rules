@@ -1,15 +1,15 @@
 import { Rule, RulePilot, RegexPattern } from "../src";
 
 describe("Regex Flags Support", () => {
-  describe("String regex patterns (backward compatibility)", () => {
-    it("should match with string regex pattern", async () => {
+  describe("Basic regex pattern matching", () => {
+    it("should match with regex pattern", async () => {
       const rule: Rule = {
         conditions: {
           all: [
             {
               field: "text",
               operator: "matches",
-              value: "hello.*world",
+              value: { regex: "hello.*world" },
             },
           ],
         },
@@ -20,14 +20,14 @@ describe("Regex Flags Support", () => {
       expect(result).toBe(true);
     });
 
-    it("should not match with string regex pattern", async () => {
+    it("should not match with regex pattern", async () => {
       const rule: Rule = {
         conditions: {
           all: [
             {
               field: "text",
               operator: "not matches",
-              value: "hello.*world",
+              value: { regex: "hello.*world" },
             },
           ],
         },
@@ -70,7 +70,7 @@ describe("Regex Flags Support", () => {
             {
               field: "text",
               operator: "matches",
-              value: "hello.*world", // no flags
+              value: { regex: "hello.*world" }, // no flags
             },
           ],
         },
@@ -152,14 +152,14 @@ describe("Regex Flags Support", () => {
   });
 
   describe("RegexPattern validation", () => {
-    it("should validate string regex patterns", () => {
+    it("should validate basic regex patterns", () => {
       const rule: Rule = {
         conditions: {
           all: [
             {
               field: "text",
               operator: "matches",
-              value: "hello.*world",
+              value: { regex: "hello.*world" },
             },
           ],
         },
@@ -191,14 +191,14 @@ describe("Regex Flags Support", () => {
       expect(validation.isValid).toBe(true);
     });
 
-    it("should reject invalid string regex patterns", () => {
+    it("should reject invalid regex patterns", () => {
       const rule: Rule = {
         conditions: {
           all: [
             {
               field: "text",
               operator: "matches",
-              value: "[invalid",
+              value: { regex: "[invalid" },
             },
           ],
         },
@@ -206,7 +206,7 @@ describe("Regex Flags Support", () => {
 
       const validation = RulePilot.validate(rule);
       expect(validation.isValid).toBe(false);
-      expect(validation.error?.message).toContain("valid regular expression");
+      expect(validation.error?.message).toContain("valid RegexPattern");
     });
 
     it("should reject invalid RegexPattern objects", () => {

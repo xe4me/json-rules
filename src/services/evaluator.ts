@@ -191,14 +191,11 @@ export class Evaluator {
    * Creates a RegExp from a constraint value, supporting both string patterns and RegexPattern objects.
    * @param value The constraint value which can be a string or RegexPattern object.
    */
-  #createRegExp(value: string | RegexPattern): RegExp {
-    if (typeof value === "string") {
-      return new RegExp(value);
-    }
+  #createRegExp(value: RegexPattern): RegExp {
     if (value && typeof value === "object" && "regex" in value) {
       return new RegExp(value.regex, value.flags || "");
     }
-    throw new Error("Invalid regex pattern format");
+    throw new Error("Invalid regex pattern format - must be a RegexPattern object");
   }
 
   /**
@@ -363,11 +360,11 @@ export class Evaluator {
         );
       case "matches":
         return this.#createRegExp(
-          resolvedValue as string | RegexPattern
+          resolvedValue as RegexPattern
         ).test(`${criterion}`);
       case "not matches":
         return !this.#createRegExp(
-          resolvedValue as string | RegexPattern
+          resolvedValue as RegexPattern
         ).test(`${criterion}`);
       case "is between":
         return this.#isBetween(criterion, resolvedValue);

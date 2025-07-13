@@ -168,7 +168,7 @@ describe("Template Validation Tests", () => {
             { field: "name", operator: "contains", value: "{searchTerm}" },
             { field: "email", operator: "starts with", value: "{prefix}" },
             { field: "filename", operator: "ends with", value: "{extension}" },
-            { field: "description", operator: "matches", value: "{pattern}" }
+            { field: "description", operator: "contains", value: "{pattern}" }
           ]
         }
       };
@@ -269,18 +269,7 @@ describe("Template Validation Tests", () => {
   });
 
   describe("Edge Cases", () => {
-    it("should handle template variables in regex patterns", () => {
-      const rule: Rule = {
-        conditions: {
-          all: [
-            { field: "email", operator: "matches", value: "{emailPattern}" }
-          ]
-        }
-      };
 
-      const validation = RulePilot.validate(rule);
-      expect(validation.isValid).toBe(true);
-    });
 
     it("should handle template variables in RegexPattern objects", () => {
       // Note: This is an edge case where the template would be in the regex field
