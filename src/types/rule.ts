@@ -35,38 +35,43 @@ export interface RegexPattern {
 }
 
 /**
+ * Type for field references in template format {fieldName}
+ */
+export type FieldReference = `{${string}}`;
+
+/**
+ * Type for values that can contain field references
+ */
+export type TemplateValue<T> = T | FieldReference | string;
+
+/**
  * Maps operators to their expected value types
  */
 export type OperatorValueMap = {
-  "==": string | number | boolean | Date | null;
-  "!=": string | number | boolean | Date | null;
-  ">": string | number | Date;
-  "<": string | number | Date;
-  ">=": string | number | Date;
-  "<=": string | number | Date;
-  in: (string | number | boolean | Record<string, unknown> | null)[];
-  "not in": (string | number | boolean | Record<string, unknown> | null)[];
-  contains: string;
-  "not contains": string;
-  "contains any": string | string[];
-  "not contains any": string | string[];
-  matches: string | RegexPattern;
-  "not matches": string | RegexPattern;
-  "is between": [number, number] | [Date, Date];
-  "is not between": [number, number] | [Date, Date];
-  "is before": string | number | Date;
-  "is after": string | number | Date;
-  "is on or before": string | number | Date;
-  "is on or after": string | number | Date;
-  "starts with": string;
-  "ends with": string;
-  "array contains": string | number | boolean | Record<string, unknown> | null;
-  "array no contains":
-    | string
-    | number
-    | boolean
-    | Record<string, unknown>
-    | null;
+  "==": TemplateValue<string | number | boolean | Date | null>;
+  "!=": TemplateValue<string | number | boolean | Date | null>;
+  ">": TemplateValue<string | number | Date>;
+  "<": TemplateValue<string | number | Date>;
+  ">=": TemplateValue<string | number | Date>;
+  "<=": TemplateValue<string | number | Date>;
+  in: (string | number | boolean | Record<string, unknown> | null)[] | TemplateValue<(string | number | boolean | Record<string, unknown> | null)[]>;
+  "not in": (string | number | boolean | Record<string, unknown> | null)[] | TemplateValue<(string | number | boolean | Record<string, unknown> | null)[]>;
+  contains: TemplateValue<string>;
+  "not contains": TemplateValue<string>;
+  "contains any": string[] | TemplateValue<string[]>;
+  "not contains any": string[] | TemplateValue<string[]>;
+  matches: TemplateValue<string | RegexPattern>;
+  "not matches": TemplateValue<string | RegexPattern>;
+  "is between": [number, number] | [Date, Date] | TemplateValue<[number, number] | [Date, Date]>;
+  "is not between": [number, number] | [Date, Date] | TemplateValue<[number, number] | [Date, Date]>;
+  "is before": TemplateValue<string | number | Date>;
+  "is after": TemplateValue<string | number | Date>;
+  "is on or before": TemplateValue<string | number | Date>;
+  "is on or after": TemplateValue<string | number | Date>;
+  "starts with": TemplateValue<string>;
+  "ends with": TemplateValue<string>;
+  "array contains": TemplateValue<string | number | boolean | Record<string, unknown> | null>;
+  "array no contains": TemplateValue<string | number | boolean | Record<string, unknown> | null>;
 };
 
 /**

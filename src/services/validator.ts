@@ -1,4 +1,5 @@
 import { ObjectDiscovery } from "./object-discovery";
+import { TemplateParser } from "./template-parser";
 import { Rule, Operator, Condition, Constraint } from "../types";
 
 export interface ValidationResult {
@@ -11,6 +12,7 @@ export interface ValidationResult {
 
 export class Validator {
   #objectDiscovery: ObjectDiscovery = new ObjectDiscovery();
+  #templateParser: TemplateParser = new TemplateParser();
 
   /**
    * Takes in a rule as a parameter and returns a boolean indicating whether the rule is valid or not.
@@ -248,11 +250,13 @@ export class Validator {
     }
 
     // We must check that the value is an array if the operator is 'in' or 'not in'.
+    // Skip this check if the value contains template variables (they will be resolved at runtime)
     if (
       ["in", "not in", "contains any", "not contains any"].includes(
         constraint.operator
       ) &&
-      !Array.isArray(constraint.value)
+      !Array.isArray(constraint.value) &&
+      !this.#templateParser.hasTemplateVariables(constraint.value)
     ) {
       return {
         isValid: false,
@@ -275,6 +279,12 @@ export class Validator {
           },
         };
       }
+    }
+
+    // Validate template variables in the constraint value
+    const templateValidation = this.#validateTemplateVariables(constraint);
+    if (!templateValidation.isValid) {
+      return templateValidation;
     }
 
     return { isValid: true };
@@ -311,6 +321,50 @@ export class Validator {
           element: obj,
         },
       };
+    }
+
+    return { isValid: true };
+  }
+
+  /**
+   * Validates template variables in a constraint value.
+   * @param constraint The constraint to validate template variables for.
+   * @param criteria Optional criteria to validate template variables against.
+   */
+  #validateTemplateVariables(constraint: Constraint, criteria?: object): ValidationResult {
+    if (!this.#templateParser.hasTemplateVariables(constraint.value)) {
+      return { isValid: true };
+    }
+
+    const variables = this.#templateParser.extractTemplateVariables(constraint.value);
+    
+    // Validate template syntax
+    for (const variable of variables) {
+      // Check if variable name is valid (only letters, numbers, dots, underscores)
+      // Must start with letter or underscore, and dots can only be between valid identifiers
+      if (!/^[a-zA-Z_][a-zA-Z0-9_]*(?:\.[a-zA-Z_][a-zA-Z0-9_]*)*$/.test(variable.name)) {
+        return {
+          isValid: false,
+          error: {
+            message: `Invalid template variable name: "${variable.name}". Variable names must start with a letter or underscore and contain only letters, numbers, dots, and underscores.`,
+            element: constraint,
+          },
+        };
+      }
+    }
+
+    // If criteria is provided, validate that all template variables exist
+    if (criteria) {
+      const validation = this.#templateParser.validateTemplateVariables(constraint.value, criteria);
+      if (!validation.isValid) {
+        return {
+          isValid: false,
+          error: {
+            message: `Template variables not found in criteria: ${validation.missingFields.join(', ')}`,
+            element: constraint,
+          },
+        };
+      }
     }
 
     return { isValid: true };

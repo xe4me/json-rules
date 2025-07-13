@@ -5,4 +5,5 @@ export * from "./mutator";
 export * from "./object-discovery";
 export * from "./rule-helper";
 export * from "./rule-pilot";
+export * from "./template-parser";
 export * from "./validator";

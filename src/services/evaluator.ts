@@ -1,4 +1,5 @@
 import { ObjectDiscovery } from "./object-discovery";
+import { TemplateParser } from "./template-parser";
 import {
   Rule,
   Condition,
@@ -10,6 +11,7 @@ import {
 
 export class Evaluator {
   #objectDiscovery: ObjectDiscovery = new ObjectDiscovery();
+  #templateParser: TemplateParser = new TemplateParser();
 
   /** Stores any results from nested conditions */
   #nestedResults: any[];
@@ -305,85 +307,88 @@ export class Evaluator {
       return false;
     }
 
+    // Resolve template variables in the constraint value
+    const resolvedValue = this.#templateParser.resolveTemplateValue(constraint.value, criteria);
+
     switch (constraint.operator) {
       case "==":
-        return criterion == constraint.value;
+        return criterion == resolvedValue;
       case "!=":
-        return criterion != constraint.value;
+        return criterion != resolvedValue;
       case ">":
-        return criterion > constraint.value;
+        return criterion > resolvedValue;
       case ">=":
-        return criterion >= constraint.value;
+        return criterion >= resolvedValue;
       case "<":
-        return criterion < constraint.value;
+        return criterion < resolvedValue;
       case "<=":
-        return criterion <= constraint.value;
+        return criterion <= resolvedValue;
       case "in":
         return (
-          Array.isArray(constraint.value) &&
-          constraint.value.includes(criterion as never)
+          Array.isArray(resolvedValue) &&
+          resolvedValue.includes(criterion as never)
         );
       case "not in":
         return (
-          !Array.isArray(constraint.value) ||
-          !constraint.value.includes(criterion as never)
+          !Array.isArray(resolvedValue) ||
+          !resolvedValue.includes(criterion as never)
         );
       case "contains":
         return (
           typeof criterion === "string" &&
-          typeof constraint.value === "string" &&
-          criterion.includes(constraint.value)
+          typeof resolvedValue === "string" &&
+          criterion.includes(resolvedValue)
         );
       case "not contains":
         return (
           typeof criterion === "string" &&
-          typeof constraint.value === "string" &&
-          !criterion.includes(constraint.value)
+          typeof resolvedValue === "string" &&
+          !criterion.includes(resolvedValue)
         );
       case "contains any":
         return (
           typeof criterion === "string" &&
-          Array.isArray(constraint.value) &&
-          constraint.value.some(
+          Array.isArray(resolvedValue) &&
+          resolvedValue.some(
             (x) => typeof x === "string" && criterion.includes(x)
           )
         );
       case "not contains any":
         return (
           typeof criterion === "string" &&
-          Array.isArray(constraint.value) &&
-          !constraint.value.some(
+          Array.isArray(resolvedValue) &&
+          !resolvedValue.some(
             (x) => typeof x === "string" && criterion.includes(x)
           )
         );
       case "matches":
         return this.#createRegExp(
-          constraint.value as string | RegexPattern
+          resolvedValue as string | RegexPattern
         ).test(`${criterion}`);
       case "not matches":
         return !this.#createRegExp(
-          constraint.value as string | RegexPattern
+          resolvedValue as string | RegexPattern
         ).test(`${criterion}`);
       case "is between":
-        return this.#isBetween(criterion, constraint.value);
+        return this.#isBetween(criterion, resolvedValue);
       case "is not between":
-        return !this.#isBetween(criterion, constraint.value);
+        return !this.#isBetween(criterion, resolvedValue);
       case "is before":
-        return this.#isBefore(criterion, constraint.value);
+        return this.#isBefore(criterion, resolvedValue);
       case "is after":
-        return this.#isAfter(criterion, constraint.value);
+        return this.#isAfter(criterion, resolvedValue);
       case "is on or before":
-        return this.#isOnOrBefore(criterion, constraint.value);
+        return this.#isOnOrBefore(criterion, resolvedValue);
       case "is on or after":
-        return this.#isOnOrAfter(criterion, constraint.value);
+        return this.#isOnOrAfter(criterion, resolvedValue);
       case "starts with":
-        return this.#startsWith(criterion, constraint.value);
+        return this.#startsWith(criterion, resolvedValue);
       case "ends with":
-        return this.#endsWith(criterion, constraint.value);
+        return this.#endsWith(criterion, resolvedValue);
       case "array contains":
-        return this.#arrayContains(criterion, constraint.value);
+        return this.#arrayContains(criterion, resolvedValue);
       case "array no contains":
-        return !this.#arrayContains(criterion, constraint.value);
+        return !this.#arrayContains(criterion, resolvedValue);
       default:
         return false;
     }
