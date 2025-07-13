@@ -419,15 +419,15 @@ describe("New Operators", () => {
         })).toBe(false);
       });
 
-      it("should return true when values are not strings", async () => {
+      it("should return false when values are not strings", async () => {
         const rule: Rule = {
           conditions: {
             all: [{ field: "description", operator: "not contains", value: "awesome" }]
           }
         };
 
-        expect(await RulePilot.evaluate(rule, { description: 123 })).toBe(true);
-        expect(await RulePilot.evaluate(rule, { description: ["awesome"] })).toBe(true);
+        expect(await RulePilot.evaluate(rule, { description: 123 })).toBe(false);
+        expect(await RulePilot.evaluate(rule, { description: ["awesome"] })).toBe(false);
       });
     });
 
@@ -497,15 +497,15 @@ describe("New Operators", () => {
         })).toBe(false);
       });
 
-      it("should return true when values are not strings", async () => {
+      it("should return false when values are not strings", async () => {
         const rule: Rule = {
           conditions: {
             all: [{ field: "description", operator: "not contains any", value: ["awesome"] }]
           }
         };
 
-        expect(await RulePilot.evaluate(rule, { description: 123 })).toBe(true);
-        expect(await RulePilot.evaluate(rule, { description: ["awesome"] })).toBe(true);
+        expect(await RulePilot.evaluate(rule, { description: 123 })).toBe(false);
+        expect(await RulePilot.evaluate(rule, { description: ["awesome"] })).toBe(false);
       });
     });
   });

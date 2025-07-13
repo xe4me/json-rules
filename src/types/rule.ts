@@ -34,6 +34,36 @@ export interface RegexPattern {
 }
 
 /**
+ * Maps operators to their expected value types
+ */
+export type OperatorValueMap = {
+  "==": string | number | boolean | Date | null;
+  "!=": string | number | boolean | Date | null;
+  ">": string | number | Date;
+  "<": string | number | Date;
+  ">=": string | number | Date;
+  "<=": string | number | Date;
+  "in": (string | number | boolean | Record<string, unknown> | null)[];
+  "not in": (string | number | boolean | Record<string, unknown> | null)[];
+  "contains": string;
+  "not contains": string;
+  "contains any": string | string[];
+  "not contains any": string | string[];
+  "matches": string | RegexPattern;
+  "not matches": string | RegexPattern;
+  "isBetween": [number, number] | [Date, Date];
+  "isNotBetween": [number, number] | [Date, Date];
+  "isBefore": string | number | Date;
+  "isAfter": string | number | Date;
+  "isOnOrBefore": string | number | Date;
+  "isOnOrAfter": string | number | Date;
+  "startsWith": string;
+  "endsWith": string;
+  "arrayContains": string | number | boolean | Record<string, unknown> | null;
+  "arrayNotContains": string | number | boolean | Record<string, unknown> | null;
+};
+
+/**
  * Utility type to extract all possible property paths from a type, including nested paths with dot notation.
  * Example: { name: string, profile: { age: number } } -> "name" | "profile" | "profile.age"
  */
@@ -54,18 +84,10 @@ export type PropertyPath<T> = T extends object
  */
 type IsAny<T> = 0 extends 1 & T ? true : false;
 
-export interface Constraint<TData = any> {
+export interface Constraint<TData = any, TOperator extends Operator = Operator> {
   field: IsAny<TData> extends true ? string : PropertyPath<TData>;
-  operator: Operator;
-  value:
-    | string
-    | number
-    | boolean
-    | Date
-    | Record<string, unknown>
-    | (string | number | boolean | Record<string, unknown> | null)[]
-    | RegexPattern
-    | null;
+  operator: TOperator;
+  value: TOperator extends keyof OperatorValueMap ? OperatorValueMap[TOperator] : never;
 }
 
 export interface Condition<TData = any, TResult = any> {
