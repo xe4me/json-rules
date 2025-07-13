@@ -304,7 +304,7 @@ describe("Template Integration Tests", () => {
             {
               field: "currentLevel",
               operator: ">=",
-              value: "{requirements.level.minimums}",
+              value: "{requirements.level.minimum}",
             },
           ],
         },
@@ -324,7 +324,8 @@ describe("Template Integration Tests", () => {
     });
 
     it("should handle template references in complex conditions", async () => {
-      const rule: Rule = {
+      type UserData = { priority: string; urgency: string };
+      const rule: Rule<UserData> = {
         conditions: {
           any: [
             { field: "priority", operator: "==", value: "{highPriority}" },
