@@ -200,6 +200,83 @@ export class Evaluator {
   }
 
   /**
+   * Checks if a value is between two numbers (inclusive)
+   * @param value The value to check
+   * @param range Array with min and max values
+   */
+  #isBetween(value: any, range: any): boolean {
+    if (!Array.isArray(range) || range.length !== 2) return false;
+    const [min, max] = range;
+    return typeof value === "number" && 
+           typeof min === "number" && 
+           typeof max === "number" &&
+           value >= min && value <= max;
+  }
+
+  /**
+   * Checks if a date is before another date
+   * @param a First date
+   * @param b Second date
+   */
+  #isBefore(a: any, b: any): boolean {
+    return a instanceof Date && b instanceof Date && a < b;
+  }
+
+  /**
+   * Checks if a date is after another date
+   * @param a First date
+   * @param b Second date
+   */
+  #isAfter(a: any, b: any): boolean {
+    return a instanceof Date && b instanceof Date && a > b;
+  }
+
+  /**
+   * Checks if a date is on or before another date
+   * @param a First date
+   * @param b Second date
+   */
+  #isOnOrBefore(a: any, b: any): boolean {
+    return a instanceof Date && b instanceof Date && a <= b;
+  }
+
+  /**
+   * Checks if a date is on or after another date
+   * @param a First date
+   * @param b Second date
+   */
+  #isOnOrAfter(a: any, b: any): boolean {
+    return a instanceof Date && b instanceof Date && a >= b;
+  }
+
+  /**
+   * Checks if a string starts with another string
+   * @param a String to check
+   * @param b Prefix to check for
+   */
+  #startsWith(a: any, b: any): boolean {
+    return typeof a === "string" && typeof b === "string" && a.startsWith(b);
+  }
+
+  /**
+   * Checks if a string ends with another string
+   * @param a String to check
+   * @param b Suffix to check for
+   */
+  #endsWith(a: any, b: any): boolean {
+    return typeof a === "string" && typeof b === "string" && a.endsWith(b);
+  }
+
+  /**
+   * Checks if an array contains a specific value
+   * @param array Array to check
+   * @param value Value to check for
+   */
+  #arrayContains(array: any, value: any): boolean {
+    return Array.isArray(array) && array.includes(value);
+  }
+
+  /**
    * Checks a constraint against a set of criteria and returns true whenever the constraint passes.
    * @param constraint The constraint to evaluate.
    * @param criteria The criteria to evaluate the constraint with.
@@ -240,20 +317,32 @@ export class Evaluator {
           !constraint.value.includes(criterion as never)
         );
       case "contains":
-        return Array.isArray(criterion) && criterion.includes(constraint.value);
+        return (
+          typeof criterion === "string" &&
+          typeof constraint.value === "string" &&
+          criterion.includes(constraint.value)
+        );
       case "not contains":
         return (
-          !Array.isArray(criterion) || !criterion.includes(constraint.value)
+          typeof criterion !== "string" ||
+          typeof constraint.value !== "string" ||
+          !criterion.includes(constraint.value)
         );
       case "contains any":
         return (
+          typeof criterion === "string" &&
           Array.isArray(constraint.value) &&
-          constraint.value.some((x) => criterion.includes(x))
+          constraint.value.some((x) => 
+            typeof x === "string" && criterion.includes(x)
+          )
         );
       case "not contains any":
         return (
+          typeof criterion !== "string" ||
           !Array.isArray(constraint.value) ||
-          !constraint.value.some((x) => criterion.includes(x))
+          !constraint.value.some((x) => 
+            typeof x === "string" && criterion.includes(x)
+          )
         );
       case "matches":
         return this.#createRegExp(
@@ -263,6 +352,26 @@ export class Evaluator {
         return !this.#createRegExp(
           constraint.value as string | RegexPattern
         ).test(`${criterion}`);
+      case "isBetween":
+        return this.#isBetween(criterion, constraint.value);
+      case "isNotBetween":
+        return !this.#isBetween(criterion, constraint.value);
+      case "isBefore":
+        return this.#isBefore(criterion, constraint.value);
+      case "isAfter":
+        return this.#isAfter(criterion, constraint.value);
+      case "isOnOrBefore":
+        return this.#isOnOrBefore(criterion, constraint.value);
+      case "isOnOrAfter":
+        return this.#isOnOrAfter(criterion, constraint.value);
+      case "startsWith":
+        return this.#startsWith(criterion, constraint.value);
+      case "endsWith":
+        return this.#endsWith(criterion, constraint.value);
+      case "arrayContains":
+        return this.#arrayContains(criterion, constraint.value);
+      case "arrayNotContains":
+        return !this.#arrayContains(criterion, constraint.value);
       default:
         return false;
     }

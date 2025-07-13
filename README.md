@@ -35,7 +35,8 @@ each condition's evaluation.
 - Rule validation & debugging tools
 - Supports `Any`, `All`, and `None` type conditions
 - Supports `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanOrEqual`, `LessThan`, `LessThanOrEqual`, `In`, `NotIn`, 
-`Contains`, `Not Contains`, `ContainsAny`, `Not ContainsAny`, `Matches` and `Not Matches` operators
+`Contains`, `Not Contains`, `ContainsAny`, `Not ContainsAny`, `Matches`, `Not Matches`, `IsBetween`, `IsNotBetween`, 
+`IsBefore`, `IsAfter`, `IsOnOrBefore`, `IsOnOrAfter`, `StartsWith`, `EndsWith`, `ArrayContains`, and `ArrayNotContains` operators
 
 ## Usage
 
@@ -363,20 +364,43 @@ Condition types can be mixed and matched or nested to create complex rules.
 
 These are the operators available for a constraint and how they are used:
 
+**Basic Comparison Operators:**
 - `==`: Applies JavaScript equality (`==`) operator to criterion and constraint value
 - `!=`: Applies JavaScript inequality (`!=`) operator to criterion and constraint value
 - `>`: Applies JavaScript greater than (`>`) operator to criterion and constraint value
 - `<`: Applies JavaScript less than (`<`) operator to criterion and constraint value
 - `>=`: Applies JavaScript greater than or equal (`>=`) operator to criterion and constraint value
 - `<=`: Applies JavaScript less than or equal (`<=`) operator to criterion and constraint value
-- `in`: Tests if the criterion is an element of the constraint value (value must be an array)
-- `not in`: Tests if the criterion is not an element of the constraint value (value must be an array)
-- `contains`: Tests if the constraint value is an element of the criterion (criterion must be an array)
-- `contains any`: Tests if any element in the constraint value is an element of the criterion (criterion and constraint value must be an array)
-- `not contains`: Tests if the constraint value is not an element of the criterion (criterion must be an array)
-- `not contains any`: Tests if any element in the constraint value is bot an element of the criterion (criterion and constraint value must be an array)
+
+**Array Membership Operators:**
+- `in`: Tests if the criterion is an element of the constraint value (constraint value must be an array)
+- `not in`: Tests if the criterion is not an element of the constraint value (constraint value must be an array)
+
+**String Operators:**
+- `contains`: Tests if the criterion (string) contains the constraint value (string)
+- `not contains`: Tests if the criterion (string) does not contain the constraint value (string)
+- `contains any`: Tests if the criterion (string) contains any of the constraint values (array of strings)
+- `not contains any`: Tests if the criterion (string) does not contain any of the constraint values (array of strings)
+- `startsWith`: Tests if the criterion (string) starts with the constraint value (string)
+- `endsWith`: Tests if the criterion (string) ends with the constraint value (string)
+
+**Array Operators:**
+- `arrayContains`: Tests if the criterion (array) contains the constraint value
+- `arrayNotContains`: Tests if the criterion (array) does not contain the constraint value
+
+**Regular Expression Operators:**
 - `matches`: Tests if the criterion matches a regular expression pattern (constraint value must be a valid regex pattern)
 - `not matches`: Tests if the criterion does not match a regular expression pattern (constraint value must be a valid regex pattern)
+
+**Range Operators:**
+- `isBetween`: Tests if the criterion (number) is between the constraint values (array of two numbers, inclusive)
+- `isNotBetween`: Tests if the criterion (number) is not between the constraint values (array of two numbers, inclusive)
+
+**Date Operators:**
+- `isBefore`: Tests if the criterion (Date) is before the constraint value (Date)
+- `isAfter`: Tests if the criterion (Date) is after the constraint value (Date)
+- `isOnOrBefore`: Tests if the criterion (Date) is on or before the constraint value (Date)
+- `isOnOrAfter`: Tests if the criterion (Date) is on or after the constraint value (Date)
 
 #### Regular Expression Patterns with Flags
 
@@ -472,6 +496,122 @@ const numberResult = await RulePilot.evaluate(numberRule, numberCriteria); // re
 - `y`: Sticky matching
 
 **Note:** The `RegexPattern` object provides more flexibility and is recommended for complex regex operations, while string patterns remain fully supported for backward compatibility.
+
+#### New Operators Examples
+
+**Range Operators:**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+// Check if age is between 18 and 65 (inclusive)
+const ageRule: Rule = {
+  conditions: {
+    all: [
+      { field: "age", operator: "isBetween", value: [18, 65] },
+      { field: "score", operator: "isNotBetween", value: [0, 50] }, // Must be > 50
+    ],
+  },
+};
+
+const criteria = { age: 30, score: 85 };
+const result = await RulePilot.evaluate(ageRule, criteria); // result = true
+```
+
+**Date Operators:**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+const startDate = new Date("2023-01-01");
+const endDate = new Date("2023-12-31");
+const currentDate = new Date("2023-06-15");
+
+const dateRule: Rule = {
+  conditions: {
+    all: [
+      { field: "eventDate", operator: "isAfter", value: startDate },
+      { field: "eventDate", operator: "isOnOrBefore", value: endDate },
+    ],
+  },
+};
+
+const criteria = { eventDate: currentDate };
+const result = await RulePilot.evaluate(dateRule, criteria); // result = true
+```
+
+**String Operators:**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+const stringRule: Rule = {
+  conditions: {
+    all: [
+      { field: "email", operator: "endsWith", value: "@company.com" },
+      { field: "name", operator: "startsWith", value: "John" },
+      { field: "description", operator: "contains", value: "developer" },
+      { field: "bio", operator: "contains any", value: ["react", "node", "typescript"] },
+    ],
+  },
+};
+
+const criteria = {
+  email: "john.doe@company.com",
+  name: "John Doe",
+  description: "Senior full-stack developer",
+  bio: "I work with react and node.js frameworks"
+};
+const result = await RulePilot.evaluate(stringRule, criteria); // result = true
+```
+
+**Array Operators:**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+const arrayRule: Rule = {
+  conditions: {
+    all: [
+      { field: "skills", operator: "arrayContains", value: "javascript" },
+      { field: "languages", operator: "arrayNotContains", value: "cobol" },
+    ],
+  },
+};
+
+const criteria = {
+  skills: ["javascript", "react", "node.js"],
+  languages: ["english", "spanish", "french"]
+};
+const result = await RulePilot.evaluate(arrayRule, criteria); // result = true
+```
+
+**Complex Example with Mixed Operators:**
+
+```typescript
+import { RulePilot, Rule } from "rulepilot";
+
+const complexRule: Rule = {
+  conditions: {
+    all: [
+      { field: "age", operator: "isBetween", value: [25, 45] },
+      { field: "email", operator: "endsWith", value: "@company.com" },
+      { field: "skills", operator: "arrayContains", value: "javascript" },
+      { field: "bio", operator: "contains", value: "senior" },
+      { field: "startDate", operator: "isAfter", value: new Date("2020-01-01") },
+    ],
+  },
+};
+
+const criteria = {
+  age: 32,
+  email: "jane.smith@company.com",
+  skills: ["javascript", "react", "python"],
+  bio: "I am a senior software engineer",
+  startDate: new Date("2021-03-15")
+};
+const result = await RulePilot.evaluate(complexRule, criteria); // result = true
+```
 
 ### Criteria With Nested Properties
 

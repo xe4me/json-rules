@@ -195,19 +195,19 @@ describe("RulePilot engine correctly", () => {
 
   it("Evaluates a simple ruleset with a Contains and ContainsAny any condition", async () => {
     expect(
-      await RulePilot.evaluate(valid5Json, { countries: ["US", "FR"] })
+      await RulePilot.evaluate(valid5Json, { countries: "US, FR" })
     ).toEqual(true);
 
     expect(
-      await RulePilot.evaluate(valid5Json, { countries: ["GB", "DE"] })
+      await RulePilot.evaluate(valid5Json, { countries: "GB, DE" })
     ).toEqual(false);
 
     expect(
-      await RulePilot.evaluate(valid5Json, { states: ["CA", "TN"] })
+      await RulePilot.evaluate(valid5Json, { states: "CA,TN" })
     ).toEqual(true);
 
     expect(
-      await RulePilot.evaluate(valid5Json, { states: ["NY", "WI"] })
+      await RulePilot.evaluate(valid5Json, { states: "NY,WI" })
     ).toEqual(false);
 
     expect(

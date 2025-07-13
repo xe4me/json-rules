@@ -197,6 +197,16 @@ export class Validator {
       "not contains any",
       "matches",
       "not matches",
+      "isBetween",
+      "isNotBetween",
+      "isBefore",
+      "isAfter",
+      "isOnOrBefore",
+      "isOnOrAfter",
+      "startsWith",
+      "endsWith",
+      "arrayContains",
+      "arrayNotContains",
     ];
     if (!operators.includes(constraint.operator as Operator)) {
       return {
@@ -210,13 +220,13 @@ export class Validator {
 
     if (
       constraint.value === null &&
-      !["==", "!=", "contains", "not contains"].includes(constraint.operator)
+      !["==", "!=", "contains", "not contains", "arrayContains", "arrayNotContains"].includes(constraint.operator)
     ) {
       return {
         isValid: false,
         error: {
           message:
-            '"operator" must be in ["==", "!=", "contains", "not contains"] if "value" is null.',
+            '"operator" must be in ["==", "!=", "contains", "not contains", "arrayContains", "arrayNotContains"] if "value" is null.',
           element: constraint,
         },
       };

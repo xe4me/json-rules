@@ -16,12 +16,12 @@ export const valid10Json: Rule = {
         },
         {
           field: "foo_array",
-          operator: "contains",
+          operator: "arrayContains",
           value: null,
         },
         {
           field: "bar_array",
-          operator: "not contains",
+          operator: "arrayNotContains",
           value: null,
         },
       ],

@@ -16,7 +16,17 @@ export type Operator =
   | "contains any"
   | "not contains any"
   | "matches"
-  | "not matches";
+  | "not matches"
+  | "isBetween"
+  | "isNotBetween"
+  | "isBefore"
+  | "isAfter"
+  | "isOnOrBefore"
+  | "isOnOrAfter"
+  | "startsWith"
+  | "endsWith"
+  | "arrayContains"
+  | "arrayNotContains";
 
 export interface RegexPattern {
   regex: string;
@@ -51,8 +61,9 @@ export interface Constraint<TData = any> {
     | string
     | number
     | boolean
+    | Date
     | Record<string, unknown>
-    | (string | number | boolean | Record<string, unknown>)[]
+    | (string | number | boolean | Record<string, unknown> | null)[]
     | RegexPattern
     | null;
 }
