@@ -1,5 +1,5 @@
 import { ObjectDiscovery } from "./object-discovery";
-import { Rule, Operator, Condition, Constraint, RegexPattern } from "../types";
+import { Rule, Operator, Condition, Constraint } from "../types";
 
 export interface ValidationResult {
   isValid: boolean;
@@ -138,33 +138,39 @@ export class Validator {
    * @param value The value to validate as a regex pattern.
    */
   #validateRegexPattern(value: any): { isValid: boolean; error?: string } {
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       try {
         new RegExp(value);
         return { isValid: true };
       } catch (e) {
-        return { isValid: false, error: 'Invalid regular expression pattern' };
+        return { isValid: false, error: "Invalid regular expression pattern" };
       }
     }
-    
-    if (value && typeof value === 'object' && 'regex' in value) {
-      if (typeof value.regex !== 'string') {
-        return { isValid: false, error: 'RegexPattern.regex must be a string' };
+
+    if (value && typeof value === "object" && "regex" in value) {
+      if (typeof value.regex !== "string") {
+        return { isValid: false, error: "RegexPattern.regex must be a string" };
       }
-      
-      if (value.flags !== undefined && typeof value.flags !== 'string') {
-        return { isValid: false, error: 'RegexPattern.flags must be a string' };
+
+      if (value.flags !== undefined && typeof value.flags !== "string") {
+        return { isValid: false, error: "RegexPattern.flags must be a string" };
       }
-      
+
       try {
-        new RegExp(value.regex, value.flags || '');
+        new RegExp(value.regex, value.flags || "");
         return { isValid: true };
       } catch (e) {
-        return { isValid: false, error: 'Invalid regular expression pattern or flags' };
+        return {
+          isValid: false,
+          error: "Invalid regular expression pattern or flags",
+        };
       }
     }
-    
-    return { isValid: false, error: 'Value must be a string or RegexPattern object' };
+
+    return {
+      isValid: false,
+      error: "Value must be a string or RegexPattern object",
+    };
   }
 
   /**
@@ -197,16 +203,16 @@ export class Validator {
       "not contains any",
       "matches",
       "not matches",
-      "isBetween",
-      "isNotBetween",
-      "isBefore",
-      "isAfter",
-      "isOnOrBefore",
-      "isOnOrAfter",
-      "startsWith",
-      "endsWith",
-      "arrayContains",
-      "arrayNotContains",
+      "is between",
+      "is not between",
+      "is before",
+      "is after",
+      "is on or before",
+      "is on or after",
+      "starts with",
+      "ends with",
+      "array contains",
+      "array no contains",
     ];
     if (!operators.includes(constraint.operator as Operator)) {
       return {
@@ -220,13 +226,22 @@ export class Validator {
 
     if (
       constraint.value === null &&
-      !["==", "!=", "contains", "not contains", "arrayContains", "arrayNotContains"].includes(constraint.operator)
+      !(
+        [
+          "==",
+          "!=",
+          "contains",
+          "not contains",
+          "array contains",
+          "array no contains",
+        ] as Operator[]
+      ).includes(constraint.operator)
     ) {
       return {
         isValid: false,
         error: {
           message:
-            '"operator" must be in ["==", "!=", "contains", "not contains", "arrayContains", "arrayNotContains"] if "value" is null.',
+            '"operator" must be in ["==", "!=", "contains", "not contains", "array contains", "array no contains"] if "value" is null.',
           element: constraint,
         },
       };

@@ -17,16 +17,17 @@ export type Operator =
   | "not contains any"
   | "matches"
   | "not matches"
-  | "isBetween"
-  | "isNotBetween"
-  | "isBefore"
-  | "isAfter"
-  | "isOnOrBefore"
-  | "isOnOrAfter"
-  | "startsWith"
-  | "endsWith"
-  | "arrayContains"
-  | "arrayNotContains";
+  | "'is between'"
+  | "is between"
+  | "is not between"
+  | "is before"
+  | "is after"
+  | "is on or before"
+  | "is on or after"
+  | "starts with"
+  | "ends with"
+  | "array contains"
+  | "array no contains";
 
 export interface RegexPattern {
   regex: string;
@@ -43,24 +44,29 @@ export type OperatorValueMap = {
   "<": string | number | Date;
   ">=": string | number | Date;
   "<=": string | number | Date;
-  "in": (string | number | boolean | Record<string, unknown> | null)[];
+  in: (string | number | boolean | Record<string, unknown> | null)[];
   "not in": (string | number | boolean | Record<string, unknown> | null)[];
-  "contains": string;
+  contains: string;
   "not contains": string;
   "contains any": string | string[];
   "not contains any": string | string[];
-  "matches": string | RegexPattern;
+  matches: string | RegexPattern;
   "not matches": string | RegexPattern;
-  "isBetween": [number, number] | [Date, Date];
-  "isNotBetween": [number, number] | [Date, Date];
-  "isBefore": string | number | Date;
-  "isAfter": string | number | Date;
-  "isOnOrBefore": string | number | Date;
-  "isOnOrAfter": string | number | Date;
-  "startsWith": string;
-  "endsWith": string;
-  "arrayContains": string | number | boolean | Record<string, unknown> | null;
-  "arrayNotContains": string | number | boolean | Record<string, unknown> | null;
+  "is between": [number, number] | [Date, Date];
+  "is not between": [number, number] | [Date, Date];
+  "is before": string | number | Date;
+  "is after": string | number | Date;
+  "is on or before": string | number | Date;
+  "is on or after": string | number | Date;
+  "starts with": string;
+  "ends with": string;
+  "array contains": string | number | boolean | Record<string, unknown> | null;
+  "array no contains":
+    | string
+    | number
+    | boolean
+    | Record<string, unknown>
+    | null;
 };
 
 /**
@@ -84,10 +90,15 @@ export type PropertyPath<T> = T extends object
  */
 type IsAny<T> = 0 extends 1 & T ? true : false;
 
-export interface Constraint<TData = any, TOperator extends Operator = Operator> {
+export interface Constraint<
+  TData = any,
+  TOperator extends Operator = Operator
+> {
   field: IsAny<TData> extends true ? string : PropertyPath<TData>;
   operator: TOperator;
-  value: TOperator extends keyof OperatorValueMap ? OperatorValueMap[TOperator] : never;
+  value: TOperator extends keyof OperatorValueMap
+    ? OperatorValueMap[TOperator]
+    : never;
 }
 
 export interface Condition<TData = any, TResult = any> {

@@ -200,17 +200,29 @@ export class Evaluator {
   }
 
   /**
-   * Checks if a value is between two numbers (inclusive)
+   * Checks if a value is between two numbers or dates (inclusive)
    * @param value The value to check
    * @param range Array with min and max values
    */
   #isBetween(value: any, range: any): boolean {
     if (!Array.isArray(range) || range.length !== 2) return false;
     const [min, max] = range;
-    return typeof value === "number" && 
-           typeof min === "number" && 
-           typeof max === "number" &&
-           value >= min && value <= max;
+
+    // Check for number range
+    if (
+      typeof value === "number" &&
+      typeof min === "number" &&
+      typeof max === "number"
+    ) {
+      return value >= min && value <= max;
+    }
+
+    // Check for date range
+    if (value instanceof Date && min instanceof Date && max instanceof Date) {
+      return value >= min && value <= max;
+    }
+
+    return false;
   }
 
   /**
@@ -332,16 +344,16 @@ export class Evaluator {
         return (
           typeof criterion === "string" &&
           Array.isArray(constraint.value) &&
-          constraint.value.some((x) => 
-            typeof x === "string" && criterion.includes(x)
+          constraint.value.some(
+            (x) => typeof x === "string" && criterion.includes(x)
           )
         );
       case "not contains any":
         return (
           typeof criterion === "string" &&
           Array.isArray(constraint.value) &&
-          !constraint.value.some((x) => 
-            typeof x === "string" && criterion.includes(x)
+          !constraint.value.some(
+            (x) => typeof x === "string" && criterion.includes(x)
           )
         );
       case "matches":
@@ -352,25 +364,25 @@ export class Evaluator {
         return !this.#createRegExp(
           constraint.value as string | RegexPattern
         ).test(`${criterion}`);
-      case "isBetween":
+      case "is between":
         return this.#isBetween(criterion, constraint.value);
-      case "isNotBetween":
+      case "is not between":
         return !this.#isBetween(criterion, constraint.value);
-      case "isBefore":
+      case "is before":
         return this.#isBefore(criterion, constraint.value);
-      case "isAfter":
+      case "is after":
         return this.#isAfter(criterion, constraint.value);
-      case "isOnOrBefore":
+      case "is on or before":
         return this.#isOnOrBefore(criterion, constraint.value);
-      case "isOnOrAfter":
+      case "is on or after":
         return this.#isOnOrAfter(criterion, constraint.value);
-      case "startsWith":
+      case "starts with":
         return this.#startsWith(criterion, constraint.value);
-      case "endsWith":
+      case "ends with":
         return this.#endsWith(criterion, constraint.value);
-      case "arrayContains":
+      case "array contains":
         return this.#arrayContains(criterion, constraint.value);
-      case "arrayNotContains":
+      case "array no contains":
         return !this.#arrayContains(criterion, constraint.value);
       default:
         return false;
