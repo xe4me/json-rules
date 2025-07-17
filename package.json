@@ -1,6 +1,6 @@
 {
   "name": "@ivandt/json-rules",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "private": false,
   "description": "Rule parsing engine for JSON rules",
   "main": "dist/index.js",
