@@ -1,6 +1,6 @@
 {
   "name": "@ivandt/json-rules",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "private": false,
   "description": "Rule parsing engine for JSON rules",
   "main": "dist/index.js",
@@ -14,8 +14,8 @@
     "test": "jest --testPathPattern=test --color --forceExit",
     "prepare": "npm run build",
     "prepublishOnly": "npm run build",
-    "publish": "npm publish --access public",
     "build": "rm -rf dist && tsc",
+    "release": "npm run build && npm publish --access public",
     "prettier": "prettier --write ."
   },
   "publishConfig": {
