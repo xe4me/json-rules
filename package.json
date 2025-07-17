@@ -1,5 +1,5 @@
 {
-  "name": "rulepilot",
+  "name": "@ivandt/json-rules",
   "version": "1.7.0",
   "description": "Rule parsing engine for JSON rules",
   "main": "dist/index.js",

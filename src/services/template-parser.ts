@@ -9,7 +9,7 @@ export interface TemplateVariable {
 
 export class TemplateParser {
   #objectDiscovery: ObjectDiscovery = new ObjectDiscovery();
-  
+
   private readonly TEMPLATE_REGEX = /(?<!\{)\{([^{}]+)\}(?!\})/g;
 
   /**
@@ -18,7 +18,7 @@ export class TemplateParser {
    * @returns True if value contains template variables
    */
   hasTemplateVariables(value: any): boolean {
-    if (typeof value !== 'string') return false;
+    if (typeof value !== "string") return false;
     // Reset regex lastIndex to avoid interference
     this.TEMPLATE_REGEX.lastIndex = 0;
     return this.TEMPLATE_REGEX.test(value);
@@ -30,23 +30,23 @@ export class TemplateParser {
    * @returns Array of template variables found
    */
   extractTemplateVariables(value: any): TemplateVariable[] {
-    if (typeof value !== 'string') return [];
-    
+    if (typeof value !== "string") return [];
+
     const variables: TemplateVariable[] = [];
     let match;
-    
+
     // Reset regex lastIndex
     this.TEMPLATE_REGEX.lastIndex = 0;
-    
+
     while ((match = this.TEMPLATE_REGEX.exec(value)) !== null) {
       variables.push({
         name: match[1],
         fullMatch: match[0],
         startIndex: match.index,
-        endIndex: match.index + match[0].length
+        endIndex: match.index + match[0].length,
       });
     }
-    
+
     return variables;
   }
 
@@ -62,7 +62,7 @@ export class TemplateParser {
     }
 
     const variables = this.extractTemplateVariables(value);
-    
+
     // If the entire value is a single template variable, return the field value directly
     if (variables.length === 1 && variables[0].fullMatch === value) {
       const fieldValue = this.#resolveFieldValue(variables[0].name, criteria);
@@ -76,15 +76,16 @@ export class TemplateParser {
     for (let i = variables.length - 1; i >= 0; i--) {
       const variable = variables[i];
       const fieldValue = this.#resolveFieldValue(variable.name, criteria);
-      
+
       // If field value is undefined, keep the template as-is (will be handled by validation)
       if (fieldValue === undefined) {
         continue;
       }
 
-      resolvedValue = resolvedValue.substring(0, variable.startIndex) + 
-                     fieldValue + 
-                     resolvedValue.substring(variable.endIndex);
+      resolvedValue =
+        resolvedValue.substring(0, variable.startIndex) +
+        fieldValue +
+        resolvedValue.substring(variable.endIndex);
     }
 
     return resolvedValue;
@@ -96,7 +97,10 @@ export class TemplateParser {
    * @param criteria The criteria object to validate against
    * @returns Object with validation result and missing fields
    */
-  validateTemplateVariables(value: any, criteria: object): { isValid: boolean; missingFields: string[] } {
+  validateTemplateVariables(
+    value: any,
+    criteria: object
+  ): { isValid: boolean; missingFields: string[] } {
     const variables = this.extractTemplateVariables(value);
     const missingFields: string[] = [];
 
@@ -109,7 +113,7 @@ export class TemplateParser {
 
     return {
       isValid: missingFields.length === 0,
-      missingFields
+      missingFields,
     };
   }
 
@@ -120,9 +124,9 @@ export class TemplateParser {
    * @returns The resolved field value or undefined if not found
    */
   #resolveFieldValue(fieldName: string, criteria: object): any {
-    if (fieldName.includes('.')) {
+    if (fieldName.includes(".")) {
       return this.#objectDiscovery.resolveNestedProperty(fieldName, criteria);
     }
     return criteria[fieldName];
   }
-} 
+}

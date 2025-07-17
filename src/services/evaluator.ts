@@ -1,5 +1,5 @@
-import { ObjectDiscovery } from "./object-discovery";
 import { TemplateParser } from "./template-parser";
+import { ObjectDiscovery } from "./object-discovery";
 import {
   Rule,
   Condition,
@@ -195,7 +195,9 @@ export class Evaluator {
     if (value && typeof value === "object" && "regex" in value) {
       return new RegExp(value.regex, value.flags || "");
     }
-    throw new Error("Invalid regex pattern format - must be a RegexPattern object");
+    throw new Error(
+      "Invalid regex pattern format - must be a RegexPattern object"
+    );
   }
 
   /**
@@ -305,7 +307,10 @@ export class Evaluator {
     }
 
     // Resolve template variables in the constraint value
-    const resolvedValue = this.#templateParser.resolveTemplateValue(constraint.value, criteria);
+    const resolvedValue = this.#templateParser.resolveTemplateValue(
+      constraint.value,
+      criteria
+    );
 
     switch (constraint.operator) {
       case "==":
@@ -359,13 +364,13 @@ export class Evaluator {
           )
         );
       case "matches":
-        return this.#createRegExp(
-          resolvedValue as RegexPattern
-        ).test(`${criterion}`);
+        return this.#createRegExp(resolvedValue as RegexPattern).test(
+          `${criterion}`
+        );
       case "not matches":
-        return !this.#createRegExp(
-          resolvedValue as RegexPattern
-        ).test(`${criterion}`);
+        return !this.#createRegExp(resolvedValue as RegexPattern).test(
+          `${criterion}`
+        );
       case "is between":
         return this.#isBetween(criterion, resolvedValue);
       case "is not between":

@@ -9,14 +9,14 @@ import { invalid1Json } from "./rulesets/invalid1.json";
 import { subRulesValid2Json } from "./rulesets/sub-rules-valid2.json";
 
 import { Introspector } from "../src/services";
-import { RuleError, RulePilot, Constraint } from "../src";
+import { RuleError, JsonRules, Constraint } from "../src";
 
-describe("RulePilot introspector correctly", () => {
+describe("JsonRules introspector correctly", () => {
   it("Detects invalid rules", async () => {
     const s = ["Leverage"];
 
     expect(() =>
-      RulePilot.introspect(
+      JsonRules.introspect(
         invalid1Json,
         { field: "CountryIso", value: "GB" },
         s
@@ -27,7 +27,7 @@ describe("RulePilot introspector correctly", () => {
   it("Introspects valid rules", async () => {
     let sub: string[] = ["Leverage"];
     let con: any = { field: "CountryIso", value: "GB" };
-    expect(RulePilot.introspect(valid3Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid3Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -44,7 +44,7 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["Monetization"];
     con = { field: "Leverage", value: 199 };
-    expect(RulePilot.introspect(valid3Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid3Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -58,11 +58,11 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["Monetization"];
     con = { field: "Leverage", value: 200 };
-    expect(RulePilot.introspect(valid3Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid3Json, con, sub)).toEqual([]);
 
     sub = ["Leverage"];
     con = { field: "Category", value: 22 };
-    expect(RulePilot.introspect(valid4Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid4Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -80,7 +80,7 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["Category"];
     con = { field: "Leverage", value: 199 };
-    expect(RulePilot.introspect(valid4Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid4Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -108,19 +108,19 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["IsUnder18"];
     con = { field: "Category", value: "Islamic" };
-    expect(RulePilot.introspect(valid6Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid6Json, con, sub)).toEqual([]);
 
     sub = ["IsUnder18"];
     con = { field: "Category", value: 122 };
-    expect(RulePilot.introspect(valid6Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid6Json, con, sub)).toEqual([]);
 
     sub = ["Monetization"];
     con = { field: "Category", value: 11 };
-    expect(RulePilot.introspect(valid6Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid6Json, con, sub)).toEqual([]);
 
     sub = ["Leverage"];
     con = { field: "CountryIso", value: "DK" };
-    expect(RulePilot.introspect(valid7Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid7Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -137,11 +137,11 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["Leverage"];
     con = { field: "CountryIso", value: "FI" };
-    expect(RulePilot.introspect(valid7Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid7Json, con, sub)).toEqual([]);
 
     sub = ["OtherType"];
     con = { field: "Leverage", value: 999 };
-    expect(RulePilot.introspect(valid8Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(valid8Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -155,11 +155,11 @@ describe("RulePilot introspector correctly", () => {
 
     sub = ["totalCheckoutPrice"];
     con = { field: "country", value: "SE" };
-    expect(RulePilot.introspect(valid9Json, con, sub)).toEqual([]);
+    expect(JsonRules.introspect(valid9Json, con, sub)).toEqual([]);
 
     sub = ["Leverage", "Monetization"];
     con = { field: "Category", value: 22 };
-    expect(RulePilot.introspect(subRulesValid2Json, con, sub)).toEqual([
+    expect(JsonRules.introspect(subRulesValid2Json, con, sub)).toEqual([
       {
         result: 3,
         subjects: [
@@ -563,8 +563,8 @@ describe("RulePilot introspector correctly", () => {
   it("Tests a rule with only sub-rules", async () => {
     const con = { field: "monetization", value: "demo" };
 
-    expect(RulePilot.introspect(valid11Json, con, ["platform"])).toEqual([]);
-    expect(RulePilot.introspect(valid11Json, con, ["currency"])).toEqual([
+    expect(JsonRules.introspect(valid11Json, con, ["platform"])).toEqual([]);
+    expect(JsonRules.introspect(valid11Json, con, ["currency"])).toEqual([
       {
         result: {
           groupId: 10997667,

@@ -1,4 +1,4 @@
 export * from "./types";
 export * from "./errors";
-export { RulePilot } from "./services/rule-pilot";
+export { JsonRules } from "./services/json-rules";
 export { ValidationResult } from "./services/validator";

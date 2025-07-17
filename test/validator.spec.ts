@@ -1,16 +1,16 @@
 import { valid1Json } from "./rulesets/valid1.json";
 import { valid3Json } from "./rulesets/valid3.json";
-import { invalid1Json } from "./rulesets/invalid1.json";
-import { subRulesValid1Json } from "./rulesets/sub-rules-valid1.json";
 import { valid10Json } from "./rulesets/valid10.json";
-
-import { Operator, RulePilot, Condition, Constraint } from "../src";
+import { invalid1Json } from "./rulesets/invalid1.json";
 import { invalid3Json } from "./rulesets/invalid3.json";
+import { subRulesValid1Json } from "./rulesets/sub-rules-valid1.json";
 
-describe("RulePilot validator correctly", () => {
+import { Operator, JsonRules, Condition, Constraint } from "../src";
+
+describe("JsonRules validator correctly", () => {
   it("Identifies a bad operator", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           {
             all: [{ field: "name", operator: "*" as Operator, value: "test" }],
@@ -22,7 +22,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Identifies an invalid field", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           {
             all: [
@@ -40,7 +40,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Identifies an invalid condition", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           {
             all: [
@@ -59,7 +59,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Identifies an invalid node", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           {
             all: [
@@ -76,7 +76,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Identifies an badly constructed condition", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           {
             foo: [
@@ -93,7 +93,7 @@ describe("RulePilot validator correctly", () => {
   });
 
   it("Identifies an invalid rule", () => {
-    const validation = RulePilot.validate(invalid1Json);
+    const validation = JsonRules.validate(invalid1Json);
 
     expect(validation.isValid).toEqual(false);
     expect(validation.error?.message).toEqual(
@@ -102,7 +102,7 @@ describe("RulePilot validator correctly", () => {
   });
 
   it("Identifies an empty rule", () => {
-    const validation = RulePilot.validate({ conditions: [] });
+    const validation = JsonRules.validate({ conditions: [] });
 
     expect(validation.isValid).toEqual(false);
     expect(validation.error?.message).toEqual(
@@ -112,7 +112,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Identifies invalid values for In/NotIn/ContainsAny operators", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           { all: [{ field: "name", operator: "in", value: "test" }] },
         ],
@@ -120,7 +120,7 @@ describe("RulePilot validator correctly", () => {
     ).toEqual(false);
 
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           { all: [{ field: "name", operator: "not in", value: "test" }] },
         ],
@@ -128,7 +128,7 @@ describe("RulePilot validator correctly", () => {
     ).toEqual(false);
 
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           { all: [{ field: "name", operator: "contains any", value: "test" }] },
         ],
@@ -138,7 +138,7 @@ describe("RulePilot validator correctly", () => {
 
   it("Validates a correct rule", () => {
     expect(
-      RulePilot.validate({
+      JsonRules.validate({
         conditions: [
           { all: [{ field: "name", operator: "==", value: "test" }] },
         ],
@@ -147,20 +147,20 @@ describe("RulePilot validator correctly", () => {
   });
 
   it("Validates a simple correct rule", () => {
-    expect(RulePilot.validate(valid1Json).isValid).toEqual(true);
+    expect(JsonRules.validate(valid1Json).isValid).toEqual(true);
   });
 
   it("Validates a nested correct rule", () => {
-    expect(RulePilot.validate(valid3Json).isValid).toEqual(true);
+    expect(JsonRules.validate(valid3Json).isValid).toEqual(true);
   });
 
   it("Validates a rule with sub rules correctly", async () => {
-    expect(RulePilot.validate(subRulesValid1Json).isValid).toEqual(true);
+    expect(JsonRules.validate(subRulesValid1Json).isValid).toEqual(true);
   });
   it("Validates a rule with null values correctly - valid", async () => {
-    expect(RulePilot.validate(valid10Json).isValid).toEqual(true);
+    expect(JsonRules.validate(valid10Json).isValid).toEqual(true);
   });
   it("Validates a rule with null values correctly - invalid", async () => {
-    expect(RulePilot.validate(invalid3Json).isValid).toEqual(false);
+    expect(JsonRules.validate(invalid3Json).isValid).toEqual(false);
   });
 });

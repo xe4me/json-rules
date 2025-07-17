@@ -1,4 +1,4 @@
-import { Rule, RulePilot, RegexPattern } from "../src";
+import { Rule, JsonRules, RegexPattern } from "../src";
 
 describe("Regex Flags Support", () => {
   describe("Basic regex pattern matching", () => {
@@ -16,7 +16,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "hello beautiful world" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -34,7 +34,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "hello beautiful world" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(false);
     });
   });
@@ -59,7 +59,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL WORLD" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -77,7 +77,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL WORLD" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(false);
     });
 
@@ -100,7 +100,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "There are 123 apples and 456 oranges" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -123,7 +123,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "world\nhello there" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -146,7 +146,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL\nWORLD" };
-      const result = await RulePilot.evaluate(rule, criteria);
+      const result = await JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
   });
@@ -165,7 +165,7 @@ describe("Regex Flags Support", () => {
         },
       };
 
-      const validation = RulePilot.validate(rule);
+      const validation = JsonRules.validate(rule);
       expect(validation.isValid).toBe(true);
     });
 
@@ -187,7 +187,7 @@ describe("Regex Flags Support", () => {
         },
       };
 
-      const validation = RulePilot.validate(rule);
+      const validation = JsonRules.validate(rule);
       expect(validation.isValid).toBe(true);
     });
 
@@ -204,7 +204,7 @@ describe("Regex Flags Support", () => {
         },
       };
 
-      const validation = RulePilot.validate(rule);
+      const validation = JsonRules.validate(rule);
       expect(validation.isValid).toBe(false);
       expect(validation.error?.message).toContain("valid RegexPattern");
     });
@@ -227,7 +227,7 @@ describe("Regex Flags Support", () => {
         },
       };
 
-      const validation = RulePilot.validate(rule);
+      const validation = JsonRules.validate(rule);
       expect(validation.isValid).toBe(false);
       expect(validation.error?.message).toContain("valid regular expression");
     });
@@ -250,7 +250,7 @@ describe("Regex Flags Support", () => {
         },
       };
 
-      const validation = RulePilot.validate(rule);
+      const validation = JsonRules.validate(rule);
       expect(validation.isValid).toBe(false);
       expect(validation.error?.message).toContain("valid regular expression");
     });

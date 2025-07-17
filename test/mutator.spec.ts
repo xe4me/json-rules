@@ -4,7 +4,7 @@ import { beforeEach } from "@jest/globals";
 import { valid1Json } from "./rulesets/valid1.json";
 import { valid3Json } from "./rulesets/valid3.json";
 
-import { RulePilot } from "../src";
+import { JsonRules } from "../src";
 
 const mutation1 = async (value: unknown) => {
   const result = await axios.get<{ cca2: any }>(
@@ -38,14 +38,14 @@ const criteria = [
   },
 ];
 
-describe("RulePilot mutator correctly", () => {
+describe("JsonRules mutator correctly", () => {
   beforeEach(() => {
     console.debug = jest.fn();
     process.env.DEBUG = "true";
   });
 
   it("Performs desired mutation", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("ProfitPercentage", (value: number) => value * 2);
     expect(await rp.evaluate(valid1Json, { ProfitPercentage: 5 })).toEqual(
@@ -54,7 +54,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Performs multiple mutations", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("WinRate", (value: number) => value * 2);
     rp.addMutation("AverageTradeDuration", (value: number) => value / 2);
@@ -70,7 +70,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Performs async mutation", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("CountryIso", mutation1);
 
@@ -87,7 +87,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Performs nested mutation", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("foo.bar", (value: number) => value * 2);
     expect(
@@ -105,7 +105,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Caches async mutation results", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("Leverage", (value: unknown) => value);
     rp.addMutation("CountryIso", mutation1);
@@ -120,7 +120,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Performs a migration with an array parameter", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("CountryIso", mutation2);
 
@@ -139,7 +139,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Performs a migration with a nested array parameter", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("foo.bar", mutation2);
 
@@ -158,7 +158,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Mutation cache works properly", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("Leverage", (value: unknown) => value);
     rp.addMutation("CountryIso", mutation1);
@@ -175,7 +175,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Removes a mutation properly", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("CountryIso", mutation1);
     rp.removeMutation("CountryIso");
@@ -191,7 +191,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Clears mutation cache properly", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("CountryIso", mutation1);
 
@@ -216,7 +216,7 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Clears all mutation cache properly", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
     rp.addMutation("CountryIso", mutation1);
 
@@ -241,11 +241,11 @@ describe("RulePilot mutator correctly", () => {
   });
 
   it("Static methods behave as expected", async () => {
-    const rp = new RulePilot();
+    const rp = new JsonRules();
 
-    RulePilot.addMutation("CountryIso", mutation1);
+    JsonRules.addMutation("CountryIso", mutation1);
 
-    const result1 = await RulePilot.evaluate(valid3Json, {
+    const result1 = await JsonRules.evaluate(valid3Json, {
       CountryIso: "United Kingdom",
       Leverage: 60,
       Monetization: "Real",
@@ -253,7 +253,7 @@ describe("RulePilot mutator correctly", () => {
 
     expect(result1).toEqual(3);
 
-    RulePilot.removeMutation("CountryIso");
+    JsonRules.removeMutation("CountryIso");
     const result2 = await rp.evaluate(valid3Json, {
       CountryIso: "United Kingdom",
       Leverage: 60,
@@ -262,7 +262,7 @@ describe("RulePilot mutator correctly", () => {
 
     expect(result2).toEqual(2);
 
-    RulePilot.clearMutationCache();
+    JsonRules.clearMutationCache();
     const result3 = await rp.evaluate(valid3Json, {
       CountryIso: "United Kingdom",
       Leverage: 60,

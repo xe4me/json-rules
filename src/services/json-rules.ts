@@ -6,8 +6,8 @@ import { Introspector } from "./introspector";
 import { Validator, ValidationResult } from "./validator";
 import { Rule, Constraint, IntrospectionResult } from "../types";
 
-export class RulePilot {
-  static #rulePilot = new RulePilot();
+export class JsonRules {
+  static #jsonRules = new JsonRules();
 
   #mutator: Mutator = new Mutator();
   #validator: Validator = new Validator();
@@ -30,7 +30,7 @@ export class RulePilot {
    * @param name The name of the mutation.
    * @param mutation The mutation function.
    */
-  addMutation(name: string, mutation: Function): RulePilot {
+  addMutation(name: string, mutation: Function): JsonRules {
     this.#mutator.add(name, mutation);
     return this;
   }
@@ -41,7 +41,7 @@ export class RulePilot {
    *
    * @param name The name of the mutation.
    */
-  removeMutation(name: string): RulePilot {
+  removeMutation(name: string): JsonRules {
     this.#mutator.remove(name);
     return this;
   }
@@ -53,7 +53,7 @@ export class RulePilot {
    *
    * @param name The mutator name to clear the cache for.
    */
-  clearMutationCache(name?: string): RulePilot {
+  clearMutationCache(name?: string): JsonRules {
     this.#mutator.clearCache(name);
     return this;
   }
@@ -148,7 +148,7 @@ export class RulePilot {
    * Allows for the construction of rules using a fluent interface.
    */
   static builder(): Builder {
-    return this.#rulePilot.builder();
+    return this.#jsonRules.builder();
   }
 
   /**
@@ -167,7 +167,7 @@ export class RulePilot {
     criteria: object | object[],
     trustRule = false
   ): Promise<T | boolean> {
-    return RulePilot.#rulePilot.evaluate<T>(rule, criteria, trustRule);
+    return JsonRules.#jsonRules.evaluate<T>(rule, criteria, trustRule);
   }
 
   /**
@@ -185,7 +185,7 @@ export class RulePilot {
     criteria: Omit<Constraint, "operator"> | Omit<Constraint, "operator">[],
     subjects: string[]
   ): IntrospectionResult<R>[] {
-    return RulePilot.#rulePilot.introspect<R>(
+    return JsonRules.#jsonRules.introspect<R>(
       rule,
       Array.isArray(criteria) ? criteria : [criteria],
       subjects
@@ -197,7 +197,7 @@ export class RulePilot {
    * @param rule The rule to check.
    */
   static numOutcomes(rule: Rule): number {
-    return RulePilot.#rulePilot.numOutcomes(rule);
+    return JsonRules.#jsonRules.numOutcomes(rule);
   }
 
   /**
@@ -210,7 +210,7 @@ export class RulePilot {
    * @param rule The rule to validate.
    */
   static validate(rule: Rule): ValidationResult {
-    return RulePilot.#rulePilot.validate(rule);
+    return JsonRules.#jsonRules.validate(rule);
   }
 
   /**
@@ -222,8 +222,8 @@ export class RulePilot {
    * @param name The name of the mutation.
    * @param mutation The mutation function.
    */
-  static addMutation(name: string, mutation: Function): RulePilot {
-    return RulePilot.#rulePilot.addMutation(name, mutation);
+  static addMutation(name: string, mutation: Function): JsonRules {
+    return JsonRules.#jsonRules.addMutation(name, mutation);
   }
 
   /**
@@ -232,8 +232,8 @@ export class RulePilot {
    *
    * @param name The name of the mutation.
    */
-  static removeMutation(name: string): RulePilot {
-    return RulePilot.#rulePilot.removeMutation(name);
+  static removeMutation(name: string): JsonRules {
+    return JsonRules.#jsonRules.removeMutation(name);
   }
 
   /**
@@ -243,7 +243,7 @@ export class RulePilot {
    *
    * @param name The mutator name to clear the cache for.
    */
-  static clearMutationCache(name?: string): RulePilot {
-    return RulePilot.#rulePilot.clearMutationCache(name);
+  static clearMutationCache(name?: string): JsonRules {
+    return JsonRules.#jsonRules.clearMutationCache(name);
   }
 }

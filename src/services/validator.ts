@@ -1,5 +1,5 @@
-import { ObjectDiscovery } from "./object-discovery";
 import { TemplateParser } from "./template-parser";
+import { ObjectDiscovery } from "./object-discovery";
 import { Rule, Operator, Condition, Constraint } from "../types";
 
 export interface ValidationResult {
@@ -162,7 +162,8 @@ export class Validator {
 
     return {
       isValid: false,
-      error: "Value must be a RegexPattern object with regex and optional flags properties",
+      error:
+        "Value must be a RegexPattern object with regex and optional flags properties",
     };
   }
 
@@ -322,18 +323,27 @@ export class Validator {
    * @param constraint The constraint to validate template variables for.
    * @param criteria Optional criteria to validate template variables against.
    */
-  #validateTemplateVariables(constraint: Constraint, criteria?: object): ValidationResult {
+  #validateTemplateVariables(
+    constraint: Constraint,
+    criteria?: object
+  ): ValidationResult {
     if (!this.#templateParser.hasTemplateVariables(constraint.value)) {
       return { isValid: true };
     }
 
-    const variables = this.#templateParser.extractTemplateVariables(constraint.value);
-    
+    const variables = this.#templateParser.extractTemplateVariables(
+      constraint.value
+    );
+
     // Validate template syntax
     for (const variable of variables) {
       // Check if variable name is valid (only letters, numbers, dots, underscores)
       // Must start with letter or underscore, and dots can only be between valid identifiers
-      if (!/^[a-zA-Z_][a-zA-Z0-9_]*(?:\.[a-zA-Z_][a-zA-Z0-9_]*)*$/.test(variable.name)) {
+      if (
+        !/^[a-zA-Z_][a-zA-Z0-9_]*(?:\.[a-zA-Z_][a-zA-Z0-9_]*)*$/.test(
+          variable.name
+        )
+      ) {
         return {
           isValid: false,
           error: {
@@ -346,12 +356,17 @@ export class Validator {
 
     // If criteria is provided, validate that all template variables exist
     if (criteria) {
-      const validation = this.#templateParser.validateTemplateVariables(constraint.value, criteria);
+      const validation = this.#templateParser.validateTemplateVariables(
+        constraint.value,
+        criteria
+      );
       if (!validation.isValid) {
         return {
           isValid: false,
           error: {
-            message: `Template variables not found in criteria: ${validation.missingFields.join(', ')}`,
+            message: `Template variables not found in criteria: ${validation.missingFields.join(
+              ", "
+            )}`,
             element: constraint,
           },
         };

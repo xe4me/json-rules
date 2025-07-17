@@ -1,6 +1,4 @@
-<img src=".github/logo.png" width="190" alt="RulePilot" />
-
-[![npm version](https://badge.fury.io/js/rulepilot.svg)](https://badge.fury.io/js/rulepilot?v1.3.1)
+[![npm version](https://badge.fury.io/js/@ivandt/json-rules.svg)](https://badge.fury.io/js/@ivandt/json-rules?v1.3.1)
 
 | Statements                                                                  | Functions                                                                  | Lines                                                                  |
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
@@ -8,7 +6,7 @@
 
 ## Overview
 
-`RulePilot` is a fast and lightweight rule engine for JavaScript. It is designed to be simple to use and easy to
+`JsonRules` is a fast and lightweight rule engine for JavaScript. It is designed to be simple to use and easy to
 integrate into your application.
 
 The rule engine evaluates human-readable JSON rules against a set of criteria. The rules are evaluated in a top-down
@@ -43,23 +41,23 @@ each condition's evaluation.
 ### Installation
 
 ```bash
-npm install rulepilot
+npm install @ivandt/json-rules
 ```
 
 ```bash
-yarn add rulepilot
+yarn add @ivandt/json-rules
 ```
 
 ### Importing
 
 ```typescript
-import { RulePilot } from "rulepilot";
+import { JsonRules } from "@ivandt/json-rules";
 ```
 
 For TypeScript users, you can import the `Rule` interface to get type definitions for the rule JSON.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   // ...
@@ -68,24 +66,24 @@ const rule: Rule = {
 
 ### Static vs Instantiated Approach
 
-The `RulePilot` library can be used in two ways, either as a static class or as an instance.
+The `Rules` library can be used in two ways, either as a static class or as an instance.
 
 The static class is great for most cases as long as you do not intend to use different mutations in multiple places 
 in your codebase, _(more on what mutations are further down)_.
 
-Otherwise, you can create an instance of the `RulePilot` class and use it to evaluate rules.
+Otherwise, you can create an instance of the `Rules` class and use it to evaluate rules.
 
 ```typescript
-import { RulePilot } from "rulepilot";
+import { JsonRules } from "@ivandt/json-rules";
 
 let result;
 
 // Static
-result = await RulePilot.evaluate(rule, criteria);
+result = await JsonRules.evaluate(rule, criteria);
 
 // Instance
-const rulePilot = new RulePilot();
-result = await rulePilot.evaluate(rule, criteria);
+const jsonrules = new JsonRules();
+result = await jsonrules.evaluate(rule, criteria);
 ```
 
 ### Basic Example
@@ -97,7 +95,7 @@ For the discount to be applied, the user must be from either the `UK or Finland`
 price must be greater than or equal to `120.00`.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 // Define a rule which caters for your needs
 const rule: Rule = {
@@ -118,14 +116,14 @@ const criteria = {
 };
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate<boolean>(rule, criteria);
+let result = await JsonRules.evaluate<boolean>(rule, criteria);
 // result == true
 
 // However, if any of the criteria do not pass the check, the result will be false
 criteria.totalCheckoutPrice = 25.0;
 
 /** Evaluate the new criteria against the rule */
-result = await RulePilot.evaluate<boolean>(rule, criteria); // result == false
+result = await JsonRules.evaluate<boolean>(rule, criteria); // result == false
 ```
 
 We can add additional conditions to the rule, for example apart from the above-mentioned conditions, we can also
@@ -134,7 +132,7 @@ say that if the user is either `over 18` years old or `has a valid student card`
 Take note of how the `conditions` property is now an array of objects.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 // Define a rule which caters for your needs
 const rule: Rule = {
@@ -163,12 +161,12 @@ const criteria = {
 };
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate<boolean>(rule, criteria); // result == false
+let result = await JsonRules.evaluate<boolean>(rule, criteria); // result == false
 
 criteria.hasStudentCard = true;
 
 /** Evaluate the new criteria against the rule */
-result = await RulePilot.evaluate<boolean>(rule, criteria); // result == true
+result = await JsonRules.evaluate<boolean>(rule, criteria); // result == true
 ```
 
 If we want to add additional requirements to the rule, we can do so by adding another `any` or `all` condition.
@@ -297,7 +295,7 @@ const rule: Rule = {
 In such a setup the result of our evaluation will be the value of the `result` property in condition which was met first.
 
 ```typescript
-import { RulePilot } from "rulepilot";
+import { JsonRules } from "@ivandt/json-rules";
 
 // Define the criteria which will be evaluated against the rule
 const criteria = {
@@ -307,20 +305,20 @@ const criteria = {
 };
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate<number>(rule, criteria); // result = 5
+let result = await JsonRules.evaluate<number>(rule, criteria); // result = 5
 
 criteria.country = "SE";
 criteria.city = "Linköping";
 
 /** Evaluate the new criteria against the rule */
-result = await RulePilot.evaluate<number>(rule, criteria); // result = 10
+result = await JsonRules.evaluate<number>(rule, criteria); // result = 10
 
 criteria.country = "IT";
 criteria.age = 17;
 criteria.hasStudentCard = false;
 
 /** Evaluate the new criteria against the rule */
-result = await RulePilot.evaluate<number>(rule, criteria); // result = false
+result = await JsonRules.evaluate<number>(rule, criteria); // result = false
 ```
 
 **Important** When using granular rules, the order of conditions in the rule matters!
@@ -332,7 +330,7 @@ The first condition in the rule which is met will be the one which is used to ca
 In granular rules, it is possible to set a default value which will be used if no conditions are met.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: [
@@ -345,7 +343,7 @@ const rule: Rule = {
 
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate<number>(rule, {}); // result = 2.5
+let result = await JsonRules.evaluate<number>(rule, {}); // result = 2.5
 ```
 
 In such a setup as seen above, if no conditions are met, the result will be `2.5`.
@@ -409,7 +407,7 @@ The `matches` and `not matches` operators support both simple string patterns an
 **String Patterns (Backward Compatible):**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: {
@@ -420,13 +418,13 @@ const rule: Rule = {
 };
 
 const criteria = { email: "user@example.com" };
-const result = await RulePilot.evaluate(rule, criteria); // result = true
+const result = await JsonRules.evaluate(rule, criteria); // result = true
 ```
 
 **RegexPattern Objects with Flags:**
 
 ```typescript
-import { RulePilot, Rule, RegexPattern } from "rulepilot";
+import { JsonRules, Rule, RegexPattern } from "@ivandt/json-rules";
 
 // Case-insensitive email validation
 const emailPattern: RegexPattern = {
@@ -443,13 +441,13 @@ const rule: Rule = {
 };
 
 const criteria = { email: "user@example.com" };
-const result = await RulePilot.evaluate(rule, criteria); // result = true
+const result = await JsonRules.evaluate(rule, criteria); // result = true
 ```
 
 **Advanced Examples with Multiple Flags:**
 
 ```typescript
-import { RulePilot, Rule, RegexPattern } from "rulepilot";
+import { JsonRules, Rule, RegexPattern } from "@ivandt/json-rules";
 
 // Multiline text validation with case-insensitive and multiline flags
 const textPattern: RegexPattern = {
@@ -466,7 +464,7 @@ const rule: Rule = {
 };
 
 const criteria = { content: "HELLO BEAUTIFUL\nWORLD" };
-const result = await RulePilot.evaluate(rule, criteria); // result = true
+const result = await JsonRules.evaluate(rule, criteria); // result = true
 
 // Global flag for multiple matches
 const numberPattern: RegexPattern = {
@@ -483,7 +481,7 @@ const numberRule: Rule = {
 };
 
 const numberCriteria = { text: "There are 123 items and 456 reviews" };
-const numberResult = await RulePilot.evaluate(numberRule, numberCriteria); // result = true
+const numberResult = await JsonRules.evaluate(numberRule, numberCriteria); // result = true
 ```
 
 **Available Regex Flags:**
@@ -502,7 +500,7 @@ const numberResult = await RulePilot.evaluate(numberRule, numberCriteria); // re
 **Range Operators:**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 // Check if age is between 18 and 65 (inclusive)
 const ageRule: Rule = {
@@ -515,13 +513,13 @@ const ageRule: Rule = {
 };
 
 const criteria = { age: 30, score: 85 };
-const result = await RulePilot.evaluate(ageRule, criteria); // result = true
+const result = await JsonRules.evaluate(ageRule, criteria); // result = true
 ```
 
 **Date Operators:**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const startDate = new Date("2023-01-01");
 const endDate = new Date("2023-12-31");
@@ -537,13 +535,13 @@ const dateRule: Rule = {
 };
 
 const criteria = { eventDate: currentDate };
-const result = await RulePilot.evaluate(dateRule, criteria); // result = true
+const result = await JsonRules.evaluate(dateRule, criteria); // result = true
 ```
 
 **String Operators:**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const stringRule: Rule = {
   conditions: {
@@ -562,13 +560,13 @@ const criteria = {
   description: "Senior full-stack developer",
   bio: "I work with react and node.js frameworks"
 };
-const result = await RulePilot.evaluate(stringRule, criteria); // result = true
+const result = await JsonRules.evaluate(stringRule, criteria); // result = true
 ```
 
 **Array Operators:**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const arrayRule: Rule = {
   conditions: {
@@ -583,13 +581,13 @@ const criteria = {
   skills: ["javascript", "react", "node.js"],
   languages: ["english", "spanish", "french"]
 };
-const result = await RulePilot.evaluate(arrayRule, criteria); // result = true
+const result = await JsonRules.evaluate(arrayRule, criteria); // result = true
 ```
 
 **Complex Example with Mixed Operators:**
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const complexRule: Rule = {
   conditions: {
@@ -610,7 +608,7 @@ const criteria = {
   bio: "I am a senior software engineer",
   startDate: new Date("2021-03-15")
 };
-const result = await RulePilot.evaluate(complexRule, criteria); // result = true
+const result = await JsonRules.evaluate(complexRule, criteria); // result = true
 ```
 
 ### Criteria With Nested Properties
@@ -623,7 +621,7 @@ the user's profile information.
 To do so, we can use the `.` (dot) notation to access nested properties in the criteria.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: {
@@ -636,7 +634,7 @@ const criteria = {
 };
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate(rule, criteria); // result = true
+let result = await JsonRules.evaluate(rule, criteria); // result = true
 ```
 
 ### Evaluating Multiple Criteria At Once
@@ -644,7 +642,7 @@ let result = await RulePilot.evaluate(rule, criteria); // result = true
 Multiple criteria can be evaluated against a rule at once by passing an array of criteria to the `evaluate()` method.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: {
@@ -658,7 +656,7 @@ const criteria = [
 ];
 
 /** Evaluate the criteria against the rule */
-let result = await RulePilot.evaluate(rule, criteria); // result = [true, false]
+let result = await JsonRules.evaluate(rule, criteria); // result = [true, false]
 ```
 
 ### Sub Rules
@@ -676,7 +674,7 @@ constraints in multiple places.
 An example of a sub-rule can be seen below:
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: {
@@ -690,19 +688,19 @@ const rule: Rule = {
 };
 
 let criteria = { profile: { age: 20 } }
-let result = await RulePilot.evaluate(rule, criteria); // result = 5
+let result = await JsonRules.evaluate(rule, criteria); // result = 5
 
 criteria = { profile: { age: 20 }, foo: 'A' };
-result = await RulePilot.evaluate(rule, criteria); // result = 10
+result = await JsonRules.evaluate(rule, criteria); // result = 10
 
 criteria = { profile: { age: 20 }, foo: 'B' };
-result = await RulePilot.evaluate(rule, criteria); // result = 20
+result = await JsonRules.evaluate(rule, criteria); // result = 20
 
 criteria = { profile: { age: 20 }, foo: 'C' };
-result = await RulePilot.evaluate(rule, criteria); // result = 5
+result = await JsonRules.evaluate(rule, criteria); // result = 5
 
 criteria = { profile: { age: 10 }, foo: 'A' };
-result = await RulePilot.evaluate(rule, criteria); // result = false
+result = await JsonRules.evaluate(rule, criteria); // result = false
 ```
 
 
@@ -714,36 +712,36 @@ The `validate()` method will return `true` if the rule is valid, otherwise it wi
 describing the problem along with the problem node from the rule for easy debugging.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   // ...
 };
 
-const result = RulePilot.validate(rule);
+const result = JsonRules.validate(rule);
 ```
 
 For TypeScript users, the `ValidationResult` interface can be imported.
 
 ```typescript
-import { RulePilot, Rule, ValidationResult } from "rulepilot";
+import { JsonRules, Rule, ValidationResult } from "@ivandt/json-rules";
 
 const rule: Rule = {
   // ...
 };
 
-const validationResult: ValidationResult = RulePilot.validate(rule);
+const validationResult: ValidationResult = JsonRules.validate(rule);
 ```
 
 ## Criteria Mutations
 
-Mutations are a powerful tool built straight into `RulePilot` which allow for the modification of criteria before
+Mutations are a powerful tool built straight into `Rules` which allow for the modification of criteria before
 evaluation.
 
 Mutations can be basic functions which modify the criteria in some way, or they can be more complex functions which make 
 API calls or perform other operations.
 
-The mutation logic built into `RulePilot` is designed to be as efficient as possible, avoiding multiple repeat 
+The mutation logic built into `Rules` is designed to be as efficient as possible, avoiding multiple repeat 
 evaluations by caching the results of previous evaluations. The mutator logic also identifies all unique mutations 
 required at runtime and executes them all in parallel before passing the criteria to the rule engine for evaluation.
 
@@ -751,7 +749,7 @@ Let's take a look at a simple example use case for mutations, where we use an AP
 the criteria before evaluation.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 // Example client method to fetch account information
 import { fetchAccount } from './api'
@@ -767,17 +765,17 @@ const rule: Rule = {
 
 const criteria = [{ account: 123 }, { account: 123 }, { account: 124 }];
 
-// Instantiate a new RulePilot instance (recommended)
-const rulePilot = new RulePilot();
+// Instantiate a new JsonRules instance (recommended)
+const jsonrules = new JsonRules();
 
 // Add a mutation to fetch account information
 // This mutation will be called once for each unique accountId in the criteria
-rulePilot.addMutation("account", async (accountId, criteria) => {
+jsonrules.addMutation("account", async (accountId, criteria) => {
   return await fetchAccount(accountId);
 });
 
 // Evaluate the rule
-const result = await rulePilot.evaluate(rule, criteria);
+const result = await jsonrules.evaluate(rule, criteria);
 ```
 
 In the example above, the `fetchAccount()` function will be called twice in parallel with (123, 124). All 3 criteria 
@@ -790,7 +788,7 @@ objects will be updated with the account information before the rule is evaluate
 - Mutations are cached by default, so if the same criteria value is encountered again, the mutation will not be called
 - Mutations will copy the criteria object before mutating it, so the original criteria object will not be modified
 
-**Note:** Mutations can be used with the static implementation of `RulePilot`, e.g. `RulePilot.addMutation(...)`, 
+**Note:** Mutations can be used with the static implementation of `Rules`, e.g. `JsonRules.addMutation(...)`, 
 however it is not recommended to do so _(instead the instantiated implementation should be used)_, otherwise you risk 
 having different parts of your application pushing different mutations for different rules to the same general pool.
 
@@ -799,17 +797,17 @@ with the same criteria mutation while needing to re-process the mutation, you wi
 
 ```typescript
 // Clear the cache for the account mutation
-rulePilot.clearMutationCache("account");
+jsonrules.clearMutationCache("account");
 
 // or ...
 
 // Clear the entire mutation cache
-rulePilot.clearMutationCache();
+jsonrules.clearMutationCache();
 ```
 
 ### Debugging Mutations
 
-Mutations can be debugged by setting an environment variable `DEBUG="true"` when running `RulePilot`. This will 
+Mutations can be debugged by setting an environment variable `DEBUG="true"` when running `Rules`. This will 
 cause mutations to log debug information to the console.
 
 ```typescript
@@ -818,9 +816,9 @@ process.env.DEBUG = "true";
 
 ## Introspection
 
-Rule introspection is built into `RulePilot` and can be used to inspect a rule and get information about it.
+Rule introspection is built into `Rules` and can be used to inspect a rule and get information about it.
 
-When `RulePilot` introspects a rule it attempts to determine, for each distinct result in the rule, the 
+When `Rules` introspects a rule it attempts to determine, for each distinct result in the rule, the 
 distribution of inputs which will satisfy the rule resolving to said result, provided an input criteria.
 
 For example, using introspection we can ask Rule Pilot the following question:
@@ -831,7 +829,7 @@ For example, using introspection we can ask Rule Pilot the following question:
 This is a useful feature when you want to know what inputs will result in a specific output, or what inputs will result
 in a specific output distribution.
 
-For example if a `RulePilot` rule is being used to evaluate what type of discount a user should get, you can use 
+For example if a `Rules` rule is being used to evaluate what type of discount a user should get, you can use 
 the introspection feature to tell the user what products, quantities, requirements, etc. they must fulfill in 
 order to obtain each possible discount. 
 
@@ -840,7 +838,7 @@ This is particularly useful when using some form of rule based configuration to 
 Taking a simple granular rule as an example:
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
 const rule: Rule = {
   conditions: [
@@ -874,7 +872,7 @@ the discount amount would be in each case.
 ```typescript
 const subjects = ["country"];
 const constraint = { field: "hasCoupon", value: true };
-const introspection = RulePilot.introspect(rule, constraint, subjects);
+const introspection = JsonRules.introspect(rule, constraint, subjects);
 ```
 
 The following will be returned by the `introspection`:
@@ -891,13 +889,13 @@ The following will be returned by the `introspection`:
 }]
 ```
 
-We can also ask `RulePilot` to introspect the rule to determine what countries would receive aa discount and what that
+We can also ask `Rules` to introspect the rule to determine what countries would receive aa discount and what that
 discount would be if the totalCheckoutPrice was 100.
 
 ```typescript
 const subjects = ["country"];
 const constraint = { field: "totalCheckoutPrice", value: 100 };
-const introspection = RulePilot.introspect(rule, constraint, subjects);
+const introspection = JsonRules.introspect(rule, constraint, subjects);
 ```
 
 The following will be returned by the `introspection`:
@@ -928,7 +926,7 @@ variable `DEBUG="true"`.
 process.env.DEBUG = "true";
 ```
 
-**Note:** Introspection requires a [Granular](#granular-example) rule to be passed to it, otherwise `RulePilot` will 
+**Note:** Introspection requires a [Granular](#granular-example) rule to be passed to it, otherwise `Rules` will 
 throw an `RuleTypeError`.
 
 **Note** Introspection does not yet work with these operators: 
@@ -941,7 +939,7 @@ throw an `RuleTypeError`.
 
 ## Fluent Rule Builder
 
-Although creating rules in plain JSON is very straightforward, `RulePilot` comes with a `Builder` class which can be
+Although creating rules in plain JSON is very straightforward, `Rules` comes with a `Builder` class which can be
 used to create rules in a fluent manner.
 
 The `add()` method allows for the addition of a root condition to the rule. This condition can be then setup as required.
@@ -949,9 +947,9 @@ The `add()` method allows for the addition of a root condition to the rule. This
 The `default()` method allows for the addition of a default value result for the rule.
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
-const builder = RulePilot.builder();
+const builder = JsonRules.builder();
 
 const rule: Rule = builder
   .add(
@@ -984,9 +982,9 @@ const rule: Rule = builder
 ### Adding Sub Rules in the builder
 
 ```typescript
-import { RulePilot, Rule } from "rulepilot";
+import { JsonRules, Rule } from "@ivandt/json-rules";
 
-const builder = RulePilot.builder();
+const builder = JsonRules.builder();
 
 const rule: Rule = builder
   .add(

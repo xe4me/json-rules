@@ -1,10 +1,10 @@
-import { Rule, RulePilot } from "../src";
+import { Rule, JsonRules } from "../src";
 
-describe("RulePilot builder correctly", () => {
+describe("JsonRules builder correctly", () => {
   it("Creates a valid ruleset", () => {
-    const builder = RulePilot.builder();
+    const builder = JsonRules.builder();
     expect(
-      RulePilot.validate(
+      JsonRules.validate(
         builder
           .add(
             builder.condition("all", [
@@ -17,7 +17,7 @@ describe("RulePilot builder correctly", () => {
   });
 
   it("Creates a complex ruleset properly", () => {
-    const builder = RulePilot.builder();
+    const builder = JsonRules.builder();
 
     const rule: Rule = builder
       .add(
@@ -73,7 +73,7 @@ describe("RulePilot builder correctly", () => {
   });
 
   it("Creates a complex ruleset with sub rules", () => {
-    const builder = RulePilot.builder();
+    const builder = JsonRules.builder();
 
     const rule: Rule = builder
       .add(
@@ -138,7 +138,7 @@ describe("RulePilot builder correctly", () => {
   });
 
   it("Throws an error when validating an invalid ruleset", () => {
-    const builder = RulePilot.builder();
+    const builder = JsonRules.builder();
     expect(() =>
       builder
         .add(
