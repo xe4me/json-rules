@@ -1,6 +1,7 @@
 {
   "name": "@ivandt/json-rules",
   "version": "1.7.0",
+  "private": false,
   "description": "Rule parsing engine for JSON rules",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,11 +13,14 @@
     "prettier": "prettier --write .",
     "publish": "npm run build && npm publish --access public"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andrewbrg/rulepilot.git"
+    "url": "https://github.com/xe4me/json-rules.git"
   },
-  "author": "Andrew Borg <andrew.borg@redacreltd.com>",
+  "author": "Milad Hi <milad.hi@syptime.com>",
   "license": "MIT",
   "keywords": [
     "rules",
