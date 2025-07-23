@@ -17,7 +17,6 @@ export type Operator =
   | "not contains any"
   | "matches"
   | "not matches"
-  | "'is between'"
   | "is between"
   | "is not between"
   | "is before"
