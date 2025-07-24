@@ -95,7 +95,7 @@ describe("JsonRules mutator correctly", () => {
         {
           conditions: [
             {
-              all: [{ field: "foo.bar", operator: ">", value: 6 }],
+              all: [{ field: "foo.bar", operator: "is greater than", value: 6 }],
             },
           ],
         },

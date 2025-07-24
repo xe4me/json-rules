@@ -7,7 +7,7 @@ export const invalid3Json: Rule = {
       any: [
         {
           field: "foo",
-          operator: ">=",
+          operator: "is greater than or equal",
           value: null,
         },
       ],

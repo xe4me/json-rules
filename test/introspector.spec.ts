@@ -34,8 +34,8 @@ describe("JsonRules introspector correctly", () => {
           {
             subject: "Leverage",
             values: [
-              { operator: ">=", value: 1000 },
-              { operator: "<", value: 200 },
+              { operator: "is greater than or equal", value: 1000 },
+              { operator: "is less than", value: 200 },
             ],
           },
         ],
@@ -71,7 +71,7 @@ describe("JsonRules introspector correctly", () => {
             values: [
               { operator: "==", value: 1000 },
               { operator: "==", value: 500 },
-              { operator: "<", value: 200 },
+              { operator: "is less than", value: 200 },
             ],
           },
         ],
@@ -87,7 +87,7 @@ describe("JsonRules introspector correctly", () => {
           {
             subject: "Category",
             values: [
-              { operator: ">=", value: 1000 },
+              { operator: "is greater than or equal", value: 1000 },
               { operator: "==", value: 22 },
               { operator: "==", value: 11 },
               { operator: "==", value: 12 },
@@ -127,8 +127,8 @@ describe("JsonRules introspector correctly", () => {
           {
             subject: "Leverage",
             values: [
-              { operator: "<", value: 1000 },
-              { operator: ">=", value: 200 },
+              { operator: "is less than", value: 1000 },
+              { operator: "is greater than or equal", value: 200 },
             ],
           },
         ],
@@ -192,7 +192,7 @@ describe("JsonRules introspector correctly", () => {
           {
             subject: "Leverage",
             values: [
-              { operator: ">", value: 400 },
+              { operator: "is greater than", value: 400 },
               { operator: "==", value: "Demo" },
             ],
           },
@@ -220,39 +220,39 @@ describe("JsonRules introspector correctly", () => {
 
   it("Sanitizes results correctly", async () => {
     let results: Constraint[] = [
-      { field: "Lev", value: 200, operator: "<" },
+      { field: "Lev", value: 200, operator: "is less than" },
       { field: "Lev", value: 200, operator: "==" },
     ];
 
     expect(IntrospectorSpec.sanitizeFn(results)).toEqual([
-      { field: "Lev", value: 200, operator: "<=" },
+      { field: "Lev", value: 200, operator: "is less than or equal" },
     ]);
 
     results = [
-      { field: "Lev", value: 200, operator: ">" },
+      { field: "Lev", value: 200, operator: "is greater than" },
       { field: "Lev", value: 200, operator: "==" },
     ];
 
     expect(IntrospectorSpec.sanitizeFn(results)).toEqual([
-      { field: "Lev", value: 200, operator: ">=" },
+      { field: "Lev", value: 200, operator: "is greater than or equal" },
     ]);
 
     results = [
-      { field: "Lev", value: 200, operator: ">" },
-      { field: "Lev", value: 300, operator: ">" },
+      { field: "Lev", value: 200, operator: "is greater than" },
+      { field: "Lev", value: 300, operator: "is greater than" },
     ];
 
     expect(IntrospectorSpec.sanitizeFn(results)).toEqual([
-      { field: "Lev", value: 200, operator: ">" },
+      { field: "Lev", value: 200, operator: "is greater than" },
     ]);
 
     results = [
-      { field: "Lev", value: 200, operator: "<" },
-      { field: "Lev", value: 300, operator: "<" },
+      { field: "Lev", value: 200, operator: "is less than" },
+      { field: "Lev", value: 300, operator: "is less than" },
     ];
 
     expect(IntrospectorSpec.sanitizeFn(results)).toEqual([
-      { field: "Lev", value: 300, operator: "<" },
+      { field: "Lev", value: 300, operator: "is less than" },
     ]);
 
     results = [
@@ -296,8 +296,8 @@ describe("JsonRules introspector correctly", () => {
     const input = { field: "Category", value: 30 };
 
     let candidates: Constraint[] = [
-      { field: "Lev", value: 200, operator: "<" },
-      { field: "Lev", value: 20, operator: ">" },
+      { field: "Lev", value: 200, operator: "is less than" },
+      { field: "Lev", value: 20, operator: "is greater than" },
     ];
 
     let item: Constraint = { field: "Lev", value: 200, operator: "==" };
@@ -318,44 +318,44 @@ describe("JsonRules introspector correctly", () => {
     item = { field: "Lev", value: 21, operator: "==" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 30, operator: "<=" };
+    item = { field: "Lev", value: 30, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 20, operator: ">" };
+    item = { field: "Lev", value: 20, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 300, operator: "<=" };
+    item = { field: "Lev", value: 300, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 3, operator: "<=" };
+    item = { field: "Lev", value: 3, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 20, operator: "<=" };
+    item = { field: "Lev", value: 20, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 21, operator: "<=" };
+    item = { field: "Lev", value: 21, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 3, operator: "<" };
+    item = { field: "Lev", value: 3, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 210, operator: ">=" };
+    item = { field: "Lev", value: 210, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 200, operator: ">=" };
+    item = { field: "Lev", value: 200, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 199, operator: ">=" };
+    item = { field: "Lev", value: 199, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 210, operator: ">" };
+    item = { field: "Lev", value: 210, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
     //////////////////////////////////////////////////////////////////////
 
     candidates = [
-      { field: "Lev", value: 200, operator: "<=" },
-      { field: "Lev", value: 20, operator: ">=" },
+      { field: "Lev", value: 200, operator: "is less than or equal" },
+      { field: "Lev", value: 20, operator: "is greater than or equal" },
     ];
 
     item = { field: "Lev", value: 200, operator: "==" };
@@ -376,65 +376,65 @@ describe("JsonRules introspector correctly", () => {
     item = { field: "Lev", value: 21, operator: "==" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 30, operator: "<=" };
+    item = { field: "Lev", value: 30, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 300, operator: "<=" };
+    item = { field: "Lev", value: 300, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 3, operator: "<=" };
+    item = { field: "Lev", value: 3, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 20, operator: "<=" };
+    item = { field: "Lev", value: 20, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 20, operator: ">" };
+    item = { field: "Lev", value: 20, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 21, operator: "<=" };
+    item = { field: "Lev", value: 21, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 3, operator: "<" };
+    item = { field: "Lev", value: 3, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 210, operator: ">=" };
+    item = { field: "Lev", value: 210, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 200, operator: ">=" };
+    item = { field: "Lev", value: 200, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 199, operator: ">=" };
+    item = { field: "Lev", value: 199, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 210, operator: ">" };
+    item = { field: "Lev", value: 210, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
     //////////////////////////////////////////////////////////////////////
 
     candidates = [{ field: "Lev", value: 200, operator: "==" }];
 
-    item = { field: "Lev", value: 210, operator: "<=" };
+    item = { field: "Lev", value: 210, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 200, operator: "<=" };
+    item = { field: "Lev", value: 200, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 200, operator: "<" };
+    item = { field: "Lev", value: 200, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 201, operator: "<" };
+    item = { field: "Lev", value: 201, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 190, operator: ">=" };
+    item = { field: "Lev", value: 190, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 200, operator: ">=" };
+    item = { field: "Lev", value: 200, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 200, operator: ">" };
+    item = { field: "Lev", value: 200, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 99, operator: ">" };
+    item = { field: "Lev", value: 99, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
     item = { field: "Lev", value: [200, 300], operator: "in" };
@@ -482,36 +482,36 @@ describe("JsonRules introspector correctly", () => {
 
     //
 
-    item = { field: "Lev", value: 30, operator: ">" };
+    item = { field: "Lev", value: 30, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 30, operator: ">=" };
+    item = { field: "Lev", value: 30, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 30, operator: "<=" };
+    item = { field: "Lev", value: 30, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 40, operator: "<" };
+    item = { field: "Lev", value: 40, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 40, operator: "<=" };
+    item = { field: "Lev", value: 40, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
     //
 
-    item = { field: "Lev", value: 10, operator: "<" };
+    item = { field: "Lev", value: 10, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(false);
 
-    item = { field: "Lev", value: 10, operator: "<=" };
+    item = { field: "Lev", value: 10, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 10, operator: ">=" };
+    item = { field: "Lev", value: 10, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 5, operator: ">" };
+    item = { field: "Lev", value: 5, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 5, operator: ">=" };
+    item = { field: "Lev", value: 5, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
     //
@@ -544,19 +544,19 @@ describe("JsonRules introspector correctly", () => {
 
     //
 
-    item = { field: "Lev", value: 30, operator: ">" };
+    item = { field: "Lev", value: 30, operator: "is greater than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 30, operator: ">=" };
+    item = { field: "Lev", value: 30, operator: "is greater than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 30, operator: "<=" };
+    item = { field: "Lev", value: 30, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 40, operator: "<" };
+    item = { field: "Lev", value: 40, operator: "is less than" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
 
-    item = { field: "Lev", value: 40, operator: "<=" };
+    item = { field: "Lev", value: 40, operator: "is less than or equal" };
     expect(IntrospectorSpec.testFn(candidates, input, item)).toEqual(true);
   });
 

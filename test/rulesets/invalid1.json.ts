@@ -13,7 +13,7 @@ export const invalid1Json: Rule = {
             },
             {
               field: "Leverage",
-              operator: "<",
+              operator: "is less than",
               value: 200,
             },
             {
@@ -30,7 +30,7 @@ export const invalid1Json: Rule = {
           all: [
             {
               field: "Leverage",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: 1000,
             },
           ],

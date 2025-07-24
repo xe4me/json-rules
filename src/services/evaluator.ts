@@ -317,13 +317,13 @@ export class Evaluator {
         return criterion == resolvedValue;
       case "!=":
         return criterion != resolvedValue;
-      case ">":
+      case "is greater than":
         return criterion > resolvedValue;
-      case ">=":
+      case "is greater than or equal":
         return criterion >= resolvedValue;
-      case "<":
+      case "is less than":
         return criterion < resolvedValue;
-      case "<=":
+      case "is less than or equal":
         return criterion <= resolvedValue;
       case "in":
         return (
@@ -371,10 +371,14 @@ export class Evaluator {
         return !this.#createRegExp(resolvedValue as RegexPattern).test(
           `${criterion}`
         );
-      case "is between":
-        return this.#isBetween(criterion, resolvedValue);
-      case "is not between":
-        return !this.#isBetween(criterion, resolvedValue);
+      case "is between numbers":
+        return this.#isBetweenNumbers(criterion, resolvedValue);
+      case "is between dates":
+        return this.#isBetweenDates(criterion, resolvedValue);
+      case "is not between numbers":
+        return !this.#isBetweenNumbers(criterion, resolvedValue);
+      case "is not between dates":
+        return !this.#isBetweenDates(criterion, resolvedValue);
       case "is before":
         return this.#isBefore(criterion, resolvedValue);
       case "is after":
@@ -394,5 +398,28 @@ export class Evaluator {
       default:
         return false;
     }
+  }
+
+  // Add these helper methods for DRYness
+  #isBetweenNumbers(value: any, range: any): boolean {
+    if (!Array.isArray(range) || range.length !== 2) return false;
+    const [min, max] = range;
+    return (
+      typeof value === "number" &&
+      typeof min === "number" &&
+      typeof max === "number" &&
+      value >= min && value <= max
+    );
+  }
+
+  #isBetweenDates(value: any, range: any): boolean {
+    if (!Array.isArray(range) || range.length !== 2) return false;
+    const [min, max] = range;
+    return (
+      value instanceof Date &&
+      min instanceof Date &&
+      max instanceof Date &&
+      value >= min && value <= max
+    );
   }
 }

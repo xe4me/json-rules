@@ -13,7 +13,7 @@ export const subRulesValid3Json: Rule = {
             },
             {
               field: "fieldB",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: 2,
             },
             {

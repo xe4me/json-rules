@@ -6,7 +6,7 @@ export const valid8Json: Rule = {
       none: [
         {
           field: "Leverage",
-          operator: ">=",
+          operator: "is greater than or equal",
           value: 1000,
         },
         {
@@ -30,7 +30,7 @@ export const valid8Json: Rule = {
                 },
                 {
                   field: "Leverage",
-                  operator: "<",
+                  operator: "is less than",
                   value: 200,
                 },
                 {

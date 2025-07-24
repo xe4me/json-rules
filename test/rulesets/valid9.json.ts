@@ -18,7 +18,7 @@ export const valid9Json: Rule = {
             },
             {
               field: "totalCheckoutPrice",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: 120.0,
             },
           ],
@@ -35,7 +35,7 @@ export const valid9Json: Rule = {
       all: [
         {
           field: "age",
-          operator: ">=",
+          operator: "is greater than or equal",
           value: 18,
         },
         {

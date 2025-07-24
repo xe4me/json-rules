@@ -5,7 +5,7 @@ describe("Template Integration Tests", () => {
     it("should compare field values using template references", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "drivingExperience", operator: ">", value: "{age}" }],
+          all: [{ field: "drivingExperience", operator: "is greater than", value: "{age}" }],
         },
       };
 
@@ -20,7 +20,7 @@ describe("Template Integration Tests", () => {
     it("should handle field-to-field comparisons that fail", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "drivingExperience", operator: ">", value: "{age}" }],
+          all: [{ field: "drivingExperience", operator: "is greater than", value: "{age}" }],
         },
       };
 
@@ -36,7 +36,7 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "salary", operator: ">=", value: "{profile.minSalary}" },
+            { field: "salary", operator: "is greater than or equal", value: "{profile.minSalary}" },
           ],
         },
       };
@@ -177,7 +177,7 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "birthYear", operator: "is between", value: "{ageRange}" },
+            { field: "birthYear", operator: "is between numbers", value: "{ageRange}" },
           ],
         },
       };
@@ -257,9 +257,9 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: ">=", value: "{minAge}" },
-            { field: "experience", operator: ">=", value: "{minExperience}" },
-            { field: "salary", operator: "is between", value: "{salaryRange}" },
+            { field: "age", operator: "is greater than or equal", value: "{minAge}" },
+            { field: "experience", operator: "is greater than or equal", value: "{minExperience}" },
+            { field: "salary", operator: "is between numbers", value: "{salaryRange}" },
           ],
         },
       };
@@ -282,7 +282,7 @@ describe("Template Integration Tests", () => {
           all: [
             {
               field: "currentLevel",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: "{requirements.level.minimum}",
             },
           ],
@@ -334,10 +334,10 @@ describe("Template Integration Tests", () => {
             },
             {
               any: [
-                { field: "level", operator: ">=", value: "{minLevel}" },
+                { field: "level", operator: "is greater than or equal", value: "{minLevel}" },
                 {
                   field: "experience",
-                  operator: ">=",
+                  operator: "is greater than or equal",
                   value: "{minExperience}",
                 },
               ],
@@ -364,7 +364,7 @@ describe("Template Integration Tests", () => {
     it("should handle missing template variables gracefully", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: ">", value: "{missingField}" }],
+          all: [{ field: "age", operator: "is greater than", value: "{missingField}" }],
         },
       };
 
@@ -382,7 +382,7 @@ describe("Template Integration Tests", () => {
           all: [
             {
               field: "salary",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: "{profile.missing.field}",
             },
           ],
@@ -421,8 +421,8 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: ">=", value: 18 }, // literal value
-            { field: "experience", operator: ">=", value: "{minExperience}" }, // template value
+            { field: "age", operator: "is greater than or equal", value: 18 }, // literal value
+            { field: "experience", operator: "is greater than or equal", value: "{minExperience}" }, // template value
           ],
         },
       };
@@ -439,7 +439,7 @@ describe("Template Integration Tests", () => {
     it("should handle array of criteria with template values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "score", operator: ">=", value: "{passingScore}" }],
+          all: [{ field: "score", operator: "is greater than or equal", value: "{passingScore}" }],
         },
       };
 

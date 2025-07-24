@@ -5,10 +5,10 @@ export type ConditionType = "any" | "all" | "none";
 export type Operator =
   | "=="
   | "!="
-  | ">"
-  | "<"
-  | ">="
-  | "<="
+  | "is greater than"
+  | "is less than"
+  | "is greater than or equal"
+  | "is less than or equal"
   | "in"
   | "not in"
   | "contains"
@@ -17,8 +17,10 @@ export type Operator =
   | "not contains any"
   | "matches"
   | "not matches"
-  | "is between"
-  | "is not between"
+  | "is between numbers"
+  | "is between dates"
+  | "is not between numbers"
+  | "is not between dates"
   | "is before"
   | "is after"
   | "is on or before"
@@ -53,10 +55,10 @@ export type TemplateValue<T, TData = any> = T | ValidFieldReference<TData>;
 export type OperatorValueMap<TData = any> = {
   "==": TemplateValue<string | number | boolean | Date | null, TData>;
   "!=": TemplateValue<string | number | boolean | Date | null, TData>;
-  ">": TemplateValue<string | number | Date, TData>;
-  "<": TemplateValue<string | number | Date, TData>;
-  ">=": TemplateValue<string | number | Date, TData>;
-  "<=": TemplateValue<string | number | Date, TData>;
+  "is greater than": TemplateValue<string | number | Date, TData>;
+  "is less than": TemplateValue<string | number | Date, TData>;
+  "is greater than or equal": TemplateValue<string | number | Date, TData>;
+  "is less than or equal": TemplateValue<string | number | Date, TData>;
   in:
     | (string | number | boolean | Record<string, unknown> | null)[]
     | TemplateValue<
@@ -75,14 +77,18 @@ export type OperatorValueMap<TData = any> = {
   "not contains any": string[] | TemplateValue<string[], TData>;
   matches: TemplateValue<RegexPattern, TData>;
   "not matches": TemplateValue<RegexPattern, TData>;
-  "is between":
+  "is between numbers":
     | [number, number]
+    | TemplateValue<[number, number], TData>;
+  "is between dates":
     | [Date, Date]
-    | TemplateValue<[number, number] | [Date, Date], TData>;
-  "is not between":
+    | TemplateValue<[Date, Date], TData>;
+  "is not between numbers":
     | [number, number]
+    | TemplateValue<[number, number], TData>;
+  "is not between dates":
     | [Date, Date]
-    | TemplateValue<[number, number] | [Date, Date], TData>;
+    | TemplateValue<[Date, Date], TData>;
   "is before": TemplateValue<string | number | Date, TData>;
   "is after": TemplateValue<string | number | Date, TData>;
   "is on or before": TemplateValue<string | number | Date, TData>;

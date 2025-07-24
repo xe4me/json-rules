@@ -26,7 +26,7 @@ describe("JsonRules builder correctly", () => {
           [
             builder.condition("any", [
               builder.constraint("fieldA", "==", "bar"),
-              builder.constraint("fieldB", ">=", 2),
+              builder.constraint("fieldB", "is greater than or equal", 2),
             ]),
             builder.constraint("fieldC", "not in", [1, 2, 3]),
           ],
@@ -53,7 +53,7 @@ describe("JsonRules builder correctly", () => {
             {
               any: [
                 { field: "fieldA", operator: "==", value: "bar" },
-                { field: "fieldB", operator: ">=", value: 2 },
+                { field: "fieldB", operator: "is greater than or equal", value: 2 },
               ],
             },
             { field: "fieldC", operator: "not in", value: [1, 2, 3] },
@@ -82,7 +82,7 @@ describe("JsonRules builder correctly", () => {
           [
             builder.condition("any", [
               builder.constraint("fieldA", "==", "bar"),
-              builder.constraint("fieldB", ">=", 2),
+              builder.constraint("fieldB", "is greater than or equal", 2),
               builder.condition(
                 "all",
                 [builder.constraint("fieldD", "==", "whoop")],
@@ -114,7 +114,7 @@ describe("JsonRules builder correctly", () => {
             {
               any: [
                 { field: "fieldA", operator: "==", value: "bar" },
-                { field: "fieldB", operator: ">=", value: 2 },
+                { field: "fieldB", operator: "is greater than or equal", value: 2 },
                 {
                   all: [{ field: "fieldD", operator: "==", value: "whoop" }],
                   result: 33,

@@ -23,7 +23,7 @@ export const valid6Json: Rule = {
             },
             {
               field: "Leverage",
-              operator: "<",
+              operator: "is less than",
               value: 200,
             },
             {
@@ -35,7 +35,7 @@ export const valid6Json: Rule = {
               any: [
                 {
                   field: "Category",
-                  operator: ">=",
+                  operator: "is greater than or equal",
                   value: 1000,
                 },
                 {

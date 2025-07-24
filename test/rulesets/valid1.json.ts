@@ -7,22 +7,22 @@ export const valid1Json: Rule = {
         all: [
           {
             field: "WinRate",
-            operator: ">",
+            operator: "is greater than",
             value: 60,
           },
           {
             field: "AverageTradeDuration",
-            operator: "<",
+            operator: "is less than",
             value: 60,
           },
           {
             field: "Duration",
-            operator: ">",
+            operator: "is greater than",
             value: 259200,
           },
           {
             field: "TotalDaysTraded",
-            operator: ">=",
+            operator: "is greater than or equal",
             value: 3,
           },
         ],
@@ -31,7 +31,7 @@ export const valid1Json: Rule = {
         all: [
           {
             field: "ProfitPercentage",
-            operator: ">=",
+            operator: "is greater than or equal",
             value: 10,
           },
         ],

@@ -23,7 +23,7 @@ export const subRulesValid1Json: Rule = {
             },
             {
               field: "Leverage",
-              operator: ">",
+              operator: "is greater than",
               value: 500,
             },
             {
@@ -35,7 +35,7 @@ export const subRulesValid1Json: Rule = {
               any: [
                 {
                   field: "Category",
-                  operator: ">=",
+                  operator: "is greater than or equal",
                   value: 1000,
                 },
                 {

@@ -6,8 +6,8 @@ describe("New Operators", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: "is between", value: [18, 65] },
-            { field: "score", operator: "is between", value: [0, 100] },
+            { field: "age", operator: "is between numbers", value: [18, 65] },
+            { field: "score", operator: "is between numbers", value: [0, 100] },
           ],
         },
       };
@@ -22,7 +22,7 @@ describe("New Operators", () => {
     it("should return false when value is outside the range", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is between", value: [18, 65] }],
+          all: [{ field: "age", operator: "is between numbers", value: [18, 65] }],
         },
       };
 
@@ -33,7 +33,7 @@ describe("New Operators", () => {
     it("should return false when value or range is invalid", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is between", value: [18, 65] }],
+          all: [{ field: "age", operator: "is between numbers", value: [18, 65] }],
         },
       };
 
@@ -43,7 +43,7 @@ describe("New Operators", () => {
 
       const invalidRule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is between", value: [18] }],
+          all: [{ field: "age", operator: "is between numbers", value: [18] }],
         },
       };
 
@@ -55,7 +55,7 @@ describe("New Operators", () => {
     it("should return true when value is outside the range", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is not between", value: [18, 65] }],
+          all: [{ field: "age", operator: "is not between numbers", value: [18, 65] }],
         },
       };
 
@@ -66,13 +66,145 @@ describe("New Operators", () => {
     it("should return false when value is in the range", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is not between", value: [18, 65] }],
+          all: [{ field: "age", operator: "is not between numbers", value: [18, 65] }],
         },
       };
 
       expect(await JsonRules.evaluate(rule, { age: 25 })).toBe(false);
       expect(await JsonRules.evaluate(rule, { age: 18 })).toBe(false);
       expect(await JsonRules.evaluate(rule, { age: 65 })).toBe(false);
+    });
+  });
+
+  describe("is between numbers operator", () => {
+    it("should return true when value is between the number range (inclusive)", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "score", operator: "is between numbers", value: [0, 100] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { score: 0 })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { score: 100 })).toBe(true);
+    });
+    it("should return false when value is outside the number range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "score", operator: "is between numbers", value: [0, 100] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { score: -1 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { score: 101 })).toBe(false);
+    });
+    it("should return false for invalid range or value", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "score", operator: "is between numbers", value: [0] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { score: null })).toBe(false);
+    });
+  });
+
+  describe("is not between numbers operator", () => {
+    it("should return true when value is outside the number range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "score", operator: "is not between numbers", value: [0, 100] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { score: -1 })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { score: 101 })).toBe(true);
+    });
+    it("should return false when value is inside the number range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "score", operator: "is not between numbers", value: [0, 100] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { score: 0 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { score: 100 })).toBe(false);
+    });
+  });
+
+  describe("is between dates operator", () => {
+    const date1 = new Date("2023-01-01");
+    const date2 = new Date("2023-06-15");
+    const date3 = new Date("2023-12-31");
+    it("should return true when value is between the date range (inclusive)", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "eventDate", operator: "is between dates", value: [date1, date3] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { eventDate: date1 })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { eventDate: date3 })).toBe(true);
+    });
+    it("should return false when value is outside the date range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "eventDate", operator: "is between dates", value: [date1, date3] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })).toBe(false);
+    });
+    it("should return false for invalid range or value", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "eventDate", operator: "is between dates", value: [date1, null] as any },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { eventDate: null })).toBe(false);
+    });
+  });
+
+  describe("is not between dates operator", () => {
+    const date1 = new Date("2023-01-01");
+    const date2 = new Date("2023-06-15");
+    const date3 = new Date("2023-12-31");
+    it("should return true when value is outside the date range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "eventDate", operator: "is not between dates", value: [date1, date3] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })).toBe(true);
+    });
+    it("should return false when value is inside the date range", async () => {
+      const rule: Rule = {
+        conditions: {
+          all: [
+            { field: "eventDate", operator: "is not between dates", value: [date1, date3] },
+          ],
+        },
+      };
+      expect(await JsonRules.evaluate(rule, { eventDate: date1 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { eventDate: date3 })).toBe(false);
     });
   });
 
@@ -679,7 +811,7 @@ describe("New Operators", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: "is between", value: [18, 65] },
+            { field: "age", operator: "is between numbers", value: [18, 65] },
             { field: "email", operator: "ends with", value: "@company.com" },
             {
               field: "skills",
@@ -715,7 +847,7 @@ describe("New Operators", () => {
         conditions: {
           any: [
             { field: "priority", operator: "starts with", value: "high" },
-            { field: "score", operator: "is between", value: [90, 100] },
+            { field: "score", operator: "is between numbers", value: [90, 100] },
             { field: "tags", operator: "array contains", value: "urgent" },
           ],
         },

@@ -6,7 +6,7 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: ">", value: "{minAge}" },
+            { field: "age", operator: "is greater than", value: "{minAge}" },
             { field: "name", operator: "contains", value: "{searchTerm}" },
             {
               field: "profile.email",
@@ -27,12 +27,12 @@ describe("Template Validation Tests", () => {
           all: [
             {
               field: "currentLevel",
-              operator: ">=",
+              operator: "is greater than or equal",
               value: "{requirements.level.minimum}",
             },
             {
               field: "user.profile.age",
-              operator: "is between",
+              operator: "is between numbers",
               value: "{user.ageRange}",
             },
           ],
@@ -64,7 +64,7 @@ describe("Template Validation Tests", () => {
     it("should reject template variables starting with numbers", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: ">", value: "{123invalid}" }],
+          all: [{ field: "age", operator: "is greater than", value: "{123invalid}" }],
         },
       };
 
@@ -175,10 +175,10 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: ">", value: "{minAge}" },
-            { field: "score", operator: ">=", value: "{passingScore}" },
-            { field: "level", operator: "<", value: "{maxLevel}" },
-            { field: "experience", operator: "<=", value: "{maxExperience}" },
+            { field: "age", operator: "is greater than", value: "{minAge}" },
+            { field: "score", operator: "is greater than or equal", value: "{passingScore}" },
+            { field: "level", operator: "is less than", value: "{maxLevel}" },
+            { field: "experience", operator: "is less than or equal", value: "{maxExperience}" },
           ],
         },
       };
@@ -229,7 +229,7 @@ describe("Template Validation Tests", () => {
             { field: "endDate", operator: "is before", value: "{maxDate}" },
             {
               field: "birthDate",
-              operator: "is between",
+              operator: "is between dates",
               value: "{dateRange}",
             },
           ],
@@ -248,10 +248,10 @@ describe("Template Validation Tests", () => {
           any: [
             {
               all: [
-                { field: "age", operator: ">=", value: "{minAge}" },
+                { field: "age", operator: "is greater than or equal", value: "{minAge}" },
                 {
                   field: "experience",
-                  operator: ">=",
+                  operator: "is greater than or equal",
                   value: "{minExperience}",
                 },
               ],
@@ -276,10 +276,10 @@ describe("Template Validation Tests", () => {
             },
             {
               any: [
-                { field: "level", operator: ">=", value: "{minLevel}" },
+                { field: "level", operator: "is greater than or equal", value: "{minLevel}" },
                 {
                   field: "experience",
-                  operator: ">=",
+                  operator: "is greater than or equal",
                   value: "{minExperience}",
                 },
               ],
@@ -299,8 +299,8 @@ describe("Template Validation Tests", () => {
           any: [
             {
               all: [
-                { field: "age", operator: ">=", value: "{valid_age}" },
-                { field: "score", operator: ">=", value: "{123invalid}" },
+                { field: "age", operator: "is greater than or equal", value: "{valid_age}" },
+                { field: "score", operator: "is greater than or equal", value: "{123invalid}" },
               ],
             },
             { field: "priority", operator: "==", value: "{high-priority}" },
@@ -381,7 +381,7 @@ describe("Template Validation Tests", () => {
     it("should fail evaluation when template variables are missing", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: ">", value: "{missingField}" }],
+          all: [{ field: "age", operator: "is greater than", value: "{missingField}" }],
         },
       };
 
@@ -402,7 +402,7 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: ">", value: "{validField}" },
+            { field: "age", operator: "is greater than", value: "{validField}" },
             { field: "name", operator: "==", value: "{missingField}" },
           ],
         },

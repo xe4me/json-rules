@@ -233,20 +233,20 @@ export class Introspector {
       c.operator = "==";
       return c;
     }
-    if (">" === c.operator) {
-      c.operator = "<=";
+    if ("is greater than" === c.operator) {
+      c.operator = "is less than or equal";
       return c;
     }
-    if ("<" === c.operator) {
-      c.operator = ">=";
+    if ("is less than" === c.operator) {
+      c.operator = "is greater than or equal";
       return c;
     }
-    if (">=" === c.operator) {
-      c.operator = "<";
+    if ("is greater than or equal" === c.operator) {
+      c.operator = "is less than";
       return c;
     }
-    if ("<=" === c.operator) {
-      c.operator = ">";
+    if ("is less than or equal" === c.operator) {
+      c.operator = "is greater than";
       return c;
     }
     if ("in" === c.operator) {
@@ -281,7 +281,22 @@ export class Introspector {
       c.operator = "matches";
       return c;
     }
-
+    if ("is between numbers" === c.operator) {
+      c.operator = "is not between numbers";
+      return c;
+    }
+    if ("is not between numbers" === c.operator) {
+      c.operator = "is between numbers";
+      return c;
+    }
+    if ("is between dates" === c.operator) {
+      c.operator = "is not between dates";
+      return c;
+    }
+    if ("is not between dates" === c.operator) {
+      c.operator = "is between dates";
+      return c;
+    }
     return c;
   }
 
@@ -571,12 +586,12 @@ export class Introspector {
           if ("==" === operator && value !== c.value) result = false;
 
           // Item value must allow for constraint value to exist in item value range
-          if ("<=" === operator && value < c.value) result = false;
-          if (">=" === operator && value > c.value) result = false;
+          if ("is less than or equal" === operator && value < c.value) result = false;
+          if ("is greater than or equal" === operator && value > c.value) result = false;
 
           // Item value must allow for constraint value to exist in item value range
-          if ("<" === operator && value <= c.value) result = false;
-          if (">" === operator && value >= c.value) result = false;
+          if ("is less than" === operator && value <= c.value) result = false;
+          if ("is greater than" === operator && value >= c.value) result = false;
 
           // Item value cannot be equal to constraint value
           if ("!=" === operator && value === c.value) result = false;
@@ -619,7 +634,7 @@ export class Introspector {
               result = false;
           }
           break;
-        case ">":
+        case "is greater than":
           /**
            *  c = (L > 500)
            *  L == 501↑
@@ -635,10 +650,10 @@ export class Introspector {
           // Always pass ["!=", ">", ">=", "not in"]
 
           // Must be bigger than the value
-          ops = ["==", "<="];
+          ops = ["==", "is less than or equal"];
           if (ops.includes(operator) && value <= c.value) result = false;
 
-          if ("<" === operator && Number(value) <= Number(c.value) + 2)
+          if ("is less than" === operator && Number(value) <= Number(c.value) + 2)
             result = false;
 
           // One of the values in the item must match the candidate value
@@ -647,7 +662,7 @@ export class Introspector {
               result = false;
           }
           break;
-        case "<":
+        case "is less than":
           /**
            *  c = (L < 500)
            *  L == 499↓
@@ -662,10 +677,10 @@ export class Introspector {
           // Always pass ["!=", "<", "<=", "not in"]
 
           // Must be smaller than the value
-          ops = ["==", ">="];
+          ops = ["==", "is greater than or equal"];
           if (ops.includes(operator) && value >= c.value) result = false;
 
-          if (">" === operator && Number(value) >= Number(c.value) - 2)
+          if ("is greater than" === operator && Number(value) >= Number(c.value) - 2)
             result = false;
 
           // One of the values in the item must match the candidate value
@@ -674,7 +689,7 @@ export class Introspector {
               result = false;
           }
           break;
-        case ">=":
+        case "is greater than or equal":
           /**
            *  c = (L >= 500)
            *  L == 500↑
@@ -689,10 +704,10 @@ export class Introspector {
           // Always pass ["!=", ">=", ">", "not in"]
 
           // Must be bigger than the value
-          ops = ["==", "<="];
+          ops = ["==", "is less than or equal"];
           if (ops.includes(operator) && value < c.value) result = false;
 
-          if ("<" === operator && Number(value) < Number(c.value) + 1)
+          if ("is less than" === operator && Number(value) < Number(c.value) + 1)
             result = false;
 
           // One of the values in the item must match the candidate value
@@ -701,7 +716,7 @@ export class Introspector {
               result = false;
           }
           break;
-        case "<=":
+        case "is less than or equal":
           /**
            *  c = (L <= 500)
            *  L == 500↓
@@ -715,10 +730,10 @@ export class Introspector {
           // Always pass ["!=", "<=", "<", "not in"]
 
           // Must be smaller than the value
-          ops = ["==", ">="];
+          ops = ["==", "is greater than or equal"];
           if (ops.includes(operator) && value > c.value) result = false;
 
-          if (">" === operator && Number(value) > Number(c.value) - 1)
+          if ("is greater than" === operator && Number(value) > Number(c.value) - 1)
             result = false;
 
           // One of the values in the item must match the candidate value
@@ -744,18 +759,18 @@ export class Introspector {
             }
 
             // Item value must allow for constraint value to exist in item value range
-            if ("<=" === operator && value >= subVal) {
+            if ("is less than or equal" === operator && value >= subVal) {
               result = true;
             }
-            if (">=" === operator && value <= subVal) {
+            if ("is greater than or equal" === operator && value <= subVal) {
               result = true;
             }
 
             // Item value must allow for constraint value to exist in item value range
-            if ("<" === operator && value > subVal) {
+            if ("is less than" === operator && value > subVal) {
               result = true;
             }
-            if (">" === operator && value < subVal) {
+            if ("is greater than" === operator && value < subVal) {
               result = true;
             }
 
@@ -857,12 +872,12 @@ export class Introspector {
         // If the clone and the subject are the same, skip
         if (JSON.stringify(c) === JSON.stringify(sub)) continue;
 
-        if (">=" === op) {
+        if ("is greater than or equal" === op) {
           if ("==" === c.operator && c.value === val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
 
-          if (">" === c.operator) {
+          if ("is greater than" === c.operator) {
             // >=500, >500+ (remove >500+)
             if (c.value >= val) results = this.#removeItem(c, results);
             // >=500, >499- (remove >=500)
@@ -871,7 +886,7 @@ export class Introspector {
             return this.sanitize(results, depth);
           }
 
-          if (">=" === c.operator) {
+          if ("is greater than or equal" === c.operator) {
             // >=500, >=500+ (remove >=500+)
             if (c.value >= val) results = this.#removeItem(c, results);
             // >=500, >=499- (remove >=500)
@@ -881,12 +896,12 @@ export class Introspector {
           }
         }
 
-        if ("<=" === op) {
+        if ("is less than or equal" === op) {
           if ("==" === c.operator && c.value === val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
 
-          if ("<" === c.operator) {
+          if ("is less than" === c.operator) {
             // <=500, <500- (remove <500-)
             if (c.value <= val) results = this.#removeItem(c, results);
             // <=500, <501+ (remove >=500)
@@ -895,7 +910,7 @@ export class Introspector {
             return this.sanitize(results, depth);
           }
 
-          if ("<=" === c.operator) {
+          if ("is less than or equal" === c.operator) {
             // <=500, <500- (remove <500-)
             if (c.value <= val) results = this.#removeItem(c, results);
             // <=500, <501+ (remove >=500)
@@ -905,36 +920,36 @@ export class Introspector {
           }
         }
 
-        if (">" === op) {
+        if ("is greater than" === op) {
           if ("==" === c.operator && c.value > val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
 
           if ("==" === c.operator && c.value === val) {
             results = this.#removeItem(c, this.#removeItem(sub, results));
-            results.push({ ...sub, operator: ">=" });
+            results.push({ ...sub, operator: "is greater than or equal" });
 
             return this.sanitize(results, depth);
           }
 
-          if (">" === c.operator && c.value >= val) {
+          if ("is greater than" === c.operator && c.value >= val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
         }
 
-        if ("<" === op) {
+        if ("is less than" === op) {
           if ("==" === c.operator && c.value < val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
 
           if ("==" === c.operator && c.value === val) {
             results = this.#removeItem(c, this.#removeItem(sub, results));
-            results.push({ ...sub, operator: "<=" });
+            results.push({ ...sub, operator: "is less than or equal" });
 
             return this.sanitize(results, depth);
           }
 
-          if ("<" === c.operator && c.value <= val) {
+          if ("is less than" === c.operator && c.value <= val) {
             return this.sanitize(this.#removeItem(c, results), depth);
           }
         }
