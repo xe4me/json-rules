@@ -300,9 +300,9 @@ export class Evaluator {
       ? this.#objectDiscovery.resolveNestedProperty(constraint.field, criteria)
       : criteria[constraint.field];
 
-    // If the criteria object does not have the field
-    // we are looking for, we should return false.
-    if (undefined === criterion) {
+    // If the criteria object does not have the field we are looking for,
+    // we should return false UNLESS it's an "empty" check operator
+    if (undefined === criterion && !["is empty", "is not empty"].includes(constraint.operator)) {
       return false;
     }
 
@@ -395,8 +395,22 @@ export class Evaluator {
         return this.#arrayContains(criterion, resolvedValue);
       case "array no contains":
         return !this.#arrayContains(criterion, resolvedValue);
+      // Math validators
+      case "is even":
+        return typeof criterion === "number" && Number.isFinite(criterion) && criterion % 2 === 0;
+      case "is odd":
+        return typeof criterion === "number" && Number.isFinite(criterion) && criterion % 2 !== 0;
+      case "is positive":
+        return typeof criterion === "number" && Number.isFinite(criterion) && criterion > 0;
+      case "is negative":
+        return typeof criterion === "number" && Number.isFinite(criterion) && criterion < 0;
+      // Empty validators
+      case "is empty":
+        return this.#isEmpty(criterion);
+      case "is not empty":
+        return !this.#isEmpty(criterion);
       default:
-        return false;
+        throw new Error(`Unknown operator: ${constraint.operator}`);
     }
   }
 
@@ -421,5 +435,25 @@ export class Evaluator {
       max instanceof Date &&
       value >= min && value <= max
     );
+  }
+
+  #isEmpty(value: any): boolean {
+    // null or undefined
+    if (value === null || value === undefined) {
+      return true;
+    }
+    
+    // Empty string (but not zero)
+    if (typeof value === "string" && value === "") {
+      return true;
+    }
+    
+    // Empty array
+    if (Array.isArray(value) && value.length === 0) {
+      return true;
+    }
+    
+    // All other values (including 0, false, empty objects) are not empty
+    return false;
   }
 }

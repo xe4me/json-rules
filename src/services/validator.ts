@@ -209,6 +209,21 @@ export class Validator {
       "ends with",
       "array contains",
       "array no contains",
+      "is even",
+      "is odd",
+      "is positive",
+      "is negative",
+      "is empty",
+      "is not empty",
+      "is valid email",
+      "is valid phone",
+      "is URL",
+      "is UUID",
+      "is EAN",
+      "is IMEI",
+      "is unit",
+      "is country",
+      "is domain",
     ];
     if (!operators.includes(constraint.operator as Operator)) {
       return {
@@ -230,6 +245,13 @@ export class Validator {
           "not contains",
           "array contains",
           "array no contains",
+          "is even",
+          "is odd",
+          "is positive",
+          "is negative",
+          "is empty",
+          "is not empty",
+          "is EAN",
         ] as Operator[]
       ).includes(constraint.operator)
     ) {
@@ -237,7 +259,7 @@ export class Validator {
         isValid: false,
         error: {
           message:
-            '"operator" must be in ["is equal", "is not equal", "contains", "not contains", "array contains", "array no contains"] if "value" is null.',
+            '"operator" must be in ["is equal", "is not equal", "contains", "not contains", "array contains", "array no contains", "is even", "is odd", "is positive", "is negative", "is empty", "is not empty", "is EAN"] if "value" is null.',
           element: constraint,
         },
       };

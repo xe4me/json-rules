@@ -28,12 +28,78 @@ export type Operator =
   | "starts with"
   | "ends with"
   | "array contains"
-  | "array no contains";
+  | "array no contains"
+  | "is even"
+  | "is odd"
+  | "is positive"
+  | "is negative"
+  | "is empty"
+  | "is not empty"
+  | "is valid email"
+  | "is valid phone"
+  | "is URL"
+  | "is UUID"
+  | "is EAN"
+  | "is IMEI"
+  | "is unit"
+  | "is country"
+  | "is domain";
 
 export interface RegexPattern {
   regex: string;
   flags?: string;
 }
+
+export interface PhoneValidationConfig {
+  locale: string;
+  strict?: boolean;
+}
+
+export interface EmailValidationConfig {
+  allowDisplayName?: boolean;
+  requireDisplayName?: boolean;
+  allowUtf8LocalPart?: boolean;
+  requireTld?: boolean;
+  allowIpDomain?: boolean;
+  allowUnderscores?: boolean;
+  domainSpecificValidation?: boolean;
+  blacklistedChars?: string;
+  hostBlacklist?: string[];
+  hostWhitelist?: string[];
+}
+
+export interface URLValidationConfig {
+  protocols?: string[];
+  requireProtocol?: boolean;
+  allowUnderscores?: boolean;
+  allowTrailingDot?: boolean;
+  allowNumericTld?: boolean;
+  allowWildcard?: boolean;
+  ignoreMaxLength?: boolean;
+}
+
+export interface UUIDValidationConfig {
+  version?: 1 | 2 | 3 | 4 | 5;
+}
+
+export interface IMEIValidationConfig {
+  allowHyphens?: boolean;
+}
+
+export interface CountryValidationConfig {
+  format: "iso2" | "iso3" | "name";
+}
+
+export interface DomainValidationConfig {
+  requireTld?: boolean;
+  allowUnderscores?: boolean;
+  allowTrailingDot?: boolean;
+  allowNumericTld?: boolean;
+  allowWildcard?: boolean;
+  ignoreMaxLength?: boolean;
+}
+
+export type UnitType = "length" | "mass" | "volume" | "temperature" | "time" | "area" | "energy" | "pressure" | "speed" | "force" | "power" | "frequency";
 
 /**
  * Type for valid field references in template format {fieldName}
@@ -103,6 +169,23 @@ export type OperatorValueMap<TData = any> = {
     string | number | boolean | Record<string, unknown> | null,
     TData
   >;
+  // Simple math validators (no configuration needed)
+  "is even": null;
+  "is odd": null;
+  "is positive": null;
+  "is negative": null;
+  "is empty": null;
+  "is not empty": null;
+  // Advanced validators with configuration
+  "is valid email": EmailValidationConfig | null;
+  "is valid phone": PhoneValidationConfig | TemplateValue<PhoneValidationConfig, TData>;
+  "is URL": URLValidationConfig | TemplateValue<URLValidationConfig, TData>;
+  "is UUID": UUIDValidationConfig | TemplateValue<UUIDValidationConfig, TData>;
+  "is EAN": null;
+  "is IMEI": IMEIValidationConfig | TemplateValue<IMEIValidationConfig, TData>;
+  "is unit": UnitType | TemplateValue<UnitType, TData>;
+  "is country": CountryValidationConfig | TemplateValue<CountryValidationConfig, TData>;
+  "is domain": DomainValidationConfig | TemplateValue<DomainValidationConfig, TData>;
 };
 
 /**

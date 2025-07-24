@@ -39,9 +39,9 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(true);
   });
 
-  it("Evaluates to false if operator is unknown", async () => {
-    expect(
-      await JsonRules.evaluate(
+  it("Throws error if operator is unknown", async () => {
+    await expect(
+      JsonRules.evaluate(
         {
           conditions: [
             {
@@ -54,7 +54,7 @@ describe("JsonRules engine correctly", () => {
         { name: "test" },
         true
       )
-    ).toEqual(false);
+    ).rejects.toThrow("Unknown operator: foo");
   });
 
   it("Resolves nested field definitions", async () => {
