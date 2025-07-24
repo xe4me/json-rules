@@ -13,7 +13,7 @@ export const valid9Json: Rule = {
             },
             {
               field: "hasCoupon",
-              operator: "==",
+              operator: "is equal",
               value: true,
             },
             {
@@ -25,7 +25,7 @@ export const valid9Json: Rule = {
         },
         {
           field: "country",
-          operator: "==",
+          operator: "is equal",
           value: "SE",
         },
       ],
@@ -40,7 +40,7 @@ export const valid9Json: Rule = {
         },
         {
           field: "hasStudentCard",
-          operator: "==",
+          operator: "is equal",
           value: true,
         },
       ],

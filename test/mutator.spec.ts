@@ -128,7 +128,7 @@ describe("JsonRules mutator correctly", () => {
       {
         conditions: [
           {
-            all: [{ field: "CountryIso", operator: "==", value: "GB" }],
+            all: [{ field: "CountryIso", operator: "is equal", value: "GB" }],
           },
         ],
       },
@@ -147,7 +147,7 @@ describe("JsonRules mutator correctly", () => {
       {
         conditions: [
           {
-            all: [{ field: "foo.bar", operator: "==", value: "GB" }],
+            all: [{ field: "foo.bar", operator: "is equal", value: "GB" }],
           },
         ],
       },

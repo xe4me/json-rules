@@ -28,7 +28,7 @@ describe("JsonRules validator correctly", () => {
             all: [
               {
                 field: true as unknown as string,
-                operator: "==",
+                operator: "is equal",
                 value: "test",
               },
             ],
@@ -46,7 +46,7 @@ describe("JsonRules validator correctly", () => {
             all: [
               {
                 field: "foo",
-                operator: "==",
+                operator: "is equal",
                 value: "bar",
               },
             ],
@@ -64,7 +64,7 @@ describe("JsonRules validator correctly", () => {
           {
             all: [
               {
-                operator: "==",
+                operator: "is equal",
                 value: "bar",
               } as Constraint,
             ],
@@ -82,7 +82,7 @@ describe("JsonRules validator correctly", () => {
             foo: [
               {
                 field: "foo",
-                operator: "==",
+                operator: "is equal",
                 value: "bar",
               },
             ],
@@ -140,7 +140,7 @@ describe("JsonRules validator correctly", () => {
     expect(
       JsonRules.validate({
         conditions: [
-          { all: [{ field: "name", operator: "==", value: "test" }] },
+          { all: [{ field: "name", operator: "is equal", value: "test" }] },
         ],
       }).isValid
     ).toEqual(true);

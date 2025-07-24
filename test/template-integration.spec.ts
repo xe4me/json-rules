@@ -57,7 +57,7 @@ describe("Template Integration Tests", () => {
           all: [
             {
               field: "currentStatus",
-              operator: "==",
+              operator: "is equal",
               value: "{requiredStatus}",
             },
           ],
@@ -76,7 +76,7 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "currentStatus", operator: "!=", value: "{bannedStatus}" },
+            { field: "currentStatus", operator: "is not equal", value: "{bannedStatus}" },
           ],
         },
       };
@@ -307,8 +307,8 @@ describe("Template Integration Tests", () => {
       const rule: Rule<UserData> = {
         conditions: {
           any: [
-            { field: "priority", operator: "==", value: "{highPriority}" },
-            { field: "urgency", operator: "==", value: "{urgent}" },
+            { field: "priority", operator: "is equal", value: "{highPriority}" },
+            { field: "urgency", operator: "is equal", value: "{urgent}" },
           ],
         },
       };
@@ -329,7 +329,7 @@ describe("Template Integration Tests", () => {
           all: [
             {
               field: "department",
-              operator: "==",
+              operator: "is equal",
               value: "{targetDepartment}",
             },
             {
@@ -403,7 +403,7 @@ describe("Template Integration Tests", () => {
     it("should handle template variables with null values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "status", operator: "==", value: "{nullField}" }],
+          all: [{ field: "status", operator: "is equal", value: "{nullField}" }],
         },
       };
 

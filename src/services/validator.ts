@@ -182,9 +182,9 @@ export class Validator {
       };
     }
 
-    const operators: Operator[] = [
-      "==",
-      "!=",
+    const operators = [
+      "is equal",
+      "is not equal",
       "is greater than",
       "is less than",
       "is greater than or equal",
@@ -224,8 +224,8 @@ export class Validator {
       constraint.value === null &&
       !(
         [
-          "==",
-          "!=",
+          "is equal",
+          "is not equal",
           "contains",
           "not contains",
           "array contains",
@@ -237,7 +237,7 @@ export class Validator {
         isValid: false,
         error: {
           message:
-            '"operator" must be in ["==", "!=", "contains", "not contains", "array contains", "array no contains"] if "value" is null.',
+            '"operator" must be in ["is equal", "is not equal", "contains", "not contains", "array contains", "array no contains"] if "value" is null.',
           element: constraint,
         },
       };

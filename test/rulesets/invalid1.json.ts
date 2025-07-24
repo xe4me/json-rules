@@ -18,7 +18,7 @@ export const invalid1Json: Rule = {
             },
             {
               field: "Monetization",
-              operator: "==",
+              operator: "is equal",
               value: "Real",
             },
             {
@@ -42,7 +42,7 @@ export const invalid1Json: Rule = {
       all: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

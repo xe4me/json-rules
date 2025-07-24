@@ -8,7 +8,7 @@ export const subRulesValid3Json: Rule = {
           any: [
             {
               field: "fieldA",
-              operator: "==",
+              operator: "is equal",
               value: "bar",
             },
             {
@@ -20,7 +20,7 @@ export const subRulesValid3Json: Rule = {
               all: [
                 {
                   field: "fieldD",
-                  operator: "==",
+                  operator: "is equal",
                   value: "whoop",
                 },
               ],
@@ -37,14 +37,14 @@ export const subRulesValid3Json: Rule = {
       result: 3,
     },
     {
-      none: [{ field: "fieldE", operator: "==", value: "hoop" }],
+      none: [{ field: "fieldE", operator: "is equal", value: "hoop" }],
       result: 5,
     },
     {
       any: [
         {
           field: "fieldA",
-          operator: "==",
+          operator: "is equal",
           value: "value",
         },
       ],

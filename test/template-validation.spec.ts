@@ -47,7 +47,7 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "user_name", operator: "==", value: "{required_name}" },
+            { field: "user_name", operator: "is equal", value: "{required_name}" },
             {
               field: "first_name",
               operator: "starts with",
@@ -78,7 +78,7 @@ describe("Template Validation Tests", () => {
     it("should reject template variables with special characters", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "name", operator: "==", value: "{user-name}" }],
+          all: [{ field: "name", operator: "is equal", value: "{user-name}" }],
         },
       };
 
@@ -112,7 +112,7 @@ describe("Template Validation Tests", () => {
     it("should reject template variables starting with dots", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "value", operator: "==", value: "{.invalid}" }],
+          all: [{ field: "value", operator: "is equal", value: "{.invalid}" }],
         },
       };
 
@@ -126,7 +126,7 @@ describe("Template Validation Tests", () => {
     it("should reject template variables ending with dots", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "value", operator: "==", value: "{invalid.}" }],
+          all: [{ field: "value", operator: "is equal", value: "{invalid.}" }],
         },
       };
 
@@ -140,7 +140,7 @@ describe("Template Validation Tests", () => {
     it("should reject empty template variables", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "value", operator: "==", value: "{}" }],
+          all: [{ field: "value", operator: "is equal", value: "{}" }],
         },
       };
 
@@ -154,7 +154,7 @@ describe("Template Validation Tests", () => {
           all: [
             {
               field: "name",
-              operator: "==",
+              operator: "is equal",
               value: "{valid_name} and {123invalid}",
             },
           ],
@@ -256,7 +256,7 @@ describe("Template Validation Tests", () => {
                 },
               ],
             },
-            { field: "priority", operator: "==", value: "{highPriority}" },
+            { field: "priority", operator: "is equal", value: "{highPriority}" },
           ],
         },
       };
@@ -271,7 +271,7 @@ describe("Template Validation Tests", () => {
           all: [
             {
               field: "department",
-              operator: "==",
+              operator: "is equal",
               value: "{targetDepartment}",
             },
             {
@@ -303,7 +303,7 @@ describe("Template Validation Tests", () => {
                 { field: "score", operator: "is greater than or equal", value: "{123invalid}" },
               ],
             },
-            { field: "priority", operator: "==", value: "{high-priority}" },
+            { field: "priority", operator: "is equal", value: "{high-priority}" },
           ],
         },
       };
@@ -340,8 +340,8 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "value", operator: "==", value: "{{malformed}" },
-            { field: "other", operator: "==", value: "{unclosed" },
+            { field: "value", operator: "is equal", value: "{{malformed}" },
+            { field: "other", operator: "is equal", value: "{unclosed" },
           ],
         },
       };
@@ -354,7 +354,7 @@ describe("Template Validation Tests", () => {
       const longName = "a".repeat(100);
       const rule: Rule = {
         conditions: {
-          all: [{ field: "value", operator: "==", value: `{${longName}}` }],
+          all: [{ field: "value", operator: "is equal", value: `{${longName}}` }],
         },
       };
 
@@ -367,7 +367,7 @@ describe("Template Validation Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "value", operator: "==", value: `{${deepReference}}` },
+            { field: "value", operator: "is equal", value: `{${deepReference}}` },
           ],
         },
       };
@@ -403,7 +403,7 @@ describe("Template Validation Tests", () => {
         conditions: {
           all: [
             { field: "age", operator: "is greater than", value: "{validField}" },
-            { field: "name", operator: "==", value: "{missingField}" },
+            { field: "name", operator: "is equal", value: "{missingField}" },
           ],
         },
       };

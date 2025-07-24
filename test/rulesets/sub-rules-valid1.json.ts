@@ -6,12 +6,12 @@ export const subRulesValid1Json: Rule = {
       any: [
         {
           field: "Leverage",
-          operator: "==",
+          operator: "is equal",
           value: 1000,
         },
         {
           field: "Leverage",
-          operator: "==",
+          operator: "is equal",
           value: 500,
         },
         {
@@ -28,7 +28,7 @@ export const subRulesValid1Json: Rule = {
             },
             {
               field: "Monetization",
-              operator: "==",
+              operator: "is equal",
               value: "Real",
             },
             {
@@ -40,19 +40,19 @@ export const subRulesValid1Json: Rule = {
                 },
                 {
                   field: "Category",
-                  operator: "==",
+                  operator: "is equal",
                   value: 22,
                 },
                 {
                   any: [
                     {
                       field: "Category",
-                      operator: "==",
+                      operator: "is equal",
                       value: 900,
                     },
                     {
                       field: "Category",
-                      operator: "==",
+                      operator: "is equal",
                       value: 910,
                     },
                   ],
@@ -70,7 +70,7 @@ export const subRulesValid1Json: Rule = {
       all: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

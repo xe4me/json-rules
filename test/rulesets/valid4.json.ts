@@ -6,12 +6,12 @@ export const valid4Json: Rule = {
       any: [
         {
           field: "Leverage",
-          operator: "==",
+          operator: "is equal",
           value: 1000,
         },
         {
           field: "Leverage",
-          operator: "==",
+          operator: "is equal",
           value: 500,
         },
         {
@@ -28,7 +28,7 @@ export const valid4Json: Rule = {
             },
             {
               field: "Monetization",
-              operator: "==",
+              operator: "is equal",
               value: "Real",
             },
             {
@@ -40,31 +40,31 @@ export const valid4Json: Rule = {
                 },
                 {
                   field: "Category",
-                  operator: "==",
+                  operator: "is equal",
                   value: 22,
                 },
                 {
                   any: [
                     {
                       field: "Category",
-                      operator: "==",
+                      operator: "is equal",
                       value: 11,
                     },
                     {
                       field: "Category",
-                      operator: "==",
+                      operator: "is equal",
                       value: 12,
                     },
                     {
                       all: [
                         {
                           field: "HasStudentCard",
-                          operator: "==",
+                          operator: "is equal",
                           value: true,
                         },
                         {
                           field: "IsUnder18",
-                          operator: "==",
+                          operator: "is equal",
                           value: true,
                         },
                       ],
@@ -82,7 +82,7 @@ export const valid4Json: Rule = {
       all: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

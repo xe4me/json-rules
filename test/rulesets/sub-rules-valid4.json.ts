@@ -6,14 +6,14 @@ export const subRulesValidJson4: Rule = {
       all: [
         {
           field: "category",
-          operator: "!=",
+          operator: "is not equal",
           value: "islamic",
         },
         {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "USD",
             },
           ],
@@ -25,7 +25,7 @@ export const subRulesValidJson4: Rule = {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "CAD",
             },
           ],
@@ -37,7 +37,7 @@ export const subRulesValidJson4: Rule = {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "EUR",
             },
           ],
@@ -49,7 +49,7 @@ export const subRulesValidJson4: Rule = {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "GBP",
             },
           ],
@@ -61,7 +61,7 @@ export const subRulesValidJson4: Rule = {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "AUD",
             },
           ],
@@ -73,7 +73,7 @@ export const subRulesValidJson4: Rule = {
           all: [
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "BIT",
             },
           ],
@@ -87,7 +87,7 @@ export const subRulesValidJson4: Rule = {
       all: [
         {
           field: "category",
-          operator: "==",
+          operator: "is equal",
           value: "islamic",
         },
       ],

@@ -17,7 +17,7 @@ export const invalid3Json: Rule = {
       all: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

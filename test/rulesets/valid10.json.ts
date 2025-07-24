@@ -6,12 +6,12 @@ export const valid10Json: Rule = {
       all: [
         {
           field: "foo",
-          operator: "==",
+          operator: "is equal",
           value: null,
         },
         {
           field: "bar",
-          operator: "!=",
+          operator: "is not equal",
           value: null,
         },
         {

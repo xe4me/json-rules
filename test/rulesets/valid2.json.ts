@@ -36,7 +36,7 @@ export const valid2Json: Rule = {
         none: [
           {
             field: "AverageTradeDuration",
-            operator: "!=",
+            operator: "is not equal",
             value: 10,
           },
           {

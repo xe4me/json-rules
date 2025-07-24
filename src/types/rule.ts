@@ -3,8 +3,8 @@ export type WithRequired<Type, Key extends keyof Type> = Type &
 
 export type ConditionType = "any" | "all" | "none";
 export type Operator =
-  | "=="
-  | "!="
+  | "is equal"
+  | "is not equal"
   | "is greater than"
   | "is less than"
   | "is greater than or equal"
@@ -53,8 +53,8 @@ export type TemplateValue<T, TData = any> = T | ValidFieldReference<TData>;
  * Maps operators to their expected value types
  */
 export type OperatorValueMap<TData = any> = {
-  "==": TemplateValue<string | number | boolean | Date | null, TData>;
-  "!=": TemplateValue<string | number | boolean | Date | null, TData>;
+  "is equal": TemplateValue<string | number | boolean | Date | null, TData>;
+  "is not equal": TemplateValue<string | number | boolean | Date | null, TData>;
   "is greater than": TemplateValue<string | number | Date, TData>;
   "is less than": TemplateValue<string | number | Date, TData>;
   "is greater than or equal": TemplateValue<string | number | Date, TData>;

@@ -63,7 +63,7 @@ describe("JsonRules engine correctly", () => {
         {
           conditions: [
             {
-              all: [{ field: "foo.bar", operator: "==", value: "test" }],
+              all: [{ field: "foo.bar", operator: "is equal", value: "test" }],
             },
           ],
         },
@@ -82,7 +82,7 @@ describe("JsonRules engine correctly", () => {
         {
           conditions: [
             {
-              all: [{ field: "foo.foo", operator: "==", value: "test" }],
+              all: [{ field: "foo.foo", operator: "is equal", value: "test" }],
             },
           ],
         },
@@ -101,7 +101,7 @@ describe("JsonRules engine correctly", () => {
         {
           conditions: [
             {
-              all: [{ field: "foo.bar", operator: "==", value: "bar" }],
+              all: [{ field: "foo.bar", operator: "is equal", value: "bar" }],
             },
           ],
         },

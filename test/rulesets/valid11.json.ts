@@ -6,19 +6,19 @@ export const valid11Json: Rule = {
       all: [
         {
           field: "category",
-          operator: "==",
+          operator: "is equal",
           value: "demo",
         },
         {
           all: [
             {
               field: "monetization",
-              operator: "==",
+              operator: "is equal",
               value: "demo",
             },
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "USD",
             },
           ],
@@ -34,19 +34,19 @@ export const valid11Json: Rule = {
       all: [
         {
           field: "category",
-          operator: "==",
+          operator: "is equal",
           value: "ecn",
         },
         {
           all: [
             {
               field: "monetization",
-              operator: "==",
+              operator: "is equal",
               value: "demo",
             },
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "USD",
             },
           ],
@@ -60,12 +60,12 @@ export const valid11Json: Rule = {
           all: [
             {
               field: "monetization",
-              operator: "==",
+              operator: "is equal",
               value: "demo",
             },
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "EUR",
             },
           ],
@@ -79,12 +79,12 @@ export const valid11Json: Rule = {
           all: [
             {
               field: "monetization",
-              operator: "==",
+              operator: "is equal",
               value: "demo",
             },
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "BTC",
             },
           ],
@@ -100,19 +100,19 @@ export const valid11Json: Rule = {
       all: [
         {
           field: "category",
-          operator: "==",
+          operator: "is equal",
           value: "islamic",
         },
         {
           all: [
             {
               field: "monetization",
-              operator: "==",
+              operator: "is equal",
               value: "demo",
             },
             {
               field: "currency",
-              operator: "==",
+              operator: "is equal",
               value: "USD",
             },
           ],

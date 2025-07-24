@@ -18,7 +18,7 @@ export const valid7Json: Rule = {
             },
             {
               field: "Monetization",
-              operator: "==",
+              operator: "is equal",
               value: "Real",
             },
           ],
@@ -35,7 +35,7 @@ export const valid7Json: Rule = {
       none: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

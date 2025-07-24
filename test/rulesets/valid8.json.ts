@@ -13,7 +13,7 @@ export const valid8Json: Rule = {
           any: [
             {
               field: "Type",
-              operator: "!=",
+              operator: "is not equal",
               value: "Demo",
             },
             {
@@ -35,7 +35,7 @@ export const valid8Json: Rule = {
                 },
                 {
                   field: "Monetization",
-                  operator: "==",
+                  operator: "is equal",
                   value: "Real",
                 },
               ],
@@ -49,7 +49,7 @@ export const valid8Json: Rule = {
       none: [
         {
           field: "Category",
-          operator: "==",
+          operator: "is equal",
           value: "Islamic",
         },
       ],

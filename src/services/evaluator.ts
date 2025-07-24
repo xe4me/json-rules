@@ -313,9 +313,9 @@ export class Evaluator {
     );
 
     switch (constraint.operator) {
-      case "==":
+      case "is equal":
         return criterion == resolvedValue;
-      case "!=":
+      case "is not equal":
         return criterion != resolvedValue;
       case "is greater than":
         return criterion > resolvedValue;
