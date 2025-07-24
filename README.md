@@ -4,41 +4,289 @@
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) |
 
+# JsonRules
+
+A powerful, lightweight, and fast rule engine for JavaScript and TypeScript applications.
+
 ## Overview
 
-`JsonRules` is a fast and lightweight rule engine for JavaScript. It is designed to be simple to use and easy to
-integrate into your application.
+**JsonRules** is a modern rule engine that evaluates human-readable JSON rules against data criteria. Whether you need simple boolean evaluations or complex conditional logic with custom results, JsonRules provides an intuitive and performant solution.
 
-The rule engine evaluates human-readable JSON rules against a set of criteria. The rules are evaluated in a top-down
-fashion.
+### Key Features
 
-Simple rules can be written to evaluate to a `boolean` value _(indicating whether the criteria tested passes the rule)_.
+- 🚀 **High Performance**: 10,000+ rule evaluations in ~35-40ms
+- 📦 **Zero Dependencies**: Lightweight with no external dependencies
+- 🔧 **TypeScript First**: Full TypeScript support with comprehensive type definitions
+- 🌐 **Universal**: Runs seamlessly in Node.js and browsers
+- 🛠️ **Flexible**: Support for simple boolean rules and complex granular evaluations
+- 🎯 **Intuitive**: Human-readable JSON syntax
+- 🔄 **Extensible**: Fluent builder API and dynamic criteria mutation
+- 🧪 **Reliable**: Comprehensive validation and debugging tools
 
-Otherwise, granular rules can be created, where each condition of the rule can evaluate to a `boolean`, `number`,
-`string`, `object` or `array`. This is particularly useful when you want to evaluate a rule and return a result based on
-each condition's evaluation.
+## Operators Reference
 
-## Features
+JsonRules supports a comprehensive set of operators for different data types and comparison scenarios:
 
-- Simple to use
-- Written in TypeScript
-- Human-readable JSON rules
-- Runs in both Node & the browser
-- Lightweight with **zero dependencies** & Fast _(10,000 rule evaluations in ~35-40ms)_
-- Fluent rule builder tool (ORM style)
-- Both Simple & Granular rule evaluation
-- Sub-rules & infinitely nested conditions
-- Dynamic criteria mutation
-- Supports Criteria objects with nested properties
-- Rule validation & debugging tools
-- Supports `Any`, `All`, and `None` type conditions
-- Supports `Equal`, `NotEqual`, `GreaterThan`, `GreaterThanOrEqual`, `LessThan`, `LessThanOrEqual`, `In`, `NotIn`, 
-`Contains`, `Not Contains`, `ContainsAny`, `Not ContainsAny`, `Matches`, `Not Matches`, `IsBetween`, `IsNotBetween`, 
-`IsBefore`, `IsAfter`, `IsOnOrBefore`, `IsOnOrAfter`, `StartsWith`, `EndsWith`, `ArrayContains`, and `ArrayNotContains` operators
+### Equality Operators
 
-## Usage
+**`==` (Equal To)**
+- **Description**: Tests if the field value equals the constraint value using JavaScript equality
+- **Accepts**: `string | number | boolean | Date | null`
+- **Example**: 
+  ```typescript
+  { field: "status", operator: "==", value: "active" }
+  { field: "count", operator: "==", value: 42 }
+  { field: "isEnabled", operator: "==", value: true }
+  { field: "deletedAt", operator: "==", value: null }
+  ```
 
-### Installation
+**`!=` (Not Equal To)**
+- **Description**: Tests if the field value does not equal the constraint value
+- **Accepts**: `string | number | boolean | Date | null`
+- **Example**:
+  ```typescript
+  { field: "status", operator: "!=", value: "inactive" }
+  { field: "count", operator: "!=", value: 0 }
+  ```
+
+### Comparison Operators
+
+**`is greater than`**
+- **Description**: Tests if the field value is greater than the constraint value
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "age", operator: "is greater than", value: 18 }
+  { field: "score", operator: "is greater than", value: 85.5 }
+  { field: "createdAt", operator: "is greater than", value: new Date('2024-01-01') }
+  ```
+
+**`is less than`**
+- **Description**: Tests if the field value is less than the constraint value
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "age", operator: "is less than", value: 65 }
+  { field: "price", operator: "is less than", value: 100.00 }
+  ```
+
+**`is greater than or equal`**
+- **Description**: Tests if the field value is greater than or equal to the constraint value
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "minimumAge", operator: "is greater than or equal", value: 21 }
+  { field: "balance", operator: "is greater than or equal", value: 1000 }
+  ```
+
+**`is less than or equal`**
+- **Description**: Tests if the field value is less than or equal to the constraint value
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "maxItems", operator: "is less than or equal", value: 10 }
+  { field: "endDate", operator: "is less than or equal", value: new Date('2024-12-31') }
+  ```
+
+### Range Operators
+
+**`is between numbers`**
+- **Description**: Tests if a numeric field value falls within a specified range (inclusive)
+- **Accepts**: `[number, number]` (tuple of min and max values)
+- **Example**:
+  ```typescript
+  { field: "age", operator: "is between numbers", value: [18, 65] }
+  { field: "score", operator: "is between numbers", value: [80.0, 100.0] }
+  ```
+
+**`is not between numbers`**
+- **Description**: Tests if a numeric field value falls outside a specified range
+- **Accepts**: `[number, number]` (tuple of min and max values)
+- **Example**:
+  ```typescript
+  { field: "temperature", operator: "is not between numbers", value: [32, 212] }
+  ```
+
+**`is between dates`**
+- **Description**: Tests if a date field value falls within a specified date range (inclusive)
+- **Accepts**: `[Date, Date]` (tuple of start and end dates)
+- **Example**:
+  ```typescript
+  { field: "eventDate", operator: "is between dates", value: [new Date('2024-01-01'), new Date('2024-12-31')] }
+  { field: "birthDate", operator: "is between dates", value: [new Date('1990-01-01'), new Date('2000-12-31')] }
+  ```
+
+**`is not between dates`**
+- **Description**: Tests if a date field value falls outside a specified date range
+- **Accepts**: `[Date, Date]` (tuple of start and end dates)
+- **Example**:
+  ```typescript
+  { field: "maintenanceDate", operator: "is not between dates", value: [new Date('2024-06-01'), new Date('2024-06-30')] }
+  ```
+
+### Collection Operators
+
+**`in`**
+- **Description**: Tests if the field value exists in the provided array
+- **Accepts**: `(string | number | boolean | object | null)[]`
+- **Example**:
+  ```typescript
+  { field: "country", operator: "in", value: ["US", "CA", "GB"] }
+  { field: "priority", operator: "in", value: [1, 2, 3] }
+  { field: "plan", operator: "in", value: ["basic", "premium"] }
+  ```
+
+**`not in`**
+- **Description**: Tests if the field value does not exist in the provided array
+- **Accepts**: `(string | number | boolean | object | null)[]`
+- **Example**:
+  ```typescript
+  { field: "status", operator: "not in", value: ["banned", "suspended"] }
+  { field: "role", operator: "not in", value: ["guest", "anonymous"] }
+  ```
+
+**`array contains`**
+- **Description**: Tests if an array field contains the specified value
+- **Accepts**: `string | number | boolean | object | null`
+- **Example**:
+  ```typescript
+  { field: "skills", operator: "array contains", value: "javascript" }
+  { field: "tags", operator: "array contains", value: "urgent" }
+  ```
+
+**`array no contains`**
+- **Description**: Tests if an array field does not contain the specified value
+- **Accepts**: `string | number | boolean | object | null`
+- **Example**:
+  ```typescript
+  { field: "permissions", operator: "array no contains", value: "admin" }
+  { field: "categories", operator: "array no contains", value: "restricted" }
+  ```
+
+### String Operators
+
+**`contains`**
+- **Description**: Tests if a string field contains the specified substring
+- **Accepts**: `string`
+- **Example**:
+  ```typescript
+  { field: "email", operator: "contains", value: "@company.com" }
+  { field: "description", operator: "contains", value: "urgent" }
+  ```
+
+**`not contains`**
+- **Description**: Tests if a string field does not contain the specified substring
+- **Accepts**: `string`
+- **Example**:
+  ```typescript
+  { field: "message", operator: "not contains", value: "spam" }
+  { field: "title", operator: "not contains", value: "draft" }
+  ```
+
+**`contains any`**
+- **Description**: Tests if a string field contains any of the specified substrings
+- **Accepts**: `string[]`
+- **Example**:
+  ```typescript
+  { field: "description", operator: "contains any", value: ["urgent", "critical", "emergency"] }
+  { field: "tags", operator: "contains any", value: ["react", "vue", "angular"] }
+  ```
+
+**`not contains any`**
+- **Description**: Tests if a string field does not contain any of the specified substrings
+- **Accepts**: `string[]`
+- **Example**:
+  ```typescript
+  { field: "content", operator: "not contains any", value: ["spam", "scam", "phishing"] }
+  ```
+
+**`starts with`**
+- **Description**: Tests if a string field starts with the specified prefix
+- **Accepts**: `string`
+- **Example**:
+  ```typescript
+  { field: "phoneNumber", operator: "starts with", value: "+1" }
+  { field: "productCode", operator: "starts with", value: "PRD-" }
+  ```
+
+**`ends with`**
+- **Description**: Tests if a string field ends with the specified suffix
+- **Accepts**: `string`
+- **Example**:
+  ```typescript
+  { field: "email", operator: "ends with", value: "@company.com" }
+  { field: "filename", operator: "ends with", value: ".pdf" }
+  ```
+
+### Pattern Matching Operators
+
+**`matches`**
+- **Description**: Tests if a string field matches a regular expression pattern
+- **Accepts**: `RegexPattern` object with `regex` string and optional `flags` string
+- **Example**:
+  ```typescript
+  { field: "email", operator: "matches", value: { regex: "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" } }
+  { field: "phoneNumber", operator: "matches", value: { regex: "^\\+1[0-9]{10}$", flags: "i" } }
+  ```
+
+**`not matches`**
+- **Description**: Tests if a string field does not match a regular expression pattern
+- **Accepts**: `RegexPattern` object with `regex` string and optional `flags` string
+- **Example**:
+  ```typescript
+  { field: "username", operator: "not matches", value: { regex: "^admin|root|test$", flags: "i" } }
+  ```
+
+### Date Operators
+
+**`is before`**
+- **Description**: Tests if a date field is before the specified date
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "expirationDate", operator: "is before", value: new Date('2024-12-31') }
+  { field: "createdAt", operator: "is before", value: "2024-01-01T00:00:00Z" }
+  ```
+
+**`is after`**
+- **Description**: Tests if a date field is after the specified date
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "startDate", operator: "is after", value: new Date('2024-01-01') }
+  { field: "lastLogin", operator: "is after", value: 1704067200000 } // Unix timestamp
+  ```
+
+**`is on or before`**
+- **Description**: Tests if a date field is on or before the specified date
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "deadline", operator: "is on or before", value: new Date('2024-03-31') }
+  ```
+
+**`is on or after`**
+- **Description**: Tests if a date field is on or after the specified date
+- **Accepts**: `string | number | Date`
+- **Example**:
+  ```typescript
+  { field: "validFrom", operator: "is on or after", value: new Date('2024-01-01') }
+  ```
+
+### Template Variables
+
+All operators support template variables that reference other fields in the criteria object:
+
+```typescript
+// Reference another field's value
+{ field: "endDate", operator: "is after", value: "{startDate}" }
+{ field: "maxPrice", operator: "is greater than", value: "{basePrice}" }
+
+// Works with nested properties too
+{ field: "shipping.cost", operator: "is less than", value: "{order.total}" }
+```
+
+## Installation
 
 ```bash
 npm install @ivandt/json-rules
@@ -48,1000 +296,398 @@ npm install @ivandt/json-rules
 yarn add @ivandt/json-rules
 ```
 
-### Importing
+## Quick Start
 
-```typescript
-import { JsonRules } from "@ivandt/json-rules";
-```
-
-For TypeScript users, you can import the `Rule` interface to get type definitions for the rule JSON.
+### Basic Usage
 
 ```typescript
 import { JsonRules, Rule } from "@ivandt/json-rules";
 
-const rule: Rule = {
-  // ...
-};
-```
-
-### Static vs Instantiated Approach
-
-The `Rules` library can be used in two ways, either as a static class or as an instance.
-
-The static class is great for most cases as long as you do not intend to use different mutations in multiple places 
-in your codebase, _(more on what mutations are further down)_.
-
-Otherwise, you can create an instance of the `Rules` class and use it to evaluate rules.
-
-```typescript
-import { JsonRules } from "@ivandt/json-rules";
-
-let result;
-
-// Static
-result = await JsonRules.evaluate(rule, criteria);
-
-// Instance
-const jsonrules = new JsonRules();
-result = await jsonrules.evaluate(rule, criteria);
-```
-
-### Basic Example
-
-Here we are defining a rule which will evaluate to `true` or `false` based on the criteria provided. In this example,
-we are checking whether a user is allowed to benefit from a discount at checkout of not.
-
-For the discount to be applied, the user must be from either the `UK or Finland`, have a `coupon` and the total checkout
-price must be greater than or equal to `120.00`.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-// Define a rule which caters for your needs
+// Define a rule
 const rule: Rule = {
   conditions: {
     all: [
-      { field: "country", operator: "in", value: ["GB", "FI"] },
-      { field: "hasCoupon", operator: "==", value: true },
-      { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-    ],
-  },
-};
-
-// Define the criteria which will be evaluated against the rule
-const criteria = {
-  country: "GB",
-  totalCheckoutPrice: 125.0,
-  hasCoupon: true,
-};
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate<boolean>(rule, criteria);
-// result == true
-
-// However, if any of the criteria do not pass the check, the result will be false
-criteria.totalCheckoutPrice = 25.0;
-
-/** Evaluate the new criteria against the rule */
-result = await JsonRules.evaluate<boolean>(rule, criteria); // result == false
-```
-
-We can add additional conditions to the rule, for example apart from the above-mentioned conditions, we can also
-say that if the user is either `over 18` years old or `has a valid student card` then we will evaluate to true.
-
-Take note of how the `conditions` property is now an array of objects.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-// Define a rule which caters for your needs
-const rule: Rule = {
-  conditions: [
-    {
-      all: [
-        { field: "country", operator: "in", value: ["GB", "FI"] },
-        { field: "hasCoupon", operator: "==", value: true },
-        { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-      ],
-    },
-    {
-      any: [
-        { field: "age", operator: ">=",  value: 18 },
-        { field: "hasStudentCard", operator: "==", value: true },
-      ],
-    },
-  ],
-};
-
-// Define the criteria which will be evaluated against the rule
-const criteria = {
-  country: "GB",
-  totalCheckoutPrice: 20.0,
-  hasCoupon: true,
-};
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate<boolean>(rule, criteria); // result == false
-
-criteria.hasStudentCard = true;
-
-/** Evaluate the new criteria against the rule */
-result = await JsonRules.evaluate<boolean>(rule, criteria); // result == true
-```
-
-If we want to add additional requirements to the rule, we can do so by adding another `any` or `all` condition.
-
-For example, we can add a requirement that a discount will also be given to all users from Sweden as long as they are
-18+ or have a valid student card _(irrelevant of any other conditions set)_.
-
-```typescript
-const rule: Rule = {
-  conditions: [
-    {
-      any: [
-        {
-          all: [
-            { field: "country", operator: "in", value: ["GB", "FI"] },
-            { field: "hasCoupon", operator: "==", value: true },
-            { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-          ],
-        },
-        { field: "country",  operator: "==", value: "SE" },
-      ],
-    },
-    {
-      any: [
-        { field: "age", operator: ">=",  value: 18 },
-        { field: "hasStudentCard", operator: "==", value: true },
-      ],
-    },
-  ],
-};
-```
-
-The criteria can be narrowed down further by specifying `Swedish` users cannot be from `Stockholm` or `Gothenburg`
-otherwise they must spend `more than 200.00` at checkout.
-
-```typescript
-const rule: Rule = {
-  conditions: [
-    {
-      any: [
-        {
-          all: [
-            { field: "country", operator: "in", value: ["GB", "FI"] },
-            { field: "hasCoupon", operator: "==", value: true },
-            { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-          ],
-        },
-        {
-          any: [
-            {
-              all: [
-                { field: "country", operator: "==", value: "SE" },
-                { field: "city", operator: "not in", value: ["Stockholm", "Gothenburg"] },
-              ],
-            },
-            {
-              all: [
-                { field: "country",  operator: "==", value: "SE" },
-                { field: "city", operator: "totalCheckoutPrice",  value: 200 },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      any: [
-        { field: "age", operator: ">=",  value: 18 },
-        { field: "hasStudentCard", operator: "==", value: true },
-      ],
-    },
-  ],
-};
-```
-
-### Granular Example
-
-It might be the case that we want to give different discounts to people based on the criteria they meet. For example,
-we want to give a 10% discount to all users who `18+` or have a `student card` and a 5% discount to the rest of the
-users who meet the other criteria.
-
-To accomplish this, we can assign a `result` to each condition which will be used to calculate the discount.
-
-```typescript
-const rule: Rule = {
-  conditions: [
-    {
-      any: [
-        {
-          all: [
-            { field: "country", operator: "in", value: ["GB", "FI"] },
-            { field: "hasCoupon", operator: "==", value: true },
-            { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-          ],
-        },
-        {
-          any: [
-            {
-              all: [
-                { field: "country", operator: "==", value: "SE" },
-                { field: "city", operator: "not in", value: ["Stockholm", "Gothenburg"] },
-              ],
-            },
-            {
-              all: [
-                { field: "country",  operator: "==", value: "SE" },
-                { field: "city", operator: "totalCheckoutPrice",  value: 200 },
-              ],
-            },
-          ],
-        },
-      ],
-      result: 5,
-    },
-    {
-      any: [
-        { field: "age", operator: ">=",  value: 18 },
-        { field: "hasStudentCard", operator: "==", value: true },
-      ],
-      result: 10,
-    },
-  ],
-};
-```
-
-In such a setup the result of our evaluation will be the value of the `result` property in condition which was met first.
-
-```typescript
-import { JsonRules } from "@ivandt/json-rules";
-
-// Define the criteria which will be evaluated against the rule
-const criteria = {
-  country: "GB",
-  totalCheckoutPrice: 340.22,
-  hasCoupon: true,
-};
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate<number>(rule, criteria); // result = 5
-
-criteria.country = "SE";
-criteria.city = "Linköping";
-
-/** Evaluate the new criteria against the rule */
-result = await JsonRules.evaluate<number>(rule, criteria); // result = 10
-
-criteria.country = "IT";
-criteria.age = 17;
-criteria.hasStudentCard = false;
-
-/** Evaluate the new criteria against the rule */
-result = await JsonRules.evaluate<number>(rule, criteria); // result = false
-```
-
-**Important** When using granular rules, the order of conditions in the rule matters!
-
-The first condition in the rule which is met will be the one which is used to calculate the discount.
-
-#### Defaulting A Rule Result
-
-In granular rules, it is possible to set a default value which will be used if no conditions are met.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  conditions: [
-    {
-      // ..
-    },
-  ],
-  default: 2.5,
-};
-
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate<number>(rule, {}); // result = 2.5
-```
-
-In such a setup as seen above, if no conditions are met, the result will be `2.5`.
-
-#### Condition Types
-
-There are three (3) types of conditions which can be used in a rule:
-
-- `all` - All criteria in the condition must be met
-- `any` - Any criteria in the condition must be met
-- `none` - No criteria in the conditions must be met (none === !all)
-
-Condition types can be mixed and matched or nested to create complex rules.
-
-#### Operators
-
-These are the operators available for a constraint and how they are used:
-
-**Basic Comparison Operators:**
-- `==`: Applies JavaScript equality (`==`) operator to criterion and constraint value
-- `!=`: Applies JavaScript inequality (`!=`) operator to criterion and constraint value
-- `>`: Applies JavaScript greater than (`>`) operator to criterion and constraint value
-- `<`: Applies JavaScript less than (`<`) operator to criterion and constraint value
-- `>=`: Applies JavaScript greater than or equal (`>=`) operator to criterion and constraint value
-- `<=`: Applies JavaScript less than or equal (`<=`) operator to criterion and constraint value
-
-**Array Membership Operators:**
-- `in`: Tests if the criterion is an element of the constraint value (constraint value must be an array)
-- `not in`: Tests if the criterion is not an element of the constraint value (constraint value must be an array)
-
-**String Operators:**
-- `contains`: Tests if the criterion (string) contains the constraint value (string)
-- `not contains`: Tests if the criterion (string) does not contain the constraint value (string)
-- `contains any`: Tests if the criterion (string) contains any of the constraint values (array of strings)
-- `not contains any`: Tests if the criterion (string) does not contain any of the constraint values (array of strings)
-- `startsWith`: Tests if the criterion (string) starts with the constraint value (string)
-- `endsWith`: Tests if the criterion (string) ends with the constraint value (string)
-
-**Array Operators:**
-- `arrayContains`: Tests if the criterion (array) contains the constraint value
-- `arrayNotContains`: Tests if the criterion (array) does not contain the constraint value
-
-**Regular Expression Operators:**
-- `matches`: Tests if the criterion matches a regular expression pattern (constraint value must be a RegexPattern object with regex and optional flags properties)
-- `not matches`: Tests if the criterion does not match a regular expression pattern (constraint value must be a RegexPattern object with regex and optional flags properties)
-
-**Range Operators:**
-- `isBetween`: Tests if the criterion (number) is between the constraint values (array of two numbers, inclusive)
-- `isNotBetween`: Tests if the criterion (number) is not between the constraint values (array of two numbers, inclusive)
-
-**Date Operators:**
-- `isBefore`: Tests if the criterion (Date) is before the constraint value (Date)
-- `isAfter`: Tests if the criterion (Date) is after the constraint value (Date)
-- `isOnOrBefore`: Tests if the criterion (Date) is on or before the constraint value (Date)
-- `isOnOrAfter`: Tests if the criterion (Date) is on or after the constraint value (Date)
-
-#### Regular Expression Patterns with Flags
-
-The `matches` and `not matches` operators support both simple string patterns and advanced `RegexPattern` objects with flags for more complex matching scenarios.
-
-**String Patterns (Backward Compatible):**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  conditions: {
-    all: [
-      { field: "email", operator: "matches", value: { regex: ".*@example\\.com$" } },
-    ],
-  },
-};
-
-const criteria = { email: "user@example.com" };
-const result = await JsonRules.evaluate(rule, criteria); // result = true
-```
-
-**RegexPattern Objects with Flags:**
-
-```typescript
-import { JsonRules, Rule, RegexPattern } from "@ivandt/json-rules";
-
-// Case-insensitive email validation
-const emailPattern: RegexPattern = {
-  regex: ".*@EXAMPLE\\.COM$",
-  flags: "i"
-};
-
-const rule: Rule = {
-  conditions: {
-    all: [
-      { field: "email", operator: "matches", value: emailPattern },
-    ],
-  },
-};
-
-const criteria = { email: "user@example.com" };
-const result = await JsonRules.evaluate(rule, criteria); // result = true
-```
-
-**Advanced Examples with Multiple Flags:**
-
-```typescript
-import { JsonRules, Rule, RegexPattern } from "@ivandt/json-rules";
-
-// Multiline text validation with case-insensitive and multiline flags
-const textPattern: RegexPattern = {
-  regex: "^hello.*world$",
-  flags: "im"
-};
-
-const rule: Rule = {
-  conditions: {
-    all: [
-      { field: "content", operator: "matches", value: textPattern },
-    ],
-  },
-};
-
-const criteria = { content: "HELLO BEAUTIFUL\nWORLD" };
-const result = await JsonRules.evaluate(rule, criteria); // result = true
-
-// Global flag for multiple matches
-const numberPattern: RegexPattern = {
-  regex: "\\d+",
-  flags: "g"
-};
-
-const numberRule: Rule = {
-  conditions: {
-    all: [
-      { field: "text", operator: "matches", value: numberPattern },
-    ],
-  },
-};
-
-const numberCriteria = { text: "There are 123 items and 456 reviews" };
-const numberResult = await JsonRules.evaluate(numberRule, numberCriteria); // result = true
-```
-
-**Available Regex Flags:**
-
-- `i`: Case-insensitive matching
-- `g`: Global matching (find all matches)
-- `m`: Multiline mode (^ and $ match line boundaries)
-- `s`: Dotall mode (. matches newlines)
-- `u`: Unicode mode
-- `y`: Sticky matching
-
-**Note:** The `RegexPattern` object provides more flexibility and is recommended for complex regex operations, while string patterns remain fully supported for backward compatibility.
-
-#### New Operators Examples
-
-**Range Operators:**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-// Check if age is between 18 and 65 (inclusive)
-const ageRule: Rule = {
-  conditions: {
-    all: [
-      { field: "age", operator: "isBetween", value: [18, 65] },
-      { field: "score", operator: "isNotBetween", value: [0, 50] }, // Must be > 50
-    ],
-  },
-};
-
-const criteria = { age: 30, score: 85 };
-const result = await JsonRules.evaluate(ageRule, criteria); // result = true
-```
-
-**Date Operators:**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const startDate = new Date("2023-01-01");
-const endDate = new Date("2023-12-31");
-const currentDate = new Date("2023-06-15");
-
-const dateRule: Rule = {
-  conditions: {
-    all: [
-      { field: "eventDate", operator: "isAfter", value: startDate },
-      { field: "eventDate", operator: "isOnOrBefore", value: endDate },
-    ],
-  },
-};
-
-const criteria = { eventDate: currentDate };
-const result = await JsonRules.evaluate(dateRule, criteria); // result = true
-```
-
-**String Operators:**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const stringRule: Rule = {
-  conditions: {
-    all: [
-      { field: "email", operator: "endsWith", value: "@company.com" },
-      { field: "name", operator: "startsWith", value: "John" },
-      { field: "description", operator: "contains", value: "developer" },
-      { field: "bio", operator: "contains any", value: ["react", "node", "typescript"] },
-    ],
-  },
-};
-
-const criteria = {
-  email: "john.doe@company.com",
-  name: "John Doe",
-  description: "Senior full-stack developer",
-  bio: "I work with react and node.js frameworks"
-};
-const result = await JsonRules.evaluate(stringRule, criteria); // result = true
-```
-
-**Array Operators:**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const arrayRule: Rule = {
-  conditions: {
-    all: [
-      { field: "skills", operator: "arrayContains", value: "javascript" },
-      { field: "languages", operator: "arrayNotContains", value: "cobol" },
-    ],
-  },
-};
-
-const criteria = {
-  skills: ["javascript", "react", "node.js"],
-  languages: ["english", "spanish", "french"]
-};
-const result = await JsonRules.evaluate(arrayRule, criteria); // result = true
-```
-
-**Complex Example with Mixed Operators:**
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const complexRule: Rule = {
-  conditions: {
-    all: [
-      { field: "age", operator: "isBetween", value: [25, 45] },
-      { field: "email", operator: "endsWith", value: "@company.com" },
-      { field: "skills", operator: "arrayContains", value: "javascript" },
-      { field: "bio", operator: "contains", value: "senior" },
-      { field: "startDate", operator: "isAfter", value: new Date("2020-01-01") },
-    ],
-  },
-};
-
-const criteria = {
-  age: 32,
-  email: "jane.smith@company.com",
-  skills: ["javascript", "react", "python"],
-  bio: "I am a senior software engineer",
-  startDate: new Date("2021-03-15")
-};
-const result = await JsonRules.evaluate(complexRule, criteria); // result = true
-```
-
-### Criteria With Nested Properties
-
-In some cases, the criteria which is used to evaluate a rule might be more complex objects with nested properties.
-
-For example, we might want to evaluate a rule against a `User` object which has a `profile` property which contains
-the user's profile information.
-
-To do so, we can use the `.` (dot) notation to access nested properties in the criteria.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  conditions: {
-    all: [{ field: "profile.age",  operator: ">=", value: 18 }],
-  },
-};
-
-const criteria = {
-  profile: { age: 20 },
-};
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate(rule, criteria); // result = true
-```
-
-### Evaluating Multiple Criteria At Once
-
-Multiple criteria can be evaluated against a rule at once by passing an array of criteria to the `evaluate()` method.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  conditions: {
-    all: [{ field: "profile.age",  operator: ">=", value: 18 }],
-  },
-};
-
-const criteria = [
-  { profile: { age: 20 } },
-  { profile: { age: 17 } },
-];
-
-/** Evaluate the criteria against the rule */
-let result = await JsonRules.evaluate(rule, criteria); // result = [true, false]
-```
-
-### Sub Rules
-
-Sub-rules can be used to create early exit points in a rule by assigning a `result` property to a condition. 
-
-This value of this result will be returned when the rule is evaluated if all the constraints from the root of the rule 
-to this result are met.
-
-> Note: Sub-rules do not need to evaluate to true for their parent condition to pass evaluation. 
-
-Sub-rules provide a convenient way to create complex rules with early exit points and avoid repeating the same 
-constraints in multiple places. 
-
-An example of a sub-rule can be seen below:
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  conditions: {
-    any: [
-      { field: "profile.age", operator: ">=",  value: 18 },
-      { all: [{ field: "foo", operator: "==", value: 'A' }], result: 10 },
-      { all: [{ field: "foo", operator: "==", value: 'B' }], result: 20 }
-    ],
-    result: 5
+      { field: "age", operator: "is greater than or equal", value: 18 },
+      { field: "country", operator: "in", value: ["US", "CA", "GB"] },
+      { field: "hasAccount", operator: "==", value: true }
+    ]
   }
 };
 
-let criteria = { profile: { age: 20 } }
-let result = await JsonRules.evaluate(rule, criteria); // result = 5
-
-criteria = { profile: { age: 20 }, foo: 'A' };
-result = await JsonRules.evaluate(rule, criteria); // result = 10
-
-criteria = { profile: { age: 20 }, foo: 'B' };
-result = await JsonRules.evaluate(rule, criteria); // result = 20
-
-criteria = { profile: { age: 20 }, foo: 'C' };
-result = await JsonRules.evaluate(rule, criteria); // result = 5
-
-criteria = { profile: { age: 10 }, foo: 'A' };
-result = await JsonRules.evaluate(rule, criteria); // result = false
-```
-
-
-## Validating A Rule
-
-Validation can be performed on a rule to ensure it is valid and properly structured.
-
-The `validate()` method will return `true` if the rule is valid, otherwise it will return an error message
-describing the problem along with the problem node from the rule for easy debugging.
-
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
-  // ...
+// Test against criteria
+const user = {
+  age: 25,
+  country: "US",
+  hasAccount: true
 };
 
-const result = JsonRules.validate(rule);
+const result = await JsonRules.evaluate(rule, user);
+console.log(result); // true
 ```
 
-For TypeScript users, the `ValidationResult` interface can be imported.
+### Static vs Instance Usage
+
+JsonRules can be used as a static class or as an instance:
 
 ```typescript
-import { JsonRules, Rule, ValidationResult } from "@ivandt/json-rules";
+// Static approach (recommended for most cases)
+const result = await JsonRules.evaluate(rule, criteria);
 
+// Instance approach (useful for different configurations)
+const engine = new JsonRules();
+const result = await engine.evaluate(rule, criteria);
+```
+
+## Rule Structure
+
+### Basic Rule Components
+
+A rule consists of:
+- **conditions**: The logic to evaluate (required)
+- **default**: Default result if no conditions match (optional)
+
+```typescript
 const rule: Rule = {
-  // ...
+  conditions: {
+    // Condition logic here
+  },
+  default: false // Optional default result
 };
-
-const validationResult: ValidationResult = JsonRules.validate(rule);
 ```
 
-## Criteria Mutations
+### Condition Types
 
-Mutations are a powerful tool built straight into `Rules` which allow for the modification of criteria before
-evaluation.
+JsonRules supports three condition types:
 
-Mutations can be basic functions which modify the criteria in some way, or they can be more complex functions which make 
-API calls or perform other operations.
-
-The mutation logic built into `Rules` is designed to be as efficient as possible, avoiding multiple repeat 
-evaluations by caching the results of previous evaluations. The mutator logic also identifies all unique mutations 
-required at runtime and executes them all in parallel before passing the criteria to the rule engine for evaluation.
-
-Let's take a look at a simple example use case for mutations, where we use an API call to fetch account information into
-the criteria before evaluation.
+- **`all`**: All constraints must be true (AND logic)
+- **`any`**: At least one constraint must be true (OR logic)  
+- **`none`**: No constraints should be true (NOT logic)
 
 ```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-// Example client method to fetch account information
-import { fetchAccount } from './api'
-
 const rule: Rule = {
-  conditions: [{
+  conditions: {
     all: [
-      { field: "account.balance", operator: ">=", value: 100.00 },
-      { field: "account.age", operator: ">=", value: 18 }
-    ],
-  }],
+      { field: "age", operator: "is greater than or equal", value: 18 },
+      { field: "verified", operator: "==", value: true }
+    ]
+  }
+};
+```
+
+## Examples
+
+### 1. E-commerce Discount Eligibility
+
+```typescript
+const discountRule: Rule = {
+  conditions: {
+    any: [
+      {
+        // Premium members get discount automatically
+        all: [
+          { field: "membershipLevel", operator: "==", value: "premium" },
+          { field: "accountAge", operator: "is greater than", value: 30 }
+        ]
+      },
+      {
+        // Regular users need minimum purchase
+        all: [
+          { field: "orderTotal", operator: "is greater than or equal", value: 100 },
+          { field: "country", operator: "in", value: ["US", "CA"] },
+          { field: "hasCoupon", operator: "==", value: true }
+        ]
+      }
+    ]
+  }
 };
 
-const criteria = [{ account: 123 }, { account: 123 }, { account: 124 }];
+const customer = {
+  membershipLevel: "standard",
+  orderTotal: 150,
+  country: "US",
+  hasCoupon: true,
+  accountAge: 15
+};
 
-// Instantiate a new JsonRules instance (recommended)
-const jsonrules = new JsonRules();
-
-// Add a mutation to fetch account information
-// This mutation will be called once for each unique accountId in the criteria
-jsonrules.addMutation("account", async (accountId, criteria) => {
-  return await fetchAccount(accountId);
-});
-
-// Evaluate the rule
-const result = await jsonrules.evaluate(rule, criteria);
+const isEligible = await JsonRules.evaluate(discountRule, customer);
+// Result: true (meets second condition)
 ```
 
-In the example above, the `fetchAccount()` function will be called twice in parallel with (123, 124). All 3 criteria 
-objects will be updated with the account information before the rule is evaluated.
-
-### Important Notes About Mutations
-
-- Mutations are only called once per unique criteria value
-- Multiple mutations are called in parallel, not sequentially (for performance reasons)
-- Mutations are cached by default, so if the same criteria value is encountered again, the mutation will not be called
-- Mutations will copy the criteria object before mutating it, so the original criteria object will not be modified
-
-**Note:** Mutations can be used with the static implementation of `Rules`, e.g. `JsonRules.addMutation(...)`, 
-however it is not recommended to do so _(instead the instantiated implementation should be used)_, otherwise you risk 
-having different parts of your application pushing different mutations for different rules to the same general pool.
-
-**Note:** Mutation results are permanently cached for any given criteria value, so if you need to re-evaluate any rule
-with the same criteria mutation while needing to re-process the mutation, you will need to clear the cache first.
+### 2. Date Range Validation
 
 ```typescript
-// Clear the cache for the account mutation
-jsonrules.clearMutationCache("account");
+const eventRule: Rule = {
+  conditions: {
+    all: [
+      { 
+        field: "eventDate", 
+        operator: "is between dates", 
+        value: [new Date('2024-01-01'), new Date('2024-12-31')] 
+      },
+      { field: "participantAge", operator: "is between numbers", value: [18, 65] },
+      { field: "registrationStatus", operator: "==", value: "confirmed" }
+    ]
+  }
+};
 
-// or ...
+const participant = {
+  eventDate: new Date('2024-06-15'),
+  participantAge: 28,
+  registrationStatus: "confirmed"
+};
 
-// Clear the entire mutation cache
-jsonrules.clearMutationCache();
+const canParticipate = await JsonRules.evaluate(eventRule, participant);
+// Result: true
 ```
 
-### Debugging Mutations
-
-Mutations can be debugged by setting an environment variable `DEBUG="true"` when running `Rules`. This will 
-cause mutations to log debug information to the console.
+### 3. String Pattern Matching
 
 ```typescript
-process.env.DEBUG = "true";
+const contentRule: Rule = {
+  conditions: {
+    all: [
+      { field: "title", operator: "contains any", value: ["urgent", "important", "critical"] },
+      { field: "email", operator: "matches", value: { regex: "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$" } },
+      { field: "description", operator: "not contains", value: "spam" }
+    ]
+  }
+};
+
+const message = {
+  title: "Urgent: System Maintenance",
+  email: "admin@company.com",
+  description: "Critical system update required"
+};
+
+const isValid = await JsonRules.evaluate(contentRule, message);
+// Result: true
 ```
 
-## Introspection
+### 4. Granular Results
 
-Rule introspection is built into `Rules` and can be used to inspect a rule and get information about it.
-
-When `Rules` introspects a rule it attempts to determine, for each distinct result in the rule, the 
-distribution of inputs which will satisfy the rule resolving to said result, provided an input criteria.
-
-For example, using introspection we can ask Rule Pilot the following question:
-
-> Given rule A, If I evaluate the rule with a value X = 100, what are all the possible values of Y for which the rule will
-> evaluate to a result, and what results would the rule evaluate to?
-
-This is a useful feature when you want to know what inputs will result in a specific output, or what inputs will result
-in a specific output distribution.
-
-For example if a `Rules` rule is being used to evaluate what type of discount a user should get, you can use 
-the introspection feature to tell the user what products, quantities, requirements, etc. they must fulfill in 
-order to obtain each possible discount. 
-
-This is particularly useful when using some form of rule based configuration to drive the UI of an application.
-
-Taking a simple granular rule as an example:
+Instead of boolean results, you can return specific values based on which conditions match:
 
 ```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
-
-const rule: Rule = {
+const shippingRule: Rule = {
   conditions: [
     {
-      any: [
-        {
-          all: [
-            { field: "country", operator: "in", value: ["GB", "FI"] },
-            { field: "hasCoupon", operator: "==", value: true },
-            { field: "totalCheckoutPrice", operator: ">=", value: 120.0 },
-          ],
-        },
-        { field: "country", operator: "==", value: "SE" },
+      all: [
+        { field: "orderValue", operator: "is greater than or equal", value: 200 },
+        { field: "membershipLevel", operator: "==", value: "premium" }
       ],
-      result: 5,
+      result: { shipping: "free", priority: "express" }
     },
     {
       all: [
-        { field: "age", operator: ">=", value: 18 },
-        { field: "hasStudentCard", operator: "==", value: true },
+        { field: "orderValue", operator: "is greater than or equal", value: 100 },
+        { field: "country", operator: "in", value: ["US", "CA"] }
       ],
-      result: 10,
+      result: { shipping: "free", priority: "standard" }
     },
+    {
+      all: [
+        { field: "orderValue", operator: "is greater than", value: 50 }
+      ],
+      result: { shipping: 5.99, priority: "standard" }
+    }
   ],
+  default: { shipping: 12.99, priority: "standard" }
+};
+
+const order = {
+  orderValue: 150,
+  country: "US",
+  membershipLevel: "standard"
+};
+
+const shippingInfo = await JsonRules.evaluate(shippingRule, order);
+// Result: { shipping: "free", priority: "standard" }
+```
+
+## Advanced Features
+
+### Nested Property Access
+
+Access nested object properties using dot notation:
+
+```typescript
+const rule: Rule = {
+  conditions: {
+    all: [
+      { field: "user.profile.age", operator: "is greater than or equal", value: 21 },
+      { field: "user.preferences.newsletter", operator: "==", value: true },
+      { field: "account.billing.verified", operator: "==", value: true }
+    ]
+  }
+};
+
+const data = {
+  user: {
+    profile: { age: 25 },
+    preferences: { newsletter: true }
+  },
+  account: {
+    billing: { verified: true }
+  }
 };
 ```
 
-We can introspect the rule to determine what countries are available to get a discount if the user has a coupon, and what
-the discount amount would be in each case.
+### Multiple Criteria Evaluation
+
+Evaluate the same rule against multiple data sets:
 
 ```typescript
-const subjects = ["country"];
-const constraint = { field: "hasCoupon", value: true };
-const introspection = JsonRules.introspect(rule, constraint, subjects);
+const users = [
+  { age: 25, country: "US", verified: true },
+  { age: 17, country: "CA", verified: true },
+  { age: 30, country: "GB", verified: false }
+];
+
+const results = await JsonRules.evaluate(rule, users);
+// Returns array: [true, false, false]
 ```
 
-The following will be returned by the `introspection`:
-
-```json
-[{
-  "result": 5,
-  "subjects": [
-    {
-      "subject": "country",
-      "values": [{ "value": "SE", "operator": "==" }, { "value": ["GB", "FI"], "operator": "in" }]
-    }
-  ]
-}]
-```
-
-We can also ask `Rules` to introspect the rule to determine what countries would receive aa discount and what that
-discount would be if the totalCheckoutPrice was 100.
+### Complex Nested Conditions
 
 ```typescript
-const subjects = ["country"];
-const constraint = { field: "totalCheckoutPrice", value: 100 };
-const introspection = JsonRules.introspect(rule, constraint, subjects);
+const complexRule: Rule = {
+  conditions: {
+    any: [
+      {
+        all: [
+          { field: "region", operator: "==", value: "North America" },
+          {
+            any: [
+              { field: "salesVolume", operator: "is greater than", value: 1000000 },
+              {
+                all: [
+                  { field: "customerSatisfaction", operator: "is greater than or equal", value: 4.5 },
+                  { field: "marketShare", operator: "is greater than", value: 0.15 }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        all: [
+          { field: "region", operator: "==", value: "Europe" },
+          { field: "complianceScore", operator: "is greater than or equal", value: 95 },
+          { field: "localPartnership", operator: "==", value: true }
+        ]
+      }
+    ]
+  }
+};
 ```
 
-The following will be returned by the `introspection`:
+## Validation and Debugging
 
-```json
-[{
-  "result": 5,
-  "subjects": [
-    {
-      "subject": "country",
-      "values": [{ "value": "SE", "operator": "==" }]
-    }
-  ]
-}]
-```
+### Rule Validation
 
-Each object in the `response` criteria which are possible inputs for the rule to evaluate to the result with the criteria
-provided.
-
-The results from the introspection are sanitized before being returned. This essentially means that if the introspection
-results in these possibilities `price == 10` || `price > 10` || `price == 20`, the results will be sanitized to
-simply `price >= 10`.
-
-Similarly to mutations, it is possible to enable debug mode on the introspection feature by setting the environment
-variable `DEBUG="true"`.
+Always validate rules before evaluation:
 
 ```typescript
+const validation = JsonRules.validate(rule);
+
+if (!validation.isValid) {
+  console.error("Rule validation failed:", validation.error);
+  // Handle validation error
+} else {
+  const result = await JsonRules.evaluate(rule, criteria);
+}
+```
+
+### Debug Mode
+
+Enable debug mode for detailed logging:
+
+```typescript
+// Enable debug output
 process.env.DEBUG = "true";
+
+const result = await JsonRules.evaluate(rule, criteria);
+// Detailed logs will be printed to console
 ```
 
-**Note:** Introspection requires a [Granular](#granular-example) rule to be passed to it, otherwise `Rules` will 
-throw an `RuleTypeError`.
+## Performance Tips
 
-**Note** Introspection does not yet work with these operators: 
-- `contains`
-- `not contains` 
-- `contains any` 
-- `not contains any`
-- `matches`
-- `not matches`
+1. **Structure conditions efficiently**: Place most likely to fail conditions first in `all` blocks
+2. **Use specific operators**: `==` is faster than `contains` for exact matches
+3. **Minimize nested conditions**: Flatten when possible for better performance
+4. **Cache compiled rules**: Reuse the same rule objects across evaluations
+5. **Validate once**: Validate rules at application startup, not per evaluation
+
+## Error Handling
+
+```typescript
+import { JsonRules, RuleError } from "@ivandt/json-rules";
+
+try {
+  const result = await JsonRules.evaluate(rule, criteria);
+} catch (error) {
+  if (error instanceof RuleError) {
+    console.error("Rule validation error:", error.message);
+  } else {
+    console.error("Evaluation error:", error);
+  }
+}
+```
+
+## TypeScript Support
+
+JsonRules provides full TypeScript support with generic types:
+
+```typescript
+interface UserCriteria {
+  age: number;
+  country: string;
+  verified: boolean;
+}
+
+interface DiscountResult {
+  percentage: number;
+  code: string;
+}
+
+const rule: Rule<UserCriteria, DiscountResult> = {
+  conditions: {
+    all: [
+      { field: "age", operator: "is greater than or equal", value: 18 },
+      { field: "verified", operator: "==", value: true }
+    ]
+  }
+};
+
+const result = await JsonRules.evaluate<DiscountResult>(rule, userData);
+```
 
 ## Fluent Rule Builder
 
-Although creating rules in plain JSON is very straightforward, `Rules` comes with a `Builder` class which can be
-used to create rules in a fluent manner.
-
-The `add()` method allows for the addition of a root condition to the rule. This condition can be then setup as required.
-
-The `default()` method allows for the addition of a default value result for the rule.
+For complex rules, use the fluent builder API:
 
 ```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
+import { RuleBuilder } from "@ivandt/json-rules";
 
-const builder = JsonRules.builder();
-
-const rule: Rule = builder
-  .add(
-    builder.condition(
-      "all",
-      [
-        builder.condition("any", [
-          builder.constraint("size", "==", "medium"),
-          builder.constraint("weight", ">=", 2),
-        ]),
-        builder.constraint("category", "not in", ["free", "out of stock"]),
-      ],
-      { price: 20 }
-    )
-  )
-  .add(
-    builder.condition(
-      "any",
-      [
-        builder.constraint("size", "==", "small"),
-        builder.constraint("weight", "<", "2"),
-      ],
-      { price: 10 }
-    )
-  )
-  .default({ price: 5 })
+const rule = RuleBuilder
+  .create()
+  .condition("all", [
+    RuleBuilder.constraint("age", "is greater than or equal", 18),
+    RuleBuilder.constraint("country", "in", ["US", "CA"]),
+    RuleBuilder.condition("any", [
+      RuleBuilder.constraint("memberLevel", "==", "premium"),
+      RuleBuilder.constraint("orderValue", "is greater than", 100)
+    ])
+  ])
   .build();
 ```
 
-### Adding Sub Rules in the builder
+## License
 
-```typescript
-import { JsonRules, Rule } from "@ivandt/json-rules";
+MIT License - see LICENSE file for details.
 
-const builder = JsonRules.builder();
+## Contributing
 
-const rule: Rule = builder
-  .add(
-    builder.condition(
-      "all",
-      [
-        builder.condition("any", [
-          builder.constraint("size", "==", "medium"),
-          builder.constraint("weight", ">=", 2),
-          builder.condition(
-            "all", 
-            [
-              builder.constraint("color", "==", "green"), 
-              builder.constraint("discount", ">", 20)
-            ],
-            { price: 10 }
-          )
-        ]),
-        builder.constraint("category", "not in", ["free", "out of stock"]),
-      ],
-      { price: 20 },
-    )
-  )
-  .add(
-    builder.condition(
-      "any",
-      [
-        builder.constraint("size", "==", "small"),
-        builder.constraint("weight", "<", "2"),
-      ],
-      { price: 10 }
-    )
-  )
-  .default({ price: 5 })
-  .build();
-```
+Contributions are welcome! Please read our contributing guidelines and submit pull requests to our GitHub repository.
 
-## Building The Library
 
-The distribution can be built as follows, with the output being placed in a `dist` directory.
-
-```bash
-npm run build
-```
-
-```bash
-yarn build
-```
-
-## Running Unit Tests
-
-Tests are written in Jest and can be run with the following commands:
-
-```bash
-npm run jest --testPathPattern=test --color --forceExit --silent
-```
-
-```bash
-yarn jest --testPathPattern=test --color --forceExit --silent
-```

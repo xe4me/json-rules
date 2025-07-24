@@ -2,9 +2,8 @@ import { Mutator } from "./mutator";
 import { Builder } from "../builder";
 import { RuleError } from "../errors";
 import { Evaluator } from "./evaluator";
-import { Introspector } from "./introspector";
 import { Validator, ValidationResult } from "./validator";
-import { Rule, Constraint, IntrospectionResult } from "../types";
+import { Rule, Constraint } from "../types";
 
 export class JsonRules {
   static #jsonRules = new JsonRules();
@@ -12,7 +11,6 @@ export class JsonRules {
   #mutator: Mutator = new Mutator();
   #validator: Validator = new Validator();
   #evaluator: Evaluator = new Evaluator();
-  #introspector: Introspector = new Introspector();
 
   /**
    * Returns a rule builder class instance.
@@ -89,48 +87,6 @@ export class JsonRules {
   }
 
   /**
-   * Given a rule, checks the constraints and conditions to determine
-   * the possible range of input criteria which would be satisfied by the rule.
-   *
-   * @param rule The rule to evaluate.
-   * @param criteria The criteria to introspect against.
-   * @param subjects The subjects to introspect for.
-   * @throws RuleError if the rule is invalid
-   * @throws RuleTypeError if the rule is not granular
-   */
-  introspect<R = string>(
-    rule: Rule,
-    criteria: Omit<Constraint, "operator"> | Omit<Constraint, "operator">[],
-    subjects: string[]
-  ): IntrospectionResult<R>[] {
-    // Before we proceed with the rule, we should validate it.
-    const validationResult = this.validate(rule);
-    if (!validationResult.isValid) {
-      throw new RuleError(validationResult);
-    }
-
-    return this.#introspector.introspect<R>(
-      rule,
-      Array.isArray(criteria) ? criteria : [criteria],
-      subjects
-    );
-  }
-
-  /**
-   * Returns the number of outcomes that a rule has.
-   * @param rule The rule to check.
-   */
-  numOutcomes(rule: Rule): number {
-    // Before we proceed with the rule, we should validate it.
-    const validationResult = this.validate(rule);
-    if (!validationResult.isValid) {
-      throw new RuleError(validationResult);
-    }
-
-    return this.#introspector.numOutcomes(rule);
-  }
-
-  /**
    * Takes in a rule as a parameter and returns a ValidationResult
    * indicating whether the rule is valid or not.
    *
@@ -168,36 +124,6 @@ export class JsonRules {
     trustRule = false
   ): Promise<T | boolean> {
     return JsonRules.#jsonRules.evaluate<T>(rule, criteria, trustRule);
-  }
-
-  /**
-   * Given a rule, checks the constraints and conditions to determine
-   * the possible range of input criteria which would be satisfied by the rule.
-   *
-   * @param rule The rule to introspect.
-   * @param criteria The criteria to introspect against.
-   * @param subjects The subjects to introspect for.
-   * @throws RuleError if the rule is invalid
-   * @throws RuleTypeError if the rule is not granular
-   */
-  static introspect<R = string>(
-    rule: Rule,
-    criteria: Omit<Constraint, "operator"> | Omit<Constraint, "operator">[],
-    subjects: string[]
-  ): IntrospectionResult<R>[] {
-    return JsonRules.#jsonRules.introspect<R>(
-      rule,
-      Array.isArray(criteria) ? criteria : [criteria],
-      subjects
-    );
-  }
-
-  /**
-   * Returns the number of outcomes that a rule has.
-   * @param rule The rule to check.
-   */
-  static numOutcomes(rule: Rule): number {
-    return JsonRules.#jsonRules.numOutcomes(rule);
   }
 
   /**
