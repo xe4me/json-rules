@@ -5,7 +5,13 @@ describe("Template Integration Tests", () => {
     it("should compare field values using template references", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "drivingExperience", operator: "is greater than", value: "{age}" }],
+          all: [
+            {
+              field: "drivingExperience",
+              operator: "is greater than",
+              value: "{age}",
+            },
+          ],
         },
       };
 
@@ -20,7 +26,13 @@ describe("Template Integration Tests", () => {
     it("should handle field-to-field comparisons that fail", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "drivingExperience", operator: "is greater than", value: "{age}" }],
+          all: [
+            {
+              field: "drivingExperience",
+              operator: "is greater than",
+              value: "{age}",
+            },
+          ],
         },
       };
 
@@ -36,7 +48,11 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "salary", operator: "is greater than or equal", value: "{profile.minSalary}" },
+            {
+              field: "salary",
+              operator: "is greater than or equal",
+              value: "{profile.minSalary}",
+            },
           ],
         },
       };
@@ -76,7 +92,11 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "currentStatus", operator: "is not equal", value: "{bannedStatus}" },
+            {
+              field: "currentStatus",
+              operator: "is not equal",
+              value: "{bannedStatus}",
+            },
           ],
         },
       };
@@ -151,7 +171,6 @@ describe("Template Integration Tests", () => {
     it("should handle date comparisons with templates", async () => {
       const now = new Date();
       const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
       const rule: Rule = {
         conditions: {
@@ -177,7 +196,11 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "birthYear", operator: "is between numbers", value: "{ageRange}" },
+            {
+              field: "birthYear",
+              operator: "is between numbers",
+              value: "{ageRange}",
+            },
           ],
         },
       };
@@ -257,9 +280,21 @@ describe("Template Integration Tests", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "age", operator: "is greater than or equal", value: "{minAge}" },
-            { field: "experience", operator: "is greater than or equal", value: "{minExperience}" },
-            { field: "salary", operator: "is between numbers", value: "{salaryRange}" },
+            {
+              field: "age",
+              operator: "is greater than or equal",
+              value: "{minAge}",
+            },
+            {
+              field: "experience",
+              operator: "is greater than or equal",
+              value: "{minExperience}",
+            },
+            {
+              field: "salary",
+              operator: "is between numbers",
+              value: "{salaryRange}",
+            },
           ],
         },
       };
@@ -307,7 +342,11 @@ describe("Template Integration Tests", () => {
       const rule: Rule<UserData> = {
         conditions: {
           any: [
-            { field: "priority", operator: "is equal", value: "{highPriority}" },
+            {
+              field: "priority",
+              operator: "is equal",
+              value: "{highPriority}",
+            },
             { field: "urgency", operator: "is equal", value: "{urgent}" },
           ],
         },
@@ -334,7 +373,11 @@ describe("Template Integration Tests", () => {
             },
             {
               any: [
-                { field: "level", operator: "is greater than or equal", value: "{minLevel}" },
+                {
+                  field: "level",
+                  operator: "is greater than or equal",
+                  value: "{minLevel}",
+                },
                 {
                   field: "experience",
                   operator: "is greater than or equal",
@@ -364,7 +407,13 @@ describe("Template Integration Tests", () => {
     it("should handle missing template variables gracefully", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is greater than", value: "{missingField}" }],
+          all: [
+            {
+              field: "age",
+              operator: "is greater than",
+              value: "{missingField}",
+            },
+          ],
         },
       };
 
@@ -403,7 +452,9 @@ describe("Template Integration Tests", () => {
     it("should handle template variables with null values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "status", operator: "is equal", value: "{nullField}" }],
+          all: [
+            { field: "status", operator: "is equal", value: "{nullField}" },
+          ],
         },
       };
 
@@ -422,7 +473,11 @@ describe("Template Integration Tests", () => {
         conditions: {
           all: [
             { field: "age", operator: "is greater than or equal", value: 18 }, // literal value
-            { field: "experience", operator: "is greater than or equal", value: "{minExperience}" }, // template value
+            {
+              field: "experience",
+              operator: "is greater than or equal",
+              value: "{minExperience}",
+            }, // template value
           ],
         },
       };
@@ -439,7 +494,13 @@ describe("Template Integration Tests", () => {
     it("should handle array of criteria with template values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "score", operator: "is greater than or equal", value: "{passingScore}" }],
+          all: [
+            {
+              field: "score",
+              operator: "is greater than or equal",
+              value: "{passingScore}",
+            },
+          ],
         },
       };
 

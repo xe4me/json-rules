@@ -1,5 +1,6 @@
-import isFQDN from 'validator/lib/isFQDN';
-import { DomainValidationConfig } from '../../types/rule';
+import isFQDN from "validator/lib/isFQDN";
+
+import { DomainValidationConfig } from "../../types/rule";
 
 /**
  * Validates domain names with configurable options
@@ -9,7 +10,7 @@ export function validateDomain(
   config: DomainValidationConfig | null = null
 ): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -27,4 +28,4 @@ export function validateDomain(
   };
 
   return isFQDN(value, options);
-} 
+}

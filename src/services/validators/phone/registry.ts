@@ -1,4 +1,4 @@
-import { PhoneValidationConfig } from '../../../types/rule';
+import { PhoneValidationConfig } from "../../../types/rule";
 
 /**
  * Type definition for phone validator functions
@@ -13,7 +13,10 @@ const phoneValidators = new Map<string, PhoneValidator>();
 /**
  * Register a phone validator for a specific locale
  */
-export function registerPhoneValidator(locale: string, validator: PhoneValidator): void {
+export function registerPhoneValidator(
+  locale: string,
+  validator: PhoneValidator
+): void {
   phoneValidators.set(locale.toLowerCase(), validator);
 }
 
@@ -53,7 +56,7 @@ export function validatePhone(
   config: PhoneValidationConfig
 ): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -64,7 +67,7 @@ export function validatePhone(
 
   // Get the validator for the specified locale
   const validator = getPhoneValidator(config.locale);
-  
+
   // Use the locale-specific validator
   return validator(value, config.strict);
-} 
+}

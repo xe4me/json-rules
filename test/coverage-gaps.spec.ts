@@ -1,19 +1,21 @@
 import { JsonRules } from "../src";
-import { RuleTypeError } from "../src/errors/rule-type.error";
-import { Logger } from "../src/services/logger";
-import { RuleHelper } from "../src/services/rule-helper";
-import { ObjectDiscovery } from "../src/services/object-discovery";
-import { Rule, Condition } from "../src/types";
-
-// Import validator utilities to test them
-import { getSupportedUnits, getSupportedUnitTypes } from "../src/services/validators/units";
-import { getSupportedCountryNames } from "../src/services/validators/country";
-import { isLocaleRegistered, getRegisteredLocales } from "../src/services/validators/phone/registry";
-
-// Import phone locale validators for testing
 import "../src/validators/phone/us";
 import "../src/validators/phone/gb";
 import "../src/validators/phone/de";
+import { RuleTypeError } from "../src";
+import { Rule, Condition } from "../src";
+import { Logger } from "../src/services";
+import { RuleHelper } from "../src/services";
+import { ObjectDiscovery } from "../src/services";
+import { getSupportedCountryNames } from "../src/services/validators";
+import {
+  getSupportedUnits,
+  getSupportedUnitTypes,
+} from "../src/services/validators";
+import {
+  isLocaleRegistered,
+  getRegisteredLocales,
+} from "../src/services/validators/phone";
 
 describe("Coverage Gaps - Comprehensive Testing", () => {
   describe("RuleTypeError", () => {
@@ -25,7 +27,9 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
 
     it("should create error with default message when no message provided", () => {
       const error = new RuleTypeError(null as any);
-      expect(error.message).toBe("The type of rule is not valid for this operation");
+      expect(error.message).toBe(
+        "The type of rule is not valid for this operation"
+      );
       expect(error.type).toBe("RuleError");
     });
 
@@ -41,7 +45,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
 
     beforeEach(() => {
       originalEnv = process.env.DEBUG;
-      consoleSpy = jest.spyOn(console, 'debug').mockImplementation();
+      consoleSpy = jest.spyOn(console, "debug").mockImplementation();
     });
 
     afterEach(() => {
@@ -52,7 +56,9 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     it("should log debug messages when DEBUG=true", () => {
       process.env.DEBUG = "true";
       Logger.debug("test message", 123, { key: "value" });
-      expect(consoleSpy).toHaveBeenCalledWith("test message", 123, { key: "value" });
+      expect(consoleSpy).toHaveBeenCalledWith("test message", 123, {
+        key: "value",
+      });
     });
 
     it("should not log debug messages when DEBUG is not true", () => {
@@ -121,12 +127,10 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         all: [
           { field: "age", operator: "is greater than", value: 18 },
           {
-            any: [
-              { field: "status", operator: "is equal", value: "active" }
-            ],
-            result: "eligible"
-          }
-        ]
+            any: [{ field: "status", operator: "is equal", value: "active" }],
+            result: "eligible",
+          },
+        ],
       };
 
       const results = ruleHelper.extractSubRules(condition);
@@ -139,18 +143,18 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         all: [
           { field: "age", operator: "is greater than", value: 18 },
           {
-            any: [
-              { field: "status", operator: "is equal", value: "active" }
-            ],
-            result: "eligible"
-          }
-        ]
+            any: [{ field: "status", operator: "is equal", value: "active" }],
+            result: "eligible",
+          },
+        ],
       };
 
       const cleaned = ruleHelper.removeAllSubRules(condition);
       expect(cleaned).toBeTruthy();
-      expect(cleaned!.all).toHaveLength(1);
-      expect((cleaned!.all![0] as any).result).toBeUndefined();
+      if (cleaned?.all) {
+        expect(cleaned.all).toHaveLength(1);
+        expect((cleaned.all[0] as any).result).toBeUndefined();
+      }
     });
 
     it("should strip null properties from objects", () => {
@@ -160,7 +164,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         undefinedField: undefined,
         emptyString: "",
         zeroValue: 0,
-        falseValue: false
+        falseValue: false,
       };
 
       const cleaned = ruleHelper.stripNullProps(obj);
@@ -176,8 +180,8 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
       const condition: Condition = {
         all: [
           { field: "age", operator: "is greater than", value: 18 },
-          { field: "status", operator: "is equal", value: "active" }
-        ]
+          { field: "status", operator: "is equal", value: "active" },
+        ],
       };
 
       const results = ruleHelper.extractSubRules(condition);
@@ -190,14 +194,12 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
           {
             any: [
               {
-                none: [
-                  { field: "blocked", operator: "is equal", value: true }
-                ],
-                result: "not_blocked"
-              }
-            ]
-          }
-        ]
+                none: [{ field: "blocked", operator: "is equal", value: true }],
+                result: "not_blocked",
+              },
+            ],
+          },
+        ],
       };
 
       const results = ruleHelper.extractSubRules(condition);
@@ -231,17 +233,15 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     it("should check if rule is granular", () => {
       const granularRule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is greater than", value: 18 }]
-        }
+          all: [{ field: "age", operator: "is greater than", value: 18 }],
+        },
       };
 
       const nonGranularRule: Rule = {
         conditions: {
-          all: [
-            { field: "age", operator: "is greater than", value: 18 }
-          ],
-          result: "adult"
-        }
+          all: [{ field: "age", operator: "is greater than", value: 18 }],
+          result: "adult",
+        },
       };
 
       expect(objectDiscovery.isGranular(granularRule)).toBe(true);
@@ -251,11 +251,11 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     it("should check if condition has result", () => {
       const withResult: Condition = {
         all: [{ field: "age", operator: "is greater than", value: 18 }],
-        result: "adult"
+        result: "adult",
       };
 
       const withoutResult: Condition = {
-        all: [{ field: "age", operator: "is greater than", value: 18 }]
+        all: [{ field: "age", operator: "is greater than", value: 18 }],
       };
 
       expect(objectDiscovery.isConditionWithResult(withResult)).toBe(true);
@@ -263,7 +263,11 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     });
 
     it("should check if value is constraint", () => {
-      const constraint = { field: "age", operator: "is greater than", value: 18 };
+      const constraint = {
+        field: "age",
+        operator: "is greater than",
+        value: 18,
+      };
       const condition = { all: [constraint] };
 
       expect(objectDiscovery.isConstraint(constraint)).toBe(true);
@@ -272,7 +276,11 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     });
 
     it("should check if value is condition", () => {
-      const constraint = { field: "age", operator: "is greater than", value: 18 };
+      const constraint = {
+        field: "age",
+        operator: "is greater than",
+        value: 18,
+      };
       const condition = { all: [constraint] };
 
       expect(objectDiscovery.isCondition(condition)).toBe(true);
@@ -292,8 +300,8 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
       const rule: Rule = {
         conditions: [
           { all: [{ field: "age", operator: "is greater than", value: 18 }] },
-          { any: [{ field: "status", operator: "is equal", value: "active" }] }
-        ]
+          { any: [{ field: "status", operator: "is equal", value: "active" }] },
+        ],
       };
 
       expect(objectDiscovery.isGranular(rule)).toBe(true);
@@ -361,16 +369,33 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
   describe("Advanced Error Handling", () => {
     it("should handle malformed phone config", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "phone", operator: "is valid phone", value: { locale: "nonexistent" } }] }
+        conditions: {
+          all: [
+            {
+              field: "phone",
+              operator: "is valid phone",
+              value: { locale: "nonexistent" },
+            },
+          ],
+        },
       };
 
-      await expect(JsonRules.evaluate(rule, { phone: "+1234567890" }))
-        .rejects.toThrow("Phone locale 'nonexistent' not registered");
+      await expect(
+        JsonRules.evaluate(rule, { phone: "+1234567890" })
+      ).rejects.toThrow("Phone locale 'nonexistent' not registered");
     });
 
     it("should handle malformed country config", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "country", operator: "is country", value: { format: "invalid" } as any }] }
+        conditions: {
+          all: [
+            {
+              field: "country",
+              operator: "is country",
+              value: { format: "invalid" } as any,
+            },
+          ],
+        },
       };
 
       expect(await JsonRules.evaluate(rule, { country: "US" })).toBe(false);
@@ -378,7 +403,15 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
 
     it("should handle malformed unit validation", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "distance", operator: "is unit", value: "invalid_type" as any }] }
+        conditions: {
+          all: [
+            {
+              field: "distance",
+              operator: "is unit",
+              value: "invalid_type" as any,
+            },
+          ],
+        },
       };
 
       expect(await JsonRules.evaluate(rule, { distance: "5km" })).toBe(false);
@@ -388,54 +421,92 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
   describe("Edge Cases", () => {
     it("should handle invalid UUID config types", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "id", operator: "is UUID", value: { version: null as any } }] }
+        conditions: {
+          all: [
+            {
+              field: "id",
+              operator: "is UUID",
+              value: { version: null as any },
+            },
+          ],
+        },
       };
 
-      expect(await JsonRules.evaluate(rule, { id: "550e8400-e29b-41d4-a716-446655440000" })).toBe(true);
+      expect(
+        await JsonRules.evaluate(rule, {
+          id: "550e8400-e29b-41d4-a716-446655440000",
+        })
+      ).toBe(true);
     });
 
     it("should handle IMEI validation edge cases", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "imei", operator: "is IMEI", value: { allowHyphens: false } }] }
+        conditions: {
+          all: [
+            {
+              field: "imei",
+              operator: "is IMEI",
+              value: { allowHyphens: false },
+            },
+          ],
+        },
       };
 
-      expect(await JsonRules.evaluate(rule, { imei: "352099001761481" })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { imei: "35-209900-176148-1" })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { imei: "352099001761481" })).toBe(
+        true
+      );
+      expect(
+        await JsonRules.evaluate(rule, { imei: "35-209900-176148-1" })
+      ).toBe(false);
     });
 
     it("should handle domain validation with null config", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "domain", operator: "is domain", value: null }] }
+        conditions: {
+          all: [{ field: "domain", operator: "is domain", value: null }],
+        },
       };
 
-      expect(await JsonRules.evaluate(rule, { domain: "example.com" })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { domain: "example.com" })).toBe(
+        true
+      );
     });
 
     it("should handle email validation with null config", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "email", operator: "is valid email", value: null }] }
+        conditions: {
+          all: [{ field: "email", operator: "is valid email", value: null }],
+        },
       };
 
-      expect(await JsonRules.evaluate(rule, { email: "test@example.com" })).toBe(true);
+      expect(
+        await JsonRules.evaluate(rule, { email: "test@example.com" })
+      ).toBe(true);
     });
 
     it("should handle URL validation with empty config", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "url", operator: "is URL", value: {} }] }
+        conditions: { all: [{ field: "url", operator: "is URL", value: {} }] },
       };
 
-      expect(await JsonRules.evaluate(rule, { url: "https://example.com" })).toBe(true);
+      expect(
+        await JsonRules.evaluate(rule, { url: "https://example.com" })
+      ).toBe(true);
     });
 
     it("should handle unit validation with zero and invalid numbers", async () => {
       const rule: Rule = {
-        conditions: { all: [{ field: "distance", operator: "is unit", value: "length" }] }
+        conditions: {
+          all: [{ field: "distance", operator: "is unit", value: "length" }],
+        },
       };
 
       expect(await JsonRules.evaluate(rule, { distance: "0km" })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { distance: "-5.5meters" })).toBe(true);
+      expect(await JsonRules.evaluate(rule, { distance: "-5.5meters" })).toBe(
+        true
+      );
       expect(await JsonRules.evaluate(rule, { distance: "km" })).toBe(false); // No number
       expect(await JsonRules.evaluate(rule, { distance: "5" })).toBe(false); // No unit
     });
   });
-}); 
+});

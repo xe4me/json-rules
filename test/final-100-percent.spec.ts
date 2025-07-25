@@ -1,26 +1,23 @@
-import { JsonRules } from "../src/services/json-rules";
-import { Evaluator } from "../src/services/evaluator";
-import { Validator } from "../src/services/validator";
-import { RuleHelper } from "../src/services/rule-helper";
-import { validateEmail } from "../src/services/validators/email";
-import { validateURL } from "../src/services/validators/url";
-import { validateUUID } from "../src/services/validators/uuid";
-import { validateIMEI } from "../src/services/validators/codes";
-import { validateCountry } from "../src/services/validators/country";
-import { validateDomain } from "../src/services/validators/domain";
-import { Rule, Condition } from "../src/types";
+import { JsonRules } from "../src";
+import { Rule, Condition } from "../src";
+import { Validator } from "../src/services";
+import { RuleHelper } from "../src/services";
+import { validateURL } from "../src/services/validators";
+import { validateUUID } from "../src/services/validators";
+import { validateIMEI } from "../src/services/validators";
+import { validateEmail } from "../src/services/validators";
+import { validateDomain } from "../src/services/validators";
+import { validateCountry } from "../src/services/validators";
 
 describe("Final 100% Coverage Push", () => {
   let jsonRules: JsonRules;
   let validator: Validator;
   let ruleHelper: RuleHelper;
-  let evaluator: Evaluator;
 
   beforeEach(() => {
     jsonRules = new JsonRules();
     validator = new Validator();
     ruleHelper = new RuleHelper();
-    evaluator = new Evaluator();
   });
 
   describe("Target Remaining Uncovered Lines", () => {
@@ -33,89 +30,81 @@ describe("Final 100% Coverage Push", () => {
             { field: "status", operator: "is equal", value: "active" },
             // Mixed with a condition to ensure the loop continues
             {
-              any: [
-                { field: "role", operator: "is equal", value: "admin" }
-              ]
-            }
-          ]
-        }
+              any: [{ field: "role", operator: "is equal", value: "admin" }],
+            },
+          ],
+        },
       };
 
       const criteria = { status: "active", role: "admin" };
-      
-      return jsonRules.evaluate(rule, criteria, true).then(result => {
+
+      return jsonRules.evaluate(rule, criteria, true).then((result) => {
         expect(result).toBe(true);
       });
     });
 
     it("should cover evaluator lines 220-237 (#isBefore, #isAfter, #isOnOrBefore, #isOnOrAfter)", () => {
-      const baseDate = new Date('2023-01-15');
-      const beforeDate = new Date('2023-01-10');
-      const afterDate = new Date('2023-01-20');
+      const baseDate = new Date("2023-01-15");
+      const beforeDate = new Date("2023-01-10");
+      const afterDate = new Date("2023-01-20");
 
       const beforeRule: Rule = {
         conditions: {
-          all: [
-            { field: "date", operator: "is before", value: afterDate }
-          ]
-        }
+          all: [{ field: "date", operator: "is before", value: afterDate }],
+        },
       };
 
       const afterRule: Rule = {
         conditions: {
-          all: [
-            { field: "date", operator: "is after", value: beforeDate }
-          ]
-        }
+          all: [{ field: "date", operator: "is after", value: beforeDate }],
+        },
       };
 
       const onOrBeforeRule: Rule = {
         conditions: {
           all: [
-            { field: "date", operator: "is on or before", value: afterDate }
-          ]
-        }
+            { field: "date", operator: "is on or before", value: afterDate },
+          ],
+        },
       };
 
       const onOrAfterRule: Rule = {
         conditions: {
           all: [
-            { field: "date", operator: "is on or after", value: beforeDate }
-          ]
-        }
+            { field: "date", operator: "is on or after", value: beforeDate },
+          ],
+        },
       };
 
       const criteria = { date: baseDate };
 
       return Promise.all([
-        jsonRules.evaluate(beforeRule, criteria, true).then(result => {
+        jsonRules.evaluate(beforeRule, criteria, true).then((result) => {
           expect(result).toBe(true);
         }),
-        jsonRules.evaluate(afterRule, criteria, true).then(result => {
+        jsonRules.evaluate(afterRule, criteria, true).then((result) => {
           expect(result).toBe(true);
         }),
-        jsonRules.evaluate(onOrBeforeRule, criteria, true).then(result => {
+        jsonRules.evaluate(onOrBeforeRule, criteria, true).then((result) => {
           expect(result).toBe(true);
         }),
-        jsonRules.evaluate(onOrAfterRule, criteria, true).then(result => {
+        jsonRules.evaluate(onOrAfterRule, criteria, true).then((result) => {
           expect(result).toBe(true);
-        })
+        }),
       ]);
     });
 
     it("should cover json-rules line 35 (validation path)", () => {
       const rule: Rule = {
         conditions: {
-          all: [
-            { field: "status", operator: "is equal", value: "active" }
-          ]
-        }
+          all: [{ field: "status", operator: "is equal", value: "active" }],
+        },
       };
 
       const criteria = { status: "active" };
 
       // Use trustRule=false to trigger validation path
-      return jsonRules.evaluate(rule, criteria, false).then(result => {
+      return jsonRules.evaluate(rule, criteria, false).then((result) => {
         expect(result).toBe(true);
       });
     });
@@ -132,15 +121,15 @@ describe("Final 100% Coverage Push", () => {
             {
               field: "user.profile.preferences.theme",
               operator: "is equal",
-              value: "{app.settings.defaultTheme}"
+              value: "{app.settings.defaultTheme}",
             },
             {
               field: "user.permissions.level",
               operator: "is equal",
-              value: "{system.security.requiredLevel}"
-            }
-          ]
-        }
+              value: "{system.security.requiredLevel}",
+            },
+          ],
+        },
       };
 
       const templateResult = validator.validate(templateRule);
@@ -166,22 +155,20 @@ describe("Final 100% Coverage Push", () => {
                   { field: "disabled", operator: "is equal", value: true },
                   {
                     all: [
-                      { field: "archived", operator: "is equal", value: false }
+                      { field: "archived", operator: "is equal", value: false },
                     ],
-                    result: "archived_check"
-                  }
+                    result: "archived_check",
+                  },
                 ],
-                result: "disabled_check"
-              }
-            ]
+                result: "disabled_check",
+              },
+            ],
           },
           {
-            all: [
-              { field: "verified", operator: "is equal", value: true }
-            ],
-            result: "verified_user"
-          }
-        ]
+            all: [{ field: "verified", operator: "is equal", value: true }],
+            result: "verified_user",
+          },
+        ],
       };
 
       const extracted = ruleHelper.extractSubRules(deeplyNestedCondition);
@@ -201,15 +188,15 @@ describe("Final 100% Coverage Push", () => {
                 arrayProp: [
                   { item: "valid", nullItem: null },
                   null,
-                  { nested: { valid: "data", nullNested: null } }
-                ]
+                  { nested: { valid: "data", nullNested: null } },
+                ],
               },
-              nullLevel4: null
-            }
-          }
+              nullLevel4: null,
+            },
+          },
         },
         topLevel: "keep",
-        topLevelNull: null
+        topLevelNull: null,
       };
 
       const stripped = ruleHelper.stripNullProps(complexObject);
@@ -229,9 +216,9 @@ describe("Final 100% Coverage Push", () => {
         domainSpecificValidation: false,
         blacklistedChars: "",
         hostBlacklist: [],
-        hostWhitelist: []
+        hostWhitelist: [],
       };
-      
+
       expect(validateEmail("test@192.168.1.1", emailConfig)).toBe(true);
 
       // URL line 17 - specific config
@@ -243,30 +230,40 @@ describe("Final 100% Coverage Push", () => {
         allowTrailingDot: true,
         allowNumericTld: true,
         allowWildcard: true,
-        ignoreMaxLength: true
+        ignoreMaxLength: true,
       };
-      
+
       expect(validateURL("example.123", urlConfig)).toBe(true);
 
       // UUID line 17 - specific version config
-      expect(validateUUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8", { version: 1 })).toBe(true);
+      expect(
+        validateUUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8", { version: 1 })
+      ).toBe(true);
 
       // IMEI line 31 - config path
-      expect(validateIMEI("490154203237518", { allowHyphens: true })).toBe(true);
+      expect(validateIMEI("490154203237518", { allowHyphens: true })).toBe(
+        true
+      );
 
       // Country line 107 - invalid input
       expect(validateCountry(null as any, { format: "iso2" })).toBe(false);
 
-      // Domain line 9 - non-string input  
+      // Domain line 9 - non-string input
       expect(validateDomain(123)).toBe(false);
     });
 
     it("should cover phone validator functions (function coverage)", () => {
       // Import and call phone validators to increase function coverage
-      const { validateUSPhone } = require("../src/services/validators/phone/us");
-      const { validateGBPhone } = require("../src/services/validators/phone/gb");
-      const { validateGermanPhone } = require("../src/services/validators/phone/de");
-      
+      const {
+        validateUSPhone,
+      } = require("../src/services/validators/phone/us");
+      const {
+        validateGBPhone,
+      } = require("../src/services/validators/phone/gb");
+      const {
+        validateGermanPhone,
+      } = require("../src/services/validators/phone/de");
+
       expect(validateUSPhone("+1 202 456 1111")).toBe(true);
       expect(validateGBPhone("+44 7700 900123")).toBe(true);
       expect(validateGermanPhone("+49 151 12345678")).toBe(true);
@@ -276,4 +273,4 @@ describe("Final 100% Coverage Push", () => {
       expect(phoneIndex).toBeDefined();
     });
   });
-}); 
+});

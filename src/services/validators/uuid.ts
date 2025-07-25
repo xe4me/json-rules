@@ -1,5 +1,6 @@
-import isUUID from 'validator/lib/isUUID';
-import { UUIDValidationConfig } from '../../types/rule';
+import isUUID from "validator/lib/isUUID";
+
+import { UUIDValidationConfig } from "../../types/rule";
 
 /**
  * Validates UUIDs with configurable version options
@@ -9,7 +10,7 @@ export function validateUUID(
   config: UUIDValidationConfig | null = null
 ): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -23,4 +24,4 @@ export function validateUUID(
 
   // Validate specific UUID version
   return isUUID(value, validationConfig.version);
-} 
+}

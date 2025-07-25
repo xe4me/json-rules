@@ -100,7 +100,19 @@ export interface DomainValidationConfig {
   ignoreMaxLength?: boolean;
 }
 
-export type UnitType = "length" | "mass" | "volume" | "temperature" | "time" | "area" | "energy" | "pressure" | "speed" | "force" | "power" | "frequency";
+export type UnitType =
+  | "length"
+  | "mass"
+  | "volume"
+  | "temperature"
+  | "time"
+  | "area"
+  | "energy"
+  | "pressure"
+  | "speed"
+  | "force"
+  | "power"
+  | "frequency";
 
 /**
  * Type for valid field references in template format {fieldName}
@@ -147,15 +159,11 @@ export type OperatorValueMap<TData = any> = {
   "is between numbers":
     | [number, number]
     | TemplateValue<[number, number], TData>;
-  "is between dates":
-    | [Date, Date]
-    | TemplateValue<[Date, Date], TData>;
+  "is between dates": [Date, Date] | TemplateValue<[Date, Date], TData>;
   "is not between numbers":
     | [number, number]
     | TemplateValue<[number, number], TData>;
-  "is not between dates":
-    | [Date, Date]
-    | TemplateValue<[Date, Date], TData>;
+  "is not between dates": [Date, Date] | TemplateValue<[Date, Date], TData>;
   "is before": TemplateValue<string | number | Date, TData>;
   "is after": TemplateValue<string | number | Date, TData>;
   "is on or before": TemplateValue<string | number | Date, TData>;
@@ -179,14 +187,20 @@ export type OperatorValueMap<TData = any> = {
   "is not empty": null;
   // Advanced validators with configuration
   "is valid email": EmailValidationConfig | null;
-  "is valid phone": PhoneValidationConfig | TemplateValue<PhoneValidationConfig, TData>;
+  "is valid phone":
+    | PhoneValidationConfig
+    | TemplateValue<PhoneValidationConfig, TData>;
   "is URL": URLValidationConfig | TemplateValue<URLValidationConfig, TData>;
   "is UUID": UUIDValidationConfig | TemplateValue<UUIDValidationConfig, TData>;
   "is EAN": null;
   "is IMEI": IMEIValidationConfig | TemplateValue<IMEIValidationConfig, TData>;
   "is unit": UnitType | TemplateValue<UnitType, TData>;
-  "is country": CountryValidationConfig | TemplateValue<CountryValidationConfig, TData>;
-  "is domain": DomainValidationConfig | TemplateValue<DomainValidationConfig, TData>;
+  "is country":
+    | CountryValidationConfig
+    | TemplateValue<CountryValidationConfig, TData>;
+  "is domain":
+    | DomainValidationConfig
+    | TemplateValue<DomainValidationConfig, TData>;
 };
 
 /**

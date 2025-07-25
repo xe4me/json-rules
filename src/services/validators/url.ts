@@ -1,5 +1,6 @@
-import isURL from 'validator/lib/isURL';
-import { URLValidationConfig } from '../../types/rule';
+import isURL from "validator/lib/isURL";
+
+import { URLValidationConfig } from "../../types/rule";
 
 /**
  * Validates URLs with configurable options
@@ -9,7 +10,7 @@ export function validateURL(
   config: URLValidationConfig | null = null
 ): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -18,7 +19,7 @@ export function validateURL(
 
   // Convert our config to validator.js options
   const options: any = {
-    protocols: validationConfig.protocols || ['http', 'https', 'ftp'],
+    protocols: validationConfig.protocols || ["http", "https", "ftp"],
     require_protocol: validationConfig.requireProtocol !== false, // Default true
     require_tld: validationConfig.requireTld !== false, // Default true, but allow false for localhost
     allow_underscores: validationConfig.allowUnderscores || false,
@@ -29,4 +30,4 @@ export function validateURL(
   };
 
   return isURL(value, options);
-} 
+}

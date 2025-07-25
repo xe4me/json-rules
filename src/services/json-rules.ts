@@ -1,8 +1,8 @@
+import { Rule } from "../types";
 import { Builder } from "../builder";
 import { RuleError } from "../errors";
 import { Evaluator } from "./evaluator";
 import { Validator, ValidationResult } from "./validator";
-import { Rule, Constraint } from "../types";
 
 export class JsonRules {
   static #jsonRules = new JsonRules();

@@ -1,3 +1,14 @@
+import {
+  validateURL,
+  validateEAN,
+  validateUUID,
+  validateIMEI,
+  validateUnit,
+  validateEmail,
+  validatePhone,
+  validateDomain,
+  validateCountry,
+} from "./validators";
 import { TemplateParser } from "./template-parser";
 import { ObjectDiscovery } from "./object-discovery";
 import {
@@ -8,17 +19,6 @@ import {
   RegexPattern,
   ConditionType,
 } from "../types";
-import {
-  validateEmail,
-  validateURL,
-  validateUUID,
-  validateEAN,
-  validateIMEI,
-  validateDomain,
-  validateUnit,
-  validateCountry,
-  validatePhone,
-} from './validators';
 
 export class Evaluator {
   #objectDiscovery: ObjectDiscovery = new ObjectDiscovery();
@@ -313,7 +313,10 @@ export class Evaluator {
 
     // If the criteria object does not have the field we are looking for,
     // we should return false UNLESS it's an "empty" check operator
-    if (undefined === criterion && !["is empty", "is not empty"].includes(constraint.operator)) {
+    if (
+      undefined === criterion &&
+      !["is empty", "is not empty"].includes(constraint.operator)
+    ) {
       return false;
     }
 
@@ -408,13 +411,29 @@ export class Evaluator {
         return !this.#arrayContains(criterion, resolvedValue);
       // Math validators
       case "is even":
-        return typeof criterion === "number" && Number.isFinite(criterion) && criterion % 2 === 0;
+        return (
+          typeof criterion === "number" &&
+          Number.isFinite(criterion) &&
+          criterion % 2 === 0
+        );
       case "is odd":
-        return typeof criterion === "number" && Number.isFinite(criterion) && criterion % 2 !== 0;
+        return (
+          typeof criterion === "number" &&
+          Number.isFinite(criterion) &&
+          criterion % 2 !== 0
+        );
       case "is positive":
-        return typeof criterion === "number" && Number.isFinite(criterion) && criterion > 0;
+        return (
+          typeof criterion === "number" &&
+          Number.isFinite(criterion) &&
+          criterion > 0
+        );
       case "is negative":
-        return typeof criterion === "number" && Number.isFinite(criterion) && criterion < 0;
+        return (
+          typeof criterion === "number" &&
+          Number.isFinite(criterion) &&
+          criterion < 0
+        );
       // Empty validators
       case "is empty":
         return this.#isEmpty(criterion);
@@ -452,7 +471,8 @@ export class Evaluator {
       typeof value === "number" &&
       typeof min === "number" &&
       typeof max === "number" &&
-      value >= min && value <= max
+      value >= min &&
+      value <= max
     );
   }
 
@@ -463,7 +483,8 @@ export class Evaluator {
       value instanceof Date &&
       min instanceof Date &&
       max instanceof Date &&
-      value >= min && value <= max
+      value >= min &&
+      value <= max
     );
   }
 
@@ -472,17 +493,17 @@ export class Evaluator {
     if (value === null || value === undefined) {
       return true;
     }
-    
+
     // Empty string (but not zero)
     if (typeof value === "string" && value === "") {
       return true;
     }
-    
+
     // Empty array
     if (Array.isArray(value) && value.length === 0) {
       return true;
     }
-    
+
     // All other values (including 0, false, empty objects) are not empty
     return false;
   }

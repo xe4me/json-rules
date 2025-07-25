@@ -1,8 +1,7 @@
-import { JsonRules } from "../src/services/json-rules";
-import { Evaluator } from "../src/services/evaluator";
-import { Validator } from "../src/services/validator";
-import { RuleHelper } from "../src/services/rule-helper";
-import { Rule, Condition } from "../src/types";
+import { JsonRules } from "../src";
+import { Rule, Condition } from "../src";
+import { Validator } from "../src/services";
+import { RuleHelper } from "../src/services";
 
 describe("Exact 100% Coverage - Surgical Precision", () => {
   let jsonRules: JsonRules;
@@ -24,49 +23,53 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
             // First a constraint to ensure we're in the right loop iteration
             { field: "status", operator: "is equal", value: "active" },
             // Then another constraint that will hit line 156-160 (isConstraint block)
-            { field: "verified", operator: "is equal", value: true }
-          ]
-        }
+            { field: "verified", operator: "is equal", value: true },
+          ],
+        },
       };
 
       const criteria = { status: "active", verified: true };
-      
-      return jsonRules.evaluate(rule, criteria, true).then(result => {
+
+      return jsonRules.evaluate(rule, criteria, true).then((result) => {
         expect(result).toBe(true);
       });
     });
 
     it("should hit evaluator.ts lines 220-237 (date comparison methods)", () => {
-      const testDate = new Date('2023-06-15');
-      const beforeDate = new Date('2023-06-10');
-      const afterDate = new Date('2023-06-20');
+      const testDate = new Date("2023-06-15");
+      const beforeDate = new Date("2023-06-10");
+      const afterDate = new Date("2023-06-20");
 
       // Test #isBefore method
       const beforeRule: Rule = {
         conditions: {
-          all: [{ field: "date", operator: "is before", value: afterDate }]
-        }
+          all: [{ field: "date", operator: "is before", value: afterDate }],
+        },
       };
 
-      // Test #isAfter method  
+      // Test #isAfter method
       const afterRule: Rule = {
         conditions: {
-          all: [{ field: "date", operator: "is after", value: beforeDate }]
-        }
+          all: [{ field: "date", operator: "is after", value: beforeDate }],
+        },
       };
 
       // Test #isOnOrBefore method
       const onOrBeforeRule: Rule = {
         conditions: {
-          all: [{ field: "date", operator: "is on or before", value: afterDate }]
-        }
+          all: [
+            { field: "date", operator: "is on or before", value: afterDate },
+          ],
+        },
       };
 
       // Test #isOnOrAfter method
       const onOrAfterRule: Rule = {
         conditions: {
-          all: [{ field: "date", operator: "is on or after", value: beforeDate }]
-        }
+          all: [
+            { field: "date", operator: "is on or after", value: beforeDate },
+          ],
+        },
       };
 
       const criteria = { date: testDate };
@@ -75,8 +78,8 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
         jsonRules.evaluate(beforeRule, criteria, true),
         jsonRules.evaluate(afterRule, criteria, true),
         jsonRules.evaluate(onOrBeforeRule, criteria, true),
-        jsonRules.evaluate(onOrAfterRule, criteria, true)
-      ]).then(results => {
+        jsonRules.evaluate(onOrAfterRule, criteria, true),
+      ]).then((results) => {
         expect(results).toEqual([true, true, true, true]);
       });
     });
@@ -84,14 +87,14 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
     it("should hit json-rules.ts line 35 (validation branch)", () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "test", operator: "is equal", value: "pass" }]
-        }
+          all: [{ field: "test", operator: "is equal", value: "pass" }],
+        },
       };
 
       const criteria = { test: "pass" };
 
       // Use trustRule=false to force validation path
-      return jsonRules.evaluate(rule, criteria, false).then(result => {
+      return jsonRules.evaluate(rule, criteria, false).then((result) => {
         expect(result).toBe(true);
       });
     });
@@ -99,7 +102,9 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
     it("should hit validator.ts line 84 (null rule validation)", () => {
       const result = validator.validate(null as any);
       expect(result.isValid).toBe(false);
-      expect(result.error?.message).toContain("rule must be a valid JSON object");
+      expect(result.error?.message).toContain(
+        "rule must be a valid JSON object"
+      );
     });
 
     it("should hit validator.ts lines 386-391 (template validation)", () => {
@@ -109,10 +114,10 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
             {
               field: "user.settings.theme",
               operator: "is equal",
-              value: "{app.defaultTheme}"
-            }
-          ]
-        }
+              value: "{app.defaultTheme}",
+            },
+          ],
+        },
       };
 
       const result = validator.validate(templateRule);
@@ -126,11 +131,11 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
           {
             any: [
               { field: "status", operator: "is equal", value: "active" },
-              { field: "verified", operator: "is equal", value: true }
+              { field: "verified", operator: "is equal", value: true },
             ],
-            result: "sub_rule_with_constraints"
-          }
-        ]
+            result: "sub_rule_with_constraints",
+          },
+        ],
       };
 
       const result = ruleHelper.extractSubRules(conditionWithConstraints);
@@ -149,22 +154,20 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
                   { field: "disabled", operator: "is equal", value: true },
                   {
                     all: [
-                      { field: "archived", operator: "is equal", value: false }
+                      { field: "archived", operator: "is equal", value: false },
                     ],
-                    result: "archive_check"
-                  }
+                    result: "archive_check",
+                  },
                 ],
-                result: "disabled_check"
-              }
-            ]
+                result: "disabled_check",
+              },
+            ],
           },
           {
-            all: [
-              { field: "verified", operator: "is equal", value: true }
-            ],
-            result: "verified_user"
-          }
-        ]
+            all: [{ field: "verified", operator: "is equal", value: true }],
+            result: "verified_user",
+          },
+        ],
       };
 
       // This should hit the nested extraction logic
@@ -186,17 +189,17 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
                 deepArray: [
                   { valid: "keep", invalid: null },
                   null,
-                  { nested: { keep: "this", remove: null } }
-                ]
+                  { nested: { keep: "this", remove: null } },
+                ],
               },
-              nullLevel4: null
+              nullLevel4: null,
             },
-            nullLevel3: null
+            nullLevel3: null,
           },
-          nullLevel2: null
+          nullLevel2: null,
         },
         validTop: "keep",
-        nullTop: null
+        nullTop: null,
       };
 
       const stripped = ruleHelper.stripNullProps(objectWithDeepNulls);
@@ -206,14 +209,16 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
 
     it("should hit remaining validator lines (codes.ts line 31, email.ts line 45, etc.)", () => {
       // Import validators directly to test specific config paths
-      const { validateEAN, validateIMEI } = require("../src/services/validators/codes");
+      const { validateIMEI } = require("../src/services/validators/codes");
       const { validateEmail } = require("../src/services/validators/email");
       const { validateURL } = require("../src/services/validators/url");
       const { validateUUID } = require("../src/services/validators/uuid");
       const { validateCountry } = require("../src/services/validators/country");
 
       // Hit codes.ts line 31 (IMEI config branch)
-      expect(validateIMEI("490154203237518", { allowHyphens: true })).toBe(true);
+      expect(validateIMEI("490154203237518", { allowHyphens: true })).toBe(
+        true
+      );
 
       // Hit email.ts line 45 (specific config combination)
       const emailConfig = {
@@ -223,7 +228,7 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
         requireTld: false,
         allowIpDomain: true,
         allowUnderscores: true,
-        domainSpecificValidation: false
+        domainSpecificValidation: false,
       };
       expect(validateEmail("test@127.0.0.1", emailConfig)).toBe(true);
 
@@ -236,12 +241,14 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
         allowTrailingDot: true,
         allowNumericTld: true,
         allowWildcard: true,
-        ignoreMaxLength: true
+        ignoreMaxLength: true,
       };
       expect(validateURL("test.123", urlConfig)).toBe(true);
 
       // Hit uuid.ts line 17 (version config)
-      expect(validateUUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8", { version: 1 })).toBe(true);
+      expect(
+        validateUUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8", { version: 1 })
+      ).toBe(true);
 
       // Hit country.ts line 107 (invalid country)
       expect(validateCountry("INVALID", { format: "iso2" })).toBe(false);
@@ -252,19 +259,20 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
       const invalidRegexRule: Rule = {
         conditions: {
           all: [
-            { 
-              field: "text", 
-              operator: "matches", 
-              value: { invalidFormat: "not a regex pattern" } as any
-            }
-          ]
-        }
+            {
+              field: "text",
+              operator: "matches",
+              value: { invalidFormat: "not a regex pattern" } as any,
+            },
+          ],
+        },
       };
 
       const criteria = { text: "test" };
 
-      return expect(jsonRules.evaluate(invalidRegexRule, criteria, true))
-        .rejects.toThrow("Invalid regex pattern format");
+      return expect(
+        jsonRules.evaluate(invalidRegexRule, criteria, true)
+      ).rejects.toThrow("Invalid regex pattern format");
     });
 
     it("should test edge cases for complete coverage", () => {
@@ -272,16 +280,22 @@ describe("Exact 100% Coverage - Surgical Precision", () => {
       const invalidRangeRule: Rule = {
         conditions: {
           all: [
-            { field: "score", operator: "is between numbers", value: [10] as any }
-          ]
-        }
+            {
+              field: "score",
+              operator: "is between numbers",
+              value: [10] as any,
+            },
+          ],
+        },
       };
 
       const criteria = { score: 15 };
 
-      return jsonRules.evaluate(invalidRangeRule, criteria, true).then(result => {
-        expect(result).toBe(false);
-      });
+      return jsonRules
+        .evaluate(invalidRangeRule, criteria, true)
+        .then((result) => {
+          expect(result).toBe(false);
+        });
     });
   });
-}); 
+});
