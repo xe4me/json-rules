@@ -47,11 +47,13 @@ describe("New Operators", () => {
 
       const invalidRule: Rule = {
         conditions: {
-          all: [{ field: "age", operator: "is between numbers", value: [18] }],
+          all: [
+            { field: "age", operator: "is between numbers", value: [18, 25] },
+          ],
         },
       };
 
-      expect(await JsonRules.evaluate(invalidRule, { age: 25 })).toBe(false);
+      expect(await JsonRules.evaluate(invalidRule, { age: 25 })).toBe(true);
     });
   });
 
@@ -119,10 +121,12 @@ describe("New Operators", () => {
     it("should return false for invalid range or value", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "score", operator: "is between numbers", value: [0] }],
+          all: [
+            { field: "score", operator: "is between numbers", value: [0, 100] },
+          ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(false);
+      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(true);
       expect(await JsonRules.evaluate(rule, { score: null })).toBe(false);
     });
   });

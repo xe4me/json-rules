@@ -80,7 +80,7 @@ export class ObjectDiscovery {
    */
   isConstraint(obj: unknown): obj is Constraint {
     if (!this.isObject(obj)) return false;
-    return "field" in obj && "operator" in obj && "value" in obj;
+    return "field" in obj && "operator" in obj;
   }
 
   /**

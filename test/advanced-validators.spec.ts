@@ -8,7 +8,7 @@ describe("Advanced Validators", () => {
     it("should validate basic email addresses", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "email", operator: "is valid email", value: null }],
+          all: [{ field: "email", operator: "is valid email" }],
         },
       };
 
@@ -84,7 +84,7 @@ describe("Advanced Validators", () => {
     it("should handle non-string values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "email", operator: "is valid email", value: null }],
+          all: [{ field: "email", operator: "is valid email" }],
         },
       };
 
@@ -351,7 +351,7 @@ describe("Advanced Validators", () => {
     it("should validate EAN codes", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "barcode", operator: "is EAN", value: null }],
+          all: [{ field: "barcode", operator: "is EAN" }],
         },
       };
 
@@ -372,7 +372,7 @@ describe("Advanced Validators", () => {
     it("should handle non-string values", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "barcode", operator: "is EAN", value: null }],
+          all: [{ field: "barcode", operator: "is EAN" }],
         },
       };
 
@@ -669,7 +669,7 @@ describe("Advanced Validators", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "email", operator: "is valid email", value: null },
+            { field: "email", operator: "is valid email" },
             {
               field: "phone",
               operator: "is valid phone",

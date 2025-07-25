@@ -463,7 +463,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     it("should handle domain validation with null config", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "domain", operator: "is domain", value: null }],
+          all: [{ field: "domain", operator: "is domain" }],
         },
       };
 
@@ -475,7 +475,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
     it("should handle email validation with null config", async () => {
       const rule: Rule = {
         conditions: {
-          all: [{ field: "email", operator: "is valid email", value: null }],
+          all: [{ field: "email", operator: "is valid email" }],
         },
       };
 

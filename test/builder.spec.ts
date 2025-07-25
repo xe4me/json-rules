@@ -46,7 +46,7 @@ describe("JsonRules builder correctly", () => {
         ])
       )
       .default(2)
-      .build(true);
+      .build();
 
     expect(rule).toEqual({
       conditions: [
@@ -113,7 +113,7 @@ describe("JsonRules builder correctly", () => {
         ])
       )
       .default(2)
-      .build(true);
+      .build();
 
     expect(rule).toEqual({
       conditions: [

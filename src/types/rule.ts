@@ -2,6 +2,7 @@ export type WithRequired<Type, Key extends keyof Type> = Type &
   Required<Pick<Type, Key>>;
 
 export type ConditionType = "any" | "all" | "none";
+
 export type Operator =
   | "is equal"
   | "is not equal"
@@ -129,81 +130,6 @@ export type ValidFieldReference<TData> = IsAny<TData> extends true
 export type TemplateValue<T, TData = any> = T | ValidFieldReference<TData>;
 
 /**
- * Maps operators to their expected value types
- */
-export type OperatorValueMap<TData = any> = {
-  "is equal": TemplateValue<string | number | boolean | Date | null, TData>;
-  "is not equal": TemplateValue<string | number | boolean | Date | null, TData>;
-  "is greater than": TemplateValue<string | number | Date, TData>;
-  "is less than": TemplateValue<string | number | Date, TData>;
-  "is greater than or equal": TemplateValue<string | number | Date, TData>;
-  "is less than or equal": TemplateValue<string | number | Date, TData>;
-  in:
-    | (string | number | boolean | Record<string, unknown> | null)[]
-    | TemplateValue<
-        (string | number | boolean | Record<string, unknown> | null)[],
-        TData
-      >;
-  "not in":
-    | (string | number | boolean | Record<string, unknown> | null)[]
-    | TemplateValue<
-        (string | number | boolean | Record<string, unknown> | null)[],
-        TData
-      >;
-  contains: TemplateValue<string, TData>;
-  "not contains": TemplateValue<string, TData>;
-  "contains any": string[] | TemplateValue<string[], TData>;
-  "not contains any": string[] | TemplateValue<string[], TData>;
-  matches: TemplateValue<RegexPattern, TData>;
-  "not matches": TemplateValue<RegexPattern, TData>;
-  "is between numbers":
-    | [number, number]
-    | TemplateValue<[number, number], TData>;
-  "is between dates": [Date, Date] | TemplateValue<[Date, Date], TData>;
-  "is not between numbers":
-    | [number, number]
-    | TemplateValue<[number, number], TData>;
-  "is not between dates": [Date, Date] | TemplateValue<[Date, Date], TData>;
-  "is before": TemplateValue<string | number | Date, TData>;
-  "is after": TemplateValue<string | number | Date, TData>;
-  "is on or before": TemplateValue<string | number | Date, TData>;
-  "is on or after": TemplateValue<string | number | Date, TData>;
-  "starts with": TemplateValue<string, TData>;
-  "ends with": TemplateValue<string, TData>;
-  "array contains": TemplateValue<
-    string | number | boolean | Record<string, unknown> | null,
-    TData
-  >;
-  "array no contains": TemplateValue<
-    string | number | boolean | Record<string, unknown> | null,
-    TData
-  >;
-  // Simple math validators (no configuration needed)
-  "is even": null;
-  "is odd": null;
-  "is positive": null;
-  "is negative": null;
-  "is empty": null;
-  "is not empty": null;
-  // Advanced validators with configuration
-  "is valid email": EmailValidationConfig | null;
-  "is valid phone":
-    | PhoneValidationConfig
-    | TemplateValue<PhoneValidationConfig, TData>;
-  "is URL": URLValidationConfig | TemplateValue<URLValidationConfig, TData>;
-  "is UUID": UUIDValidationConfig | TemplateValue<UUIDValidationConfig, TData>;
-  "is EAN": null;
-  "is IMEI": IMEIValidationConfig | TemplateValue<IMEIValidationConfig, TData>;
-  "is unit": UnitType | TemplateValue<UnitType, TData>;
-  "is country":
-    | CountryValidationConfig
-    | TemplateValue<CountryValidationConfig, TData>;
-  "is domain":
-    | DomainValidationConfig
-    | TemplateValue<DomainValidationConfig, TData>;
-};
-
-/**
  * Utility type to extract all possible property paths from a type, including nested paths with dot notation.
  * Example: { name: string, profile: { age: number } } -> "name" | "profile" | "profile.age"
  */
@@ -224,16 +150,130 @@ export type PropertyPath<T> = T extends object
  */
 type IsAny<T> = 0 extends 1 & T ? true : false;
 
-export interface Constraint<
-  TData = any,
-  TOperator extends Operator = Operator
-> {
-  field: IsAny<TData> extends true ? string : PropertyPath<TData>;
-  operator: TOperator;
-  value: TOperator extends keyof OperatorValueMap<TData>
-    ? OperatorValueMap<TData>[TOperator]
-    : never;
-}
+/**
+ * Discriminated union for constraints based on operator type
+ */
+export type Constraint<TData = any> =
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator:
+        | "is even"
+        | "is odd"
+        | "is positive"
+        | "is negative"
+        | "is empty"
+        | "is not empty"
+        | "is EAN";
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is IMEI";
+      value?: IMEIValidationConfig | TemplateValue<IMEIValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is domain";
+      value?:
+        | DomainValidationConfig
+        | TemplateValue<DomainValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is valid email";
+      value?:
+        | EmailValidationConfig
+        | TemplateValue<EmailValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is equal" | "is not equal";
+      value: TemplateValue<string | number | boolean | Date | null, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator:
+        | "is greater than"
+        | "is less than"
+        | "is greater than or equal"
+        | "is less than or equal"
+        | "is before"
+        | "is after"
+        | "is on or before"
+        | "is on or after";
+      value: TemplateValue<string | number | Date, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "in" | "not in";
+      value:
+        | (string | number | boolean | Record<string, unknown> | null)[]
+        | TemplateValue<
+            (string | number | boolean | Record<string, unknown> | null)[],
+            TData
+          >;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "contains" | "not contains" | "starts with" | "ends with";
+      value: TemplateValue<string, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "contains any" | "not contains any";
+      value: string[] | TemplateValue<string[], TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "matches" | "not matches";
+      value: TemplateValue<RegexPattern, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is between numbers" | "is not between numbers";
+      value: [number, number] | TemplateValue<[number, number], TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is between dates" | "is not between dates";
+      value: [Date, Date] | TemplateValue<[Date, Date], TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "array contains" | "array no contains";
+      value: TemplateValue<
+        string | number | boolean | Record<string, unknown> | null,
+        TData
+      >;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is valid phone";
+      value:
+        | PhoneValidationConfig
+        | TemplateValue<PhoneValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is URL";
+      value: URLValidationConfig | TemplateValue<URLValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is UUID";
+      value: UUIDValidationConfig | TemplateValue<UUIDValidationConfig, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is unit";
+      value: UnitType | TemplateValue<UnitType, TData>;
+    }
+  | {
+      field: IsAny<TData> extends true ? string : PropertyPath<TData>;
+      operator: "is country";
+      value:
+        | CountryValidationConfig
+        | TemplateValue<CountryValidationConfig, TData>;
+    };
 
 export interface Condition<TData = any, TResult = any> {
   any?: (Constraint<TData> | Condition<TData, TResult>)[];

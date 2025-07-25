@@ -9,7 +9,7 @@ import { subRulesValid3Json } from "./rulesets/sub-rules-valid3.json";
 import { subRulesValid1Json } from "./rulesets/sub-rules-valid1.json";
 import { subRulesValid2Json } from "./rulesets/sub-rules-valid2.json";
 
-import { Operator, JsonRules, RuleError } from "../src";
+import { JsonRules, RuleError } from "../src";
 
 describe("JsonRules engine correctly", () => {
   it("Evaluates a simple ruleset", async () => {
@@ -45,9 +45,7 @@ describe("JsonRules engine correctly", () => {
         {
           conditions: [
             {
-              all: [
-                { field: "name", operator: "foo" as Operator, value: "test" },
-              ],
+              all: [{ field: "name", operator: "foo", value: "test" } as any],
             },
           ],
         },

@@ -320,11 +320,11 @@ export class Evaluator {
       return false;
     }
 
-    // Resolve template variables in the constraint value
-    const resolvedValue = this.#templateParser.resolveTemplateValue(
-      constraint.value,
-      criteria
-    );
+    // Resolve template variables in the constraint value (if it exists)
+    const resolvedValue =
+      "value" in constraint
+        ? this.#templateParser.resolveTemplateValue(constraint.value, criteria)
+        : undefined;
 
     switch (constraint.operator) {
       case "is equal":
@@ -459,7 +459,10 @@ export class Evaluator {
       case "is domain":
         return validateDomain(criterion, resolvedValue);
       default:
-        throw new Error(`Unknown operator: ${constraint.operator}`);
+        const exhaustiveCheck: never = constraint;
+        throw new Error(
+          `Unknown operator: ${(exhaustiveCheck as any).operator}`
+        );
     }
   }
 

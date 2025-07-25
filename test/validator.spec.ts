@@ -5,7 +5,7 @@ import { invalid1Json } from "./rulesets/invalid1.json";
 import { invalid3Json } from "./rulesets/invalid3.json";
 import { subRulesValid1Json } from "./rulesets/sub-rules-valid1.json";
 
-import { Operator, JsonRules, Condition, Constraint } from "../src";
+import { JsonRules, Condition, Constraint } from "../src";
 
 describe("JsonRules validator correctly", () => {
   it("Identifies a bad operator", () => {
@@ -13,7 +13,9 @@ describe("JsonRules validator correctly", () => {
       JsonRules.validate({
         conditions: [
           {
-            all: [{ field: "name", operator: "*" as Operator, value: "test" }],
+            all: [
+              { field: "name", operator: "*", value: "test" as any } as any,
+            ],
           },
         ],
       }).isValid
@@ -29,7 +31,7 @@ describe("JsonRules validator correctly", () => {
               {
                 field: true as unknown as string,
                 operator: "is equal",
-                value: "test",
+                value: "test" as any,
               },
             ],
           },
@@ -114,7 +116,7 @@ describe("JsonRules validator correctly", () => {
     expect(
       JsonRules.validate({
         conditions: [
-          { all: [{ field: "name", operator: "in", value: "test" }] },
+          { all: [{ field: "name", operator: "in", value: "test" as any }] },
         ],
       }).isValid
     ).toEqual(false);
@@ -122,7 +124,9 @@ describe("JsonRules validator correctly", () => {
     expect(
       JsonRules.validate({
         conditions: [
-          { all: [{ field: "name", operator: "not in", value: "test" }] },
+          {
+            all: [{ field: "name", operator: "not in", value: "test" as any }],
+          },
         ],
       }).isValid
     ).toEqual(false);
@@ -130,7 +134,11 @@ describe("JsonRules validator correctly", () => {
     expect(
       JsonRules.validate({
         conditions: [
-          { all: [{ field: "name", operator: "contains any", value: "test" }] },
+          {
+            all: [
+              { field: "name", operator: "contains any", value: "test" as any },
+            ],
+          },
         ],
       }).isValid
     ).toEqual(false);
@@ -140,7 +148,11 @@ describe("JsonRules validator correctly", () => {
     expect(
       JsonRules.validate({
         conditions: [
-          { all: [{ field: "name", operator: "is equal", value: "test" }] },
+          {
+            all: [
+              { field: "name", operator: "is equal", value: "test" as any },
+            ],
+          },
         ],
       }).isValid
     ).toEqual(true);

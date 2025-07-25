@@ -336,7 +336,7 @@ describe("Final Coverage Push - 100%", () => {
       // Non-array value for array operators
       const result1 = validator.validate({
         conditions: {
-          all: [{ field: "tags", operator: "in", value: "not-array" }],
+          all: [{ field: "tags", operator: "in", value: "not-array" as any }],
         },
       });
       expect(result1.isValid).toBe(false);
@@ -344,7 +344,11 @@ describe("Final Coverage Push - 100%", () => {
       const result2 = validator.validate({
         conditions: {
           all: [
-            { field: "tags", operator: "contains any", value: "not-array" },
+            {
+              field: "tags",
+              operator: "contains any",
+              value: "not-array" as any,
+            },
           ],
         },
       });
@@ -385,12 +389,12 @@ describe("Final Coverage Push - 100%", () => {
 
     it("should handle non-string values for string validators", async () => {
       const nonStringRules = [
-        { field: "email", operator: "is valid email", value: null },
+        { field: "email", operator: "is valid email" },
         { field: "url", operator: "is URL", value: {} },
         { field: "uuid", operator: "is UUID", value: {} },
-        { field: "ean", operator: "is EAN", value: null },
-        { field: "imei", operator: "is IMEI", value: null },
-        { field: "domain", operator: "is domain", value: null },
+        { field: "ean", operator: "is EAN" },
+        { field: "imei", operator: "is IMEI" },
+        { field: "domain", operator: "is domain" },
         { field: "country", operator: "is country", value: { format: "iso2" } },
       ] as const;
 
@@ -436,7 +440,7 @@ describe("Final Coverage Push - 100%", () => {
       // Non-string IMEI
       const rule1: Rule = {
         conditions: {
-          all: [{ field: "imei", operator: "is IMEI", value: null }],
+          all: [{ field: "imei", operator: "is IMEI" }],
         },
       };
       expect(await JsonRules.evaluate(rule1, { imei: 123 })).toBe(false);
@@ -470,7 +474,7 @@ describe("Final Coverage Push - 100%", () => {
       // Non-string domain
       const rule1: Rule = {
         conditions: {
-          all: [{ field: "domain", operator: "is domain", value: null }],
+          all: [{ field: "domain", operator: "is domain" }],
         },
       };
       expect(await JsonRules.evaluate(rule1, { domain: 123 })).toBe(false);

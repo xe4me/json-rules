@@ -236,7 +236,7 @@ export class Validator {
     }
 
     if (
-      constraint.value === null &&
+      (constraint as any).value === null &&
       !(
         [
           "is equal",
@@ -274,8 +274,8 @@ export class Validator {
       ["in", "not in", "contains any", "not contains any"].includes(
         constraint.operator
       ) &&
-      !Array.isArray(constraint.value) &&
-      !this.#templateParser.hasTemplateVariables(constraint.value)
+      !Array.isArray((constraint as any).value) &&
+      !this.#templateParser.hasTemplateVariables((constraint as any).value)
     ) {
       return {
         isValid: false,
@@ -288,7 +288,9 @@ export class Validator {
     }
 
     if (["matches", "not matches"].includes(constraint.operator)) {
-      const regexValidation = this.#validateRegexPattern(constraint.value);
+      const regexValidation = this.#validateRegexPattern(
+        (constraint as any).value
+      );
       if (!regexValidation.isValid) {
         return {
           isValid: false,
@@ -354,12 +356,12 @@ export class Validator {
     constraint: Constraint,
     criteria?: object
   ): ValidationResult {
-    if (!this.#templateParser.hasTemplateVariables(constraint.value)) {
+    if (!this.#templateParser.hasTemplateVariables((constraint as any).value)) {
       return { isValid: true };
     }
 
     const variables = this.#templateParser.extractTemplateVariables(
-      constraint.value
+      (constraint as any).value
     );
 
     // Validate template syntax
@@ -384,7 +386,7 @@ export class Validator {
     // If criteria is provided, validate that all template variables exist
     if (criteria) {
       const validation = this.#templateParser.validateTemplateVariables(
-        constraint.value,
+        (constraint as any).value,
         criteria
       );
       if (!validation.isValid) {

@@ -142,22 +142,22 @@ JsonRules provides operators for common data operations:
 
 | Operator | Description | Accepts | Example |
 |----------|-------------|---------|---------|
-| `is even` | Number is even | `null` | `{ field: "quantity", operator: "is even", value: null }` |
-| `is odd` | Number is odd | `null` | `{ field: "productId", operator: "is odd", value: null }` |
-| `is positive` | Number is positive (> 0) | `null` | `{ field: "balance", operator: "is positive", value: null }` |
-| `is negative` | Number is negative (< 0) | `null` | `{ field: "adjustment", operator: "is negative", value: null }` |
-| `is empty` | Value is null, undefined, or empty string/array | `null` | `{ field: "optionalField", operator: "is empty", value: null }` |
-| `is not empty` | Value is not empty | `null` | `{ field: "requiredField", operator: "is not empty", value: null }` |
+| `is even` | Number is even | none | `{ field: "quantity", operator: "is even" }` |
+| `is odd` | Number is odd | none | `{ field: "productId", operator: "is odd" }` |
+| `is positive` | Number is positive (> 0) | none | `{ field: "balance", operator: "is positive" }` |
+| `is negative` | Number is negative (< 0) | none | `{ field: "adjustment", operator: "is negative" }` |
+| `is empty` | Value is null, undefined, or empty string/array | none | `{ field: "optionalField", operator: "is empty" }` |
+| `is not empty` | Value is not empty | none | `{ field: "requiredField", operator: "is not empty" }` |
 
 ### Data Validation
 
 | Operator | Description | Accepts | Example |
 |----------|-------------|---------|---------|
-| `is valid email` | Valid email address | `EmailValidationConfig \| null` | `{ field: "email", operator: "is valid email", value: null }` |
+| `is valid email` | Valid email address | `EmailValidationConfig` (optional) | `{ field: "email", operator: "is valid email" }` |
 | `is valid phone` | Valid phone number | `PhoneValidationConfig` | `{ field: "phone", operator: "is valid phone", value: { locale: "us" } }` |
 | `is URL` | Valid URL | `URLValidationConfig` | `{ field: "website", operator: "is URL", value: { requireTld: false } }` |
 | `is UUID` | Valid UUID | `UUIDValidationConfig` | `{ field: "id", operator: "is UUID", value: { version: 4 } }` |
-| `is EAN` | Valid EAN barcode | `null` | `{ field: "barcode", operator: "is EAN", value: null }` |
+| `is EAN` | Valid EAN barcode | none | `{ field: "barcode", operator: "is EAN" }` |
 | `is IMEI` | Valid IMEI number | `IMEIValidationConfig` | `{ field: "deviceId", operator: "is IMEI", value: { allowHyphens: true } }` |
 | `is unit` | Valid unit of measurement | `UnitType` | `{ field: "distance", operator: "is unit", value: "length" }` |
 | `is country` | Valid country identifier | `CountryValidationConfig` | `{ field: "country", operator: "is country", value: { format: "iso2" } }` |

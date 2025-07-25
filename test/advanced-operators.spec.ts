@@ -6,7 +6,7 @@ describe("Advanced Operators", () => {
       it("should return true for even numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is even", value: null }],
+            all: [{ field: "value", operator: "is even" }],
           },
         };
 
@@ -19,7 +19,7 @@ describe("Advanced Operators", () => {
       it("should return false for odd numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is even", value: null }],
+            all: [{ field: "value", operator: "is even" }],
           },
         };
 
@@ -32,7 +32,7 @@ describe("Advanced Operators", () => {
       it("should return false for non-numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is even", value: null }],
+            all: [{ field: "value", operator: "is even" }],
           },
         };
 
@@ -49,7 +49,7 @@ describe("Advanced Operators", () => {
       it("should return false for special numeric values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is even", value: null }],
+            all: [{ field: "value", operator: "is even" }],
           },
         };
 
@@ -63,7 +63,7 @@ describe("Advanced Operators", () => {
       it("should handle decimal numbers correctly", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is even", value: null }],
+            all: [{ field: "value", operator: "is even" }],
           },
         };
 
@@ -77,7 +77,7 @@ describe("Advanced Operators", () => {
       it("should return true for odd numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is odd", value: null }],
+            all: [{ field: "value", operator: "is odd" }],
           },
         };
 
@@ -90,7 +90,7 @@ describe("Advanced Operators", () => {
       it("should return false for even numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is odd", value: null }],
+            all: [{ field: "value", operator: "is odd" }],
           },
         };
 
@@ -103,7 +103,7 @@ describe("Advanced Operators", () => {
       it("should return false for non-numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is odd", value: null }],
+            all: [{ field: "value", operator: "is odd" }],
           },
         };
 
@@ -118,7 +118,7 @@ describe("Advanced Operators", () => {
       it("should return false for special numeric values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is odd", value: null }],
+            all: [{ field: "value", operator: "is odd" }],
           },
         };
 
@@ -134,7 +134,7 @@ describe("Advanced Operators", () => {
       it("should return true for positive numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is positive", value: null }],
+            all: [{ field: "value", operator: "is positive" }],
           },
         };
 
@@ -147,7 +147,7 @@ describe("Advanced Operators", () => {
       it("should return false for zero", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is positive", value: null }],
+            all: [{ field: "value", operator: "is positive" }],
           },
         };
 
@@ -158,7 +158,7 @@ describe("Advanced Operators", () => {
       it("should return false for negative numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is positive", value: null }],
+            all: [{ field: "value", operator: "is positive" }],
           },
         };
 
@@ -170,7 +170,7 @@ describe("Advanced Operators", () => {
       it("should return false for non-numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is positive", value: null }],
+            all: [{ field: "value", operator: "is positive" }],
           },
         };
 
@@ -185,7 +185,7 @@ describe("Advanced Operators", () => {
       it("should return false for special numeric values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is positive", value: null }],
+            all: [{ field: "value", operator: "is positive" }],
           },
         };
 
@@ -201,7 +201,7 @@ describe("Advanced Operators", () => {
       it("should return true for negative numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is negative", value: null }],
+            all: [{ field: "value", operator: "is negative" }],
           },
         };
 
@@ -214,7 +214,7 @@ describe("Advanced Operators", () => {
       it("should return false for zero", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is negative", value: null }],
+            all: [{ field: "value", operator: "is negative" }],
           },
         };
 
@@ -225,7 +225,7 @@ describe("Advanced Operators", () => {
       it("should return false for positive numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is negative", value: null }],
+            all: [{ field: "value", operator: "is negative" }],
           },
         };
 
@@ -237,7 +237,7 @@ describe("Advanced Operators", () => {
       it("should return false for non-numbers", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is negative", value: null }],
+            all: [{ field: "value", operator: "is negative" }],
           },
         };
 
@@ -252,7 +252,7 @@ describe("Advanced Operators", () => {
       it("should return false for special numeric values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is negative", value: null }],
+            all: [{ field: "value", operator: "is negative" }],
           },
         };
 
@@ -270,7 +270,7 @@ describe("Advanced Operators", () => {
       it("should return true for null and undefined", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -281,7 +281,7 @@ describe("Advanced Operators", () => {
       it("should return true for empty string", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -291,7 +291,7 @@ describe("Advanced Operators", () => {
       it("should return true for empty array", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -301,7 +301,7 @@ describe("Advanced Operators", () => {
       it("should return false for zero", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -311,7 +311,7 @@ describe("Advanced Operators", () => {
       it("should return false for false", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -321,7 +321,7 @@ describe("Advanced Operators", () => {
       it("should return false for non-empty values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is empty", value: null }],
+            all: [{ field: "value", operator: "is empty" }],
           },
         };
 
@@ -339,7 +339,7 @@ describe("Advanced Operators", () => {
       it("should handle missing field as undefined", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "missingField", operator: "is empty", value: null }],
+            all: [{ field: "missingField", operator: "is empty" }],
           },
         };
 
@@ -351,7 +351,7 @@ describe("Advanced Operators", () => {
       it("should return false for null and undefined", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -364,7 +364,7 @@ describe("Advanced Operators", () => {
       it("should return false for empty string", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -374,7 +374,7 @@ describe("Advanced Operators", () => {
       it("should return false for empty array", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -384,7 +384,7 @@ describe("Advanced Operators", () => {
       it("should return true for zero", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -394,7 +394,7 @@ describe("Advanced Operators", () => {
       it("should return true for false", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -404,7 +404,7 @@ describe("Advanced Operators", () => {
       it("should return true for non-empty values", async () => {
         const rule: Rule = {
           conditions: {
-            all: [{ field: "value", operator: "is not empty", value: null }],
+            all: [{ field: "value", operator: "is not empty" }],
           },
         };
 
@@ -422,9 +422,7 @@ describe("Advanced Operators", () => {
       it("should handle missing field as undefined", async () => {
         const rule: Rule = {
           conditions: {
-            all: [
-              { field: "missingField", operator: "is not empty", value: null },
-            ],
+            all: [{ field: "missingField", operator: "is not empty" }],
           },
         };
 
@@ -438,9 +436,9 @@ describe("Advanced Operators", () => {
       const rule: Rule = {
         conditions: {
           all: [
-            { field: "count", operator: "is even", value: null },
-            { field: "score", operator: "is positive", value: null },
-            { field: "name", operator: "is not empty", value: null },
+            { field: "count", operator: "is even" },
+            { field: "score", operator: "is positive" },
+            { field: "name", operator: "is not empty" },
           ],
         },
       };
@@ -483,15 +481,15 @@ describe("Advanced Operators", () => {
         conditions: [
           {
             all: [
-              { field: "value", operator: "is even", value: null },
-              { field: "value", operator: "is positive", value: null },
+              { field: "value", operator: "is even" },
+              { field: "value", operator: "is positive" },
             ],
             result: "even-positive",
           },
           {
             all: [
-              { field: "value", operator: "is odd", value: null },
-              { field: "value", operator: "is negative", value: null },
+              { field: "value", operator: "is odd" },
+              { field: "value", operator: "is negative" },
             ],
             result: "odd-negative",
           },
