@@ -71,6 +71,7 @@ export interface EmailValidationConfig {
 export interface URLValidationConfig {
   protocols?: string[];
   requireProtocol?: boolean;
+  requireTld?: boolean;
   allowUnderscores?: boolean;
   allowTrailingDot?: boolean;
   allowNumericTld?: boolean;

@@ -41,10 +41,11 @@
   "devDependencies": {
     "@jest/globals": "^29.5.0",
     "@olavoparno/jest-badges-readme": "^1.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.15.0",
-    "@typescript-eslint/parser": "^5.15.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.1",
+    "@types/validator": "^13.15.2",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
     "axios": "^1.7.7",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^8.1.0",
@@ -78,5 +79,8 @@
       "node_modules/(?!variables/.*)"
     ]
   },
-  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4"
+  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4",
+  "dependencies": {
+    "validator": "^13.15.15"
+  }
 }

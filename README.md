@@ -93,7 +93,7 @@ That's it! No complex setup, no learning curve—just intuitive rules that work.
 
 ## 📚 Complete Operator Reference
 
-JsonRules provides a comprehensive set of operators designed for real-world applications:
+JsonRules provides **40+ comprehensive operators** designed for real-world applications, including advanced math, data validation, and unit verification:
 
 ### 🟰 Equality & Comparison
 
@@ -150,6 +150,31 @@ JsonRules provides a comprehensive set of operators designed for real-world appl
 | `is after` | Date is after specified date | `string \| number \| Date` | `{ field: "startDate", operator: "is after", value: new Date('2024-01-01') }` |
 | `is on or before` | Date is on or before specified date | `string \| number \| Date` | `{ field: "deadline", operator: "is on or before", value: new Date() }` |
 | `is on or after` | Date is on or after specified date | `string \| number \| Date` | `{ field: "validFrom", operator: "is on or after", value: new Date() }` |
+
+### 🔢 Math & Number Validation
+
+| Operator | Description | Accepts | Example |
+|----------|-------------|---------|---------|
+| `is even` | Number is even | `null` | `{ field: "quantity", operator: "is even", value: null }` |
+| `is odd` | Number is odd | `null` | `{ field: "productId", operator: "is odd", value: null }` |
+| `is positive` | Number is positive (> 0) | `null` | `{ field: "balance", operator: "is positive", value: null }` |
+| `is negative` | Number is negative (< 0) | `null` | `{ field: "adjustment", operator: "is negative", value: null }` |
+| `is empty` | Value is null, undefined, or empty string/array | `null` | `{ field: "optionalField", operator: "is empty", value: null }` |
+| `is not empty` | Value is not empty | `null` | `{ field: "requiredField", operator: "is not empty", value: null }` |
+
+### 📊 Data Validation
+
+| Operator | Description | Accepts | Example |
+|----------|-------------|---------|---------|
+| `is valid email` | Valid email address | `EmailValidationConfig \| null` | `{ field: "email", operator: "is valid email", value: null }` |
+| `is valid phone` | Valid phone number | `PhoneValidationConfig` | `{ field: "phone", operator: "is valid phone", value: { locale: "us" } }` |
+| `is URL` | Valid URL | `URLValidationConfig` | `{ field: "website", operator: "is URL", value: { requireTld: false } }` |
+| `is UUID` | Valid UUID | `UUIDValidationConfig` | `{ field: "id", operator: "is UUID", value: { version: 4 } }` |
+| `is EAN` | Valid EAN barcode | `null` | `{ field: "barcode", operator: "is EAN", value: null }` |
+| `is IMEI` | Valid IMEI number | `IMEIValidationConfig` | `{ field: "deviceId", operator: "is IMEI", value: { allowHyphens: true } }` |
+| `is unit` | Valid unit of measurement | `UnitType` | `{ field: "distance", operator: "is unit", value: "length" }` |
+| `is country` | Valid country identifier | `CountryValidationConfig` | `{ field: "country", operator: "is country", value: { format: "iso2" } }` |
+| `is domain` | Valid domain name | `DomainValidationConfig` | `{ field: "domain", operator: "is domain", value: { requireTld: true } }` |
 
 ---
 
@@ -511,6 +536,198 @@ const advancedEligibilityRule: Rule = {
     ]
   }
 };
+```
+
+### 🔢 Math & Data Validation Examples
+
+```typescript
+// Math validation for inventory management
+const inventoryRule: Rule = {
+  conditions: {
+    all: [
+      { field: "quantity", operator: "is even", value: null },      // Even quantities for packaging
+      { field: "balance", operator: "is positive", value: null },   // Positive stock balance  
+      { field: "adjustment", operator: "is not empty", value: null } // Required adjustment note
+    ]
+  }
+};
+
+// Data validation for user registration
+const registrationRule: Rule = {
+  conditions: {
+    all: [
+      { field: "email", operator: "is valid email", value: { 
+        requireTld: true,
+        hostBlacklist: ["tempmail.com", "10minutemail.com"]
+      }},
+      { field: "phone", operator: "is valid phone", value: { locale: "us", strict: false }},
+      { field: "website", operator: "is URL", value: { 
+        protocols: ["https"],
+        requireProtocol: true 
+      }},
+      { field: "country", operator: "is country", value: { format: "iso2" }}
+    ]
+  }
+};
+
+// Unit validation for product specifications
+const productRule: Rule = {
+  conditions: {
+    all: [
+      { field: "dimensions.length", operator: "is unit", value: "length" },  // "5m", "10ft", etc.
+      { field: "weight", operator: "is unit", value: "mass" },               // "2kg", "5lbs", etc.
+      { field: "capacity", operator: "is unit", value: "volume" }            // "500ml", "1.5l", etc.
+    ]
+  }
+};
+```
+
+### 📏 Unit Validation Examples
+
+JsonRules supports comprehensive unit validation across 12 categories:
+
+```typescript
+const unitExamples: Rule = {
+  conditions: {
+    all: [
+      // Length: supports metric, imperial, nautical
+      { field: "distance", operator: "is unit", value: "length" },     // ✅ "5km", "10ft", "2.5mi"
+      
+      // Mass: supports metric, imperial, specialized
+      { field: "weight", operator: "is unit", value: "mass" },         // ✅ "2kg", "5lbs", "100g"
+      
+      // Temperature: supports all scales
+      { field: "temp", operator: "is unit", value: "temperature" },    // ✅ "23°C", "75°F", "298K"
+      
+      // Time: from nanoseconds to millennia
+      { field: "duration", operator: "is unit", value: "time" },       // ✅ "30s", "5min", "2h"
+      
+      // Area: square measurements
+      { field: "area", operator: "is unit", value: "area" },           // ✅ "100m²", "50ft²"
+      
+      // Volume: liquid and dry measures
+      { field: "volume", operator: "is unit", value: "volume" },       // ✅ "500ml", "2cups", "1gal"
+      
+      // Energy: various energy units
+      { field: "energy", operator: "is unit", value: "energy" },       // ✅ "100J", "5kWh", "200cal"
+      
+      // Pressure: atmospheric and mechanical
+      { field: "pressure", operator: "is unit", value: "pressure" },   // ✅ "1atm", "15psi", "100Pa"
+      
+      // Speed: velocity measurements
+      { field: "speed", operator: "is unit", value: "speed" },         // ✅ "60mph", "25m/s", "10kn"
+      
+      // Force: mechanical force
+      { field: "force", operator: "is unit", value: "force" },         // ✅ "100N", "50lbf"
+      
+      // Power: electrical and mechanical
+      { field: "power", operator: "is unit", value: "power" },         // ✅ "100W", "5kW", "2hp"
+      
+      // Frequency: oscillations and rotations
+      { field: "frequency", operator: "is unit", value: "frequency" }  // ✅ "60Hz", "1kHz", "120rpm"
+    ]
+  }
+};
+```
+
+### ⚙️ Validation Configuration Interfaces
+
+**Email Validation**
+```typescript
+interface EmailValidationConfig {
+  allowDisplayName?: boolean;        // Allow "Name <email@domain.com>" format
+  requireDisplayName?: boolean;      // Require display name
+  allowUtf8LocalPart?: boolean;     // Allow UTF-8 characters in local part
+  requireTld?: boolean;             // Require top-level domain
+  allowIpDomain?: boolean;          // Allow IP addresses as domain
+  allowUnderscores?: boolean;       // Allow underscores in domain
+  domainSpecificValidation?: boolean; // Enable domain-specific rules
+  blacklistedChars?: string;        // Characters to disallow
+  hostBlacklist?: string[];         // Blocked domains
+  hostWhitelist?: string[];         // Allowed domains only
+}
+```
+
+**Phone Validation**
+```typescript
+interface PhoneValidationConfig {
+  locale: string;                   // Required: "us", "gb", "de", etc.
+  strict?: boolean;                 // Enable strict formatting validation
+}
+
+// Import locale validators to enable them
+import "@ivandt/json-rules/validators/phone/us";
+import "@ivandt/json-rules/validators/phone/gb";
+import "@ivandt/json-rules/validators/phone/de";
+```
+
+**URL Validation**
+```typescript
+interface URLValidationConfig {
+  protocols?: string[];             // Allowed protocols ["http", "https", "ftp"]
+  requireProtocol?: boolean;        // Require protocol specification
+  requireTld?: boolean;             // Require top-level domain
+  allowUnderscores?: boolean;       // Allow underscores in domain
+  allowTrailingDot?: boolean;       // Allow trailing dot in domain
+  allowNumericTld?: boolean;        // Allow numeric TLD
+  allowWildcard?: boolean;          // Allow wildcard in domain
+  ignoreMaxLength?: boolean;        // Ignore URL length limits
+}
+```
+
+**UUID Validation**
+```typescript
+interface UUIDValidationConfig {
+  version?: 1 | 2 | 3 | 4 | 5;     // Specific UUID version to validate
+}
+```
+
+**IMEI Validation**
+```typescript
+interface IMEIValidationConfig {
+  allowHyphens?: boolean;           // Allow hyphenated format "35-209900-176148-1"
+}
+```
+
+**Country Validation**
+```typescript
+interface CountryValidationConfig {
+  format: "iso2" | "iso3" | "name"; // Required: validation format
+}
+
+// Examples:
+// iso2: "US", "GB", "DE"
+// iso3: "USA", "GBR", "DEU"  
+// name: "United States", "Germany", "Japan"
+```
+
+**Domain Validation**
+```typescript
+interface DomainValidationConfig {
+  requireTld?: boolean;             // Require top-level domain
+  allowUnderscores?: boolean;       // Allow underscores
+  allowTrailingDot?: boolean;       // Allow trailing dot
+  allowNumericTld?: boolean;        // Allow numeric TLD
+  allowWildcard?: boolean;          // Allow wildcard characters
+  ignoreMaxLength?: boolean;        // Ignore domain length limits
+}
+```
+
+**Unit Types**
+```typescript
+type UnitType = 
+  | "length"       // m, km, ft, in, mi, etc.
+  | "mass"         // kg, g, lb, oz, ton, etc.
+  | "volume"       // l, ml, gal, cup, pt, etc.
+  | "temperature"  // °C, °F, K, °R
+  | "time"         // s, min, h, day, year, etc.
+  | "area"         // m², ft², acre, hectare, etc.
+  | "energy"       // J, kWh, cal, BTU, etc.
+  | "pressure"     // Pa, psi, atm, bar, etc.
+  | "speed"        // m/s, mph, km/h, knots, etc.
+  | "force"        // N, lbf, kgf, dyne, etc.
+  | "power"        // W, kW, hp, PS, etc.
+  | "frequency";   // Hz, rpm, bpm, etc.
 ```
 
 ---

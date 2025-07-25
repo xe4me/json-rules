@@ -356,27 +356,27 @@ describe("Advanced Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { 
-        count: 4, 
-        score: 85.5, 
-        name: "John" 
+      expect(await JsonRules.evaluate(rule, {
+        count: 4,
+        score: 85.5,
+        name: "John"
       })).toBe(true);
 
-      expect(await JsonRules.evaluate(rule, { 
+      expect(await JsonRules.evaluate(rule, {
         count: 3, // odd - should fail
-        score: 85.5, 
-        name: "John" 
+        score: 85.5,
+        name: "John"
       })).toBe(false);
 
-      expect(await JsonRules.evaluate(rule, { 
-        count: 4, 
+      expect(await JsonRules.evaluate(rule, {
+        count: 4,
         score: -10, // negative - should fail
-        name: "John" 
+        name: "John"
       })).toBe(false);
 
-      expect(await JsonRules.evaluate(rule, { 
-        count: 4, 
-        score: 85.5, 
+      expect(await JsonRules.evaluate(rule, {
+        count: 4,
+        score: 85.5,
         name: "" // empty - should fail
       })).toBe(false);
     });
@@ -409,4 +409,4 @@ describe("Advanced Operators", () => {
       expect(await JsonRules.evaluate(rule, { value: 0 })).toBe("other");
     });
   });
-}); 
+});

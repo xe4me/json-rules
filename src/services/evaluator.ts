@@ -8,6 +8,17 @@ import {
   RegexPattern,
   ConditionType,
 } from "../types";
+import {
+  validateEmail,
+  validateURL,
+  validateUUID,
+  validateEAN,
+  validateIMEI,
+  validateDomain,
+  validateUnit,
+  validateCountry,
+  validatePhone,
+} from './validators';
 
 export class Evaluator {
   #objectDiscovery: ObjectDiscovery = new ObjectDiscovery();
@@ -409,6 +420,25 @@ export class Evaluator {
         return this.#isEmpty(criterion);
       case "is not empty":
         return !this.#isEmpty(criterion);
+      // Advanced validators
+      case "is valid email":
+        return validateEmail(criterion, resolvedValue);
+      case "is valid phone":
+        return validatePhone(criterion, resolvedValue);
+      case "is URL":
+        return validateURL(criterion, resolvedValue);
+      case "is UUID":
+        return validateUUID(criterion, resolvedValue);
+      case "is EAN":
+        return validateEAN(criterion);
+      case "is IMEI":
+        return validateIMEI(criterion, resolvedValue);
+      case "is unit":
+        return validateUnit(criterion, resolvedValue);
+      case "is country":
+        return validateCountry(criterion, resolvedValue);
+      case "is domain":
+        return validateDomain(criterion, resolvedValue);
       default:
         throw new Error(`Unknown operator: ${constraint.operator}`);
     }
