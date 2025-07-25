@@ -1,4 +1,3 @@
-import { Mutator } from "./mutator";
 import { Builder } from "../builder";
 import { RuleError } from "../errors";
 import { Evaluator } from "./evaluator";
@@ -8,7 +7,6 @@ import { Rule, Constraint } from "../types";
 export class JsonRules {
   static #jsonRules = new JsonRules();
 
-  #mutator: Mutator = new Mutator();
   #validator: Validator = new Validator();
   #evaluator: Evaluator = new Evaluator();
 
@@ -18,42 +16,6 @@ export class JsonRules {
    */
   builder(): Builder {
     return new Builder(this.#validator);
-  }
-
-  /**
-   * Adds a mutation to the rule pilot instance.
-   * Mutations allow for the modification of the criteria before
-   * it is evaluated against a rule.
-   *
-   * @param name The name of the mutation.
-   * @param mutation The mutation function.
-   */
-  addMutation(name: string, mutation: Function): JsonRules {
-    this.#mutator.add(name, mutation);
-    return this;
-  }
-
-  /**
-   * Removes a mutation to the rule pilot instance.
-   * Any cached mutation values for this mutation will be purged.
-   *
-   * @param name The name of the mutation.
-   */
-  removeMutation(name: string): JsonRules {
-    this.#mutator.remove(name);
-    return this;
-  }
-
-  /**
-   * Clears the mutator cache.
-   * The entire cache, or cache for a specific mutator, can be cleared
-   * by passing or omitting the mutator name as an argument.
-   *
-   * @param name The mutator name to clear the cache for.
-   */
-  clearMutationCache(name?: string): JsonRules {
-    this.#mutator.clearCache(name);
-    return this;
   }
 
   /**
@@ -67,7 +29,6 @@ export class JsonRules {
    * @param trustRule Set true to avoid validating the rule before evaluating it (faster).
    * @throws RuleError if the rule is invalid.
    */
-
   async evaluate<T>(
     rule: Rule,
     criteria: object | object[],
@@ -80,10 +41,7 @@ export class JsonRules {
       throw new RuleError(validationResult);
     }
 
-    return this.#evaluator.evaluate<T>(
-      rule,
-      await this.#mutator.mutate(criteria)
-    );
+    return this.#evaluator.evaluate<T>(rule, criteria);
   }
 
   /**
@@ -137,39 +95,5 @@ export class JsonRules {
    */
   static validate(rule: Rule): ValidationResult {
     return JsonRules.#jsonRules.validate(rule);
-  }
-
-  /**
-   * Adds a mutation.
-   *
-   * Mutations allow for the modification of the criteria before
-   * it is evaluated against a rule.
-   *
-   * @param name The name of the mutation.
-   * @param mutation The mutation function.
-   */
-  static addMutation(name: string, mutation: Function): JsonRules {
-    return JsonRules.#jsonRules.addMutation(name, mutation);
-  }
-
-  /**
-   * Removes a mutation to the rule pilot instance.
-   * Any cached mutation values for this mutation will be purged.
-   *
-   * @param name The name of the mutation.
-   */
-  static removeMutation(name: string): JsonRules {
-    return JsonRules.#jsonRules.removeMutation(name);
-  }
-
-  /**
-   * Clears the mutator cache.
-   * The entire cache, or cache for a specific mutator, can be cleared
-   * by passing or omitting the mutator name as an argument.
-   *
-   * @param name The mutator name to clear the cache for.
-   */
-  static clearMutationCache(name?: string): JsonRules {
-    return JsonRules.#jsonRules.clearMutationCache(name);
   }
 }

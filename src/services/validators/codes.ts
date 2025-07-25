@@ -1,13 +1,14 @@
-import isEAN from 'validator/lib/isEAN';
-import isIMEI from 'validator/lib/isIMEI';
-import { IMEIValidationConfig } from '../../types/rule';
+import isEAN from "validator/lib/isEAN";
+import isIMEI from "validator/lib/isIMEI";
+
+import { IMEIValidationConfig } from "../../types";
 
 /**
  * Validates EAN (European Article Number) barcodes
  */
 export function validateEAN(value: any): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -22,7 +23,7 @@ export function validateIMEI(
   config: IMEIValidationConfig | null = null
 ): boolean {
   // Must be a string
-  if (typeof value !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
 
@@ -34,11 +35,11 @@ export function validateIMEI(
     // Try with hyphens option
     const withHyphens = isIMEI(value, { allow_hyphens: true });
     if (withHyphens) return true;
-    
+
     // Try without hyphens (plain format)
     return isIMEI(value);
   }
 
   // Default: only plain format (no hyphens)
   return isIMEI(value);
-} 
+}

@@ -1,6 +1,5 @@
 export * from "./evaluator";
 export * from "./logger";
-export * from "./mutator";
 export * from "./object-discovery";
 export * from "./rule-helper";
 export * from "./json-rules";

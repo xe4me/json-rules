@@ -49,7 +49,7 @@ export class ObjectDiscovery {
         return prev || this.isConditionWithResult(curr.subRule);
       }, false);
 
-      if (!result) return false;
+      if (result) return false;
     }
 
     return true;

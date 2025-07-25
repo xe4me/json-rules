@@ -253,6 +253,8 @@ export class Validator {
           "is not empty",
           "is EAN",
           "is valid email",
+          "is domain",
+          "is IMEI",
         ] as Operator[]
       ).includes(constraint.operator)
     ) {
@@ -260,7 +262,7 @@ export class Validator {
         isValid: false,
         error: {
           message:
-            '"operator" must be in ["is equal", "is not equal", "contains", "not contains", "array contains", "array no contains", "is even", "is odd", "is positive", "is negative", "is empty", "is not empty", "is EAN", "is valid email"] if "value" is null.',
+            '"operator" must be in ["is equal", "is not equal", "contains", "not contains", "array contains", "array no contains", "is even", "is odd", "is positive", "is negative", "is empty", "is not empty", "is EAN", "is valid email", "is domain", "is IMEI"] if "value" is null.',
           element: constraint,
         },
       };
