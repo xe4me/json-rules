@@ -251,26 +251,5 @@ describe("Final 100% Coverage Push", () => {
       // Domain line 9 - non-string input
       expect(validateDomain(123)).toBe(false);
     });
-
-    it("should cover phone validator functions (function coverage)", () => {
-      // Import and call phone validators to increase function coverage
-      const {
-        validateUSPhone,
-      } = require("../src/services/validators/phone/us");
-      const {
-        validateGBPhone,
-      } = require("../src/services/validators/phone/gb");
-      const {
-        validateGermanPhone,
-      } = require("../src/services/validators/phone/de");
-
-      expect(validateUSPhone("+1 202 456 1111")).toBe(true);
-      expect(validateGBPhone("+44 7700 900123")).toBe(true);
-      expect(validateGermanPhone("+49 151 12345678")).toBe(true);
-
-      // Also test the phone index
-      const phoneIndex = require("../src/services/validators/phone/index");
-      expect(phoneIndex).toBeDefined();
-    });
   });
 });

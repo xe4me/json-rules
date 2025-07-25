@@ -1,7 +1,4 @@
 import { JsonRules } from "../src";
-import "../src/validators/phone/us";
-import "../src/validators/phone/gb";
-import "../src/validators/phone/de";
 import { RuleTypeError } from "../src";
 import { Rule, Condition } from "../src";
 import { Logger } from "../src/services";
@@ -12,10 +9,6 @@ import {
   getSupportedUnits,
   getSupportedUnitTypes,
 } from "../src/services/validators";
-import {
-  isLocaleRegistered,
-  getRegisteredLocales,
-} from "../src/services/validators/phone";
 
 describe("Coverage Gaps - Comprehensive Testing", () => {
   describe("RuleTypeError", () => {
@@ -349,21 +342,6 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
       expect(countries).toContain("japan");
       expect(countries).toContain("canada");
     });
-
-    it("should check if phone locale is registered", () => {
-      expect(isLocaleRegistered("us")).toBe(true);
-      expect(isLocaleRegistered("gb")).toBe(true);
-      expect(isLocaleRegistered("de")).toBe(true);
-      expect(isLocaleRegistered("fr")).toBe(false);
-      expect(isLocaleRegistered("nonexistent")).toBe(false);
-    });
-
-    it("should get registered phone locales", () => {
-      const locales = getRegisteredLocales();
-      expect(locales).toContain("us");
-      expect(locales).toContain("gb");
-      expect(locales).toContain("de");
-    });
   });
 
   describe("Advanced Error Handling", () => {
@@ -382,7 +360,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
 
       await expect(
         JsonRules.evaluate(rule, { phone: "+1234567890" })
-      ).rejects.toThrow("Phone locale 'nonexistent' not registered");
+      ).rejects.toThrow("Invalid locale 'nonexistent'");
     });
 
     it("should handle malformed country config", async () => {

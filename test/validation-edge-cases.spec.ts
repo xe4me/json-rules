@@ -313,21 +313,6 @@ describe("100% Coverage Push", () => {
       // Import specific validators to trigger coverage
       const phoneValidators = require("../src/services/validators/phone");
       expect(phoneValidators).toBeDefined();
-
-      // Import individual validators
-      const {
-        validateUSPhone,
-      } = require("../src/services/validators/phone/us");
-      const {
-        validateGBPhone,
-      } = require("../src/services/validators/phone/gb");
-      const {
-        validateGermanPhone,
-      } = require("../src/services/validators/phone/de");
-
-      expect(validateUSPhone).toBeDefined();
-      expect(validateGBPhone).toBeDefined();
-      expect(validateGermanPhone).toBeDefined();
     });
   });
 
@@ -338,13 +323,6 @@ describe("100% Coverage Push", () => {
       expect(validators.getSupportedUnitTypes).toBeDefined();
       expect(validators.getSupportedUnits).toBeDefined();
       expect(validators.getSupportedCountryNames).toBeDefined();
-      // These functions are in the phone registry, not the main validators index
-      const {
-        isLocaleRegistered,
-        getRegisteredLocales,
-      } = require("../src/services/validators/phone/registry");
-      expect(isLocaleRegistered).toBeDefined();
-      expect(getRegisteredLocales).toBeDefined();
     });
   });
 });

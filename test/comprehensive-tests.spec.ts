@@ -531,7 +531,7 @@ describe("Final Coverage Push - 100%", () => {
 
       await expect(
         JsonRules.evaluate(rule, { phone: "+1234567890" })
-      ).rejects.toThrow("Phone locale 'invalidlocale' not registered");
+      ).rejects.toThrow("Invalid locale 'invalidlocale'");
     });
   });
 });

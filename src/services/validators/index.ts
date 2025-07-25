@@ -11,8 +11,5 @@ export {
 } from "./units";
 export { validateCountry, getSupportedCountryNames } from "./country";
 
-// Phone validation (modular)
+// Phone validation
 export { validatePhone } from "./phone";
-
-// Re-export types
-export type { PhoneValidator } from "./phone";

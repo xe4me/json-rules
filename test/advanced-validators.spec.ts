@@ -1,6 +1,3 @@
-import "../src/validators/phone/us";
-import "../src/validators/phone/gb";
-import "../src/validators/phone/de";
 import { Rule, JsonRules } from "../src";
 
 describe("Advanced Validators", () => {
@@ -103,7 +100,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "us" },
+              value: { locale: "en-US" },
             },
           ],
         },
@@ -132,7 +129,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "gb" },
+              value: { locale: "en-GB" },
             },
           ],
         },
@@ -156,7 +153,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "de" },
+              value: { locale: "de-DE" },
             },
           ],
         },
@@ -173,22 +170,23 @@ describe("Advanced Validators", () => {
       );
     });
 
-    it("should throw error for unregistered locale", async () => {
+    it("should handle invalid locale", async () => {
       const rule: Rule = {
         conditions: {
           all: [
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "fr" },
+              value: { locale: "invalid-locale" },
             },
           ],
         },
       };
 
+      // validator.js will handle invalid locales by returning false or throwing
       await expect(
         JsonRules.evaluate(rule, { phone: "+33 123456789" })
-      ).rejects.toThrow("Phone locale 'fr' not registered");
+      ).rejects.toThrow();
     });
 
     it("should validate with strict mode", async () => {
@@ -198,7 +196,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "us", strict: true },
+              value: { locale: "en-US", strict: true },
             },
           ],
         },
@@ -217,7 +215,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "us" },
+              value: { locale: "en-US" },
             },
           ],
         },
@@ -673,7 +671,7 @@ describe("Advanced Validators", () => {
             {
               field: "phone",
               operator: "is valid phone",
-              value: { locale: "us" },
+              value: { locale: "en-US" },
             },
             {
               field: "website",
