@@ -13,16 +13,15 @@ import { JsonRules, RuleError } from "../src";
 
 describe("JsonRules engine correctly", () => {
   it("Evaluates a simple ruleset", async () => {
-    expect(
-      await JsonRules.evaluate(valid1Json, { ProfitPercentage: 20 })
-    ).toEqual(true);
+    expect(JsonRules.evaluate(valid1Json, { ProfitPercentage: 20 })).toEqual(
+      true
+    );
+    expect(JsonRules.evaluate(valid1Json, { ProfitPercentage: 2 })).toEqual(
+      false
+    );
 
     expect(
-      await JsonRules.evaluate(valid1Json, { ProfitPercentage: 2 })
-    ).toEqual(false);
-
-    expect(
-      await JsonRules.evaluate(valid1Json, {
+      JsonRules.evaluate(valid1Json, {
         WinRate: 80,
         AverageTradeDuration: 5,
         Duration: 9000000,
@@ -30,7 +29,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(false);
 
     expect(
-      await JsonRules.evaluate(valid1Json, {
+      JsonRules.evaluate(valid1Json, {
         WinRate: 80,
         AverageTradeDuration: 5,
         Duration: 9000000,
@@ -39,8 +38,8 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(true);
   });
 
-  it("Throws error if operator is unknown", async () => {
-    await expect(
+  it("Throws error if operator is unknown", () => {
+    try {
       JsonRules.evaluate(
         {
           conditions: [
@@ -51,13 +50,15 @@ describe("JsonRules engine correctly", () => {
         },
         { name: "test" },
         true
-      )
-    ).rejects.toThrow("Unknown operator: foo");
+      );
+    } catch (e) {
+      expect(e.message).toBe("Unknown operator: foo");
+    }
   });
 
   it("Resolves nested field definitions", async () => {
     expect(
-      await JsonRules.evaluate(
+      JsonRules.evaluate(
         {
           conditions: [
             {
@@ -76,7 +77,7 @@ describe("JsonRules engine correctly", () => {
 
   it("Handles missing nested field definitions", async () => {
     expect(
-      await JsonRules.evaluate(
+      JsonRules.evaluate(
         {
           conditions: [
             {
@@ -95,7 +96,7 @@ describe("JsonRules engine correctly", () => {
 
   it("Handles array of criteria properly", async () => {
     expect(
-      await JsonRules.evaluate(
+      JsonRules.evaluate(
         {
           conditions: [
             {
@@ -121,30 +122,26 @@ describe("JsonRules engine correctly", () => {
   });
 
   it("Throws an error on invalid not runnable ruleset", () => {
-    expect(
-      async () => await JsonRules.evaluate({ conditions: [] }, {})
+    expect(async () =>
+      JsonRules.evaluate({ conditions: [] }, {})
     ).rejects.toThrow(RuleError);
   });
 
   it("Evaluates an invalid but runnable ruleset if marked as trusted", async () => {
-    expect(await JsonRules.evaluate(invalid1Json, {}, true)).toEqual(2);
+    expect(JsonRules.evaluate(invalid1Json, {}, true)).toEqual(2);
   });
 
   it("Evaluates a nested ruleset", async () => {
-    expect(await JsonRules.evaluate(valid3Json, {})).toEqual(2);
-    expect(await JsonRules.evaluate(valid3Json, { Leverage: 1000 })).toEqual(3);
-    expect(await JsonRules.evaluate(valid3Json, { Leverage: 999 })).toEqual(2);
+    expect(JsonRules.evaluate(valid3Json, {})).toEqual(2);
+    expect(JsonRules.evaluate(valid3Json, { Leverage: 1000 })).toEqual(3);
+    expect(JsonRules.evaluate(valid3Json, { Leverage: 999 })).toEqual(2);
+
+    expect(JsonRules.evaluate(valid3Json, { Category: "Islamic" })).toEqual(4);
+
+    expect(JsonRules.evaluate(valid3Json, { Monetization: "Real" })).toEqual(2);
 
     expect(
-      await JsonRules.evaluate(valid3Json, { Category: "Islamic" })
-    ).toEqual(4);
-
-    expect(
-      await JsonRules.evaluate(valid3Json, { Monetization: "Real" })
-    ).toEqual(2);
-
-    expect(
-      await JsonRules.evaluate(valid3Json, {
+      JsonRules.evaluate(valid3Json, {
         Monetization: "Real",
         Leverage: 150,
         CountryIso: "FI",
@@ -152,7 +149,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(3);
 
     expect(
-      await JsonRules.evaluate(valid3Json, {
+      JsonRules.evaluate(valid3Json, {
         Monetization: "Real",
         Leverage: 150,
         CountryIso: "FI",
@@ -163,18 +160,16 @@ describe("JsonRules engine correctly", () => {
   });
 
   it("Evaluates a simple ruleset with redundant condition", async () => {
-    expect(await JsonRules.evaluate(invalid2Json, { foo: true }, true)).toEqual(
-      2
-    );
+    expect(JsonRules.evaluate(invalid2Json, { foo: true }, true)).toEqual(2);
 
     expect(
-      await JsonRules.evaluate(invalid2Json, { Category: "Islamic" }, true)
+      JsonRules.evaluate(invalid2Json, { Category: "Islamic" }, true)
     ).toEqual(4);
   });
 
   it("Evaluates a simple ruleset with none type condition", async () => {
     expect(
-      await JsonRules.evaluate(valid2Json, {
+      JsonRules.evaluate(valid2Json, {
         Leverage: 100,
         WinRate: 80,
         AverageTradeDuration: 5,
@@ -184,7 +179,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(true);
 
     expect(
-      await JsonRules.evaluate(valid2Json, {
+      JsonRules.evaluate(valid2Json, {
         AverageTradeDuration: 10,
         Foo: 10,
       })
@@ -192,30 +187,26 @@ describe("JsonRules engine correctly", () => {
   });
 
   it("Evaluates a simple ruleset with a Contains and ContainsAny any condition", async () => {
-    expect(
-      await JsonRules.evaluate(valid5Json, { countries: "US, FR" })
-    ).toEqual(true);
-
-    expect(
-      await JsonRules.evaluate(valid5Json, { countries: "GB, DE" })
-    ).toEqual(false);
-
-    expect(await JsonRules.evaluate(valid5Json, { states: "CA,TN" })).toEqual(
+    expect(JsonRules.evaluate(valid5Json, { countries: "US, FR" })).toEqual(
       true
     );
 
-    expect(await JsonRules.evaluate(valid5Json, { states: "NY,WI" })).toEqual(
+    expect(JsonRules.evaluate(valid5Json, { countries: "GB, DE" })).toEqual(
       false
     );
 
+    expect(JsonRules.evaluate(valid5Json, { states: "CA,TN" })).toEqual(true);
+
+    expect(JsonRules.evaluate(valid5Json, { states: "NY,WI" })).toEqual(false);
+
     expect(
-      await JsonRules.evaluate(valid5Json, { states: "invalid criterion type" })
+      JsonRules.evaluate(valid5Json, { states: "invalid criterion type" })
     ).toEqual(false);
   });
 
   it("Evaluates a rule with sub-rules", async () => {
     expect(
-      await JsonRules.evaluate(subRulesValid1Json, {
+      JsonRules.evaluate(subRulesValid1Json, {
         CountryIso: "GB",
         Leverage: 1000,
         Monetization: "Real",
@@ -223,7 +214,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(12);
 
     expect(
-      await JsonRules.evaluate(subRulesValid1Json, {
+      JsonRules.evaluate(subRulesValid1Json, {
         CountryIso: "GB",
         Leverage: 1000,
         Monetization: "Real",
@@ -232,7 +223,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(13);
 
     expect(
-      await JsonRules.evaluate(subRulesValid1Json, {
+      JsonRules.evaluate(subRulesValid1Json, {
         CountryIso: "GB",
         Leverage: 1000,
         Monetization: "Real",
@@ -241,7 +232,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(13);
 
     expect(
-      await JsonRules.evaluate(subRulesValid1Json, {
+      JsonRules.evaluate(subRulesValid1Json, {
         CountryIso: "GB",
         Leverage: 500,
         Monetization: "Real",
@@ -250,7 +241,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(3);
 
     expect(
-      await JsonRules.evaluate(subRulesValid1Json, {
+      JsonRules.evaluate(subRulesValid1Json, {
         CountryIso: "GB",
         Leverage: 333,
         Monetization: "Real",
@@ -259,14 +250,14 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(4);
 
     expect(
-      await JsonRules.evaluate(subRulesValid3Json, {
+      JsonRules.evaluate(subRulesValid3Json, {
         fieldA: "bar",
         fieldC: 600,
       })
     ).toEqual(3);
 
     expect(
-      await JsonRules.evaluate(subRulesValid3Json, {
+      JsonRules.evaluate(subRulesValid3Json, {
         fieldA: "bar",
         fieldC: 600,
         fieldD: "whoop",
@@ -274,7 +265,7 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(33);
 
     expect(
-      await JsonRules.evaluate(subRulesValid3Json, {
+      JsonRules.evaluate(subRulesValid3Json, {
         fieldA: "bar",
         fieldB: 2,
         fieldD: "whoop",
@@ -282,13 +273,13 @@ describe("JsonRules engine correctly", () => {
     ).toEqual(33);
 
     expect(
-      await JsonRules.evaluate(subRulesValid3Json, {
+      JsonRules.evaluate(subRulesValid3Json, {
         fieldD: "whoop",
       })
     ).toEqual(5);
 
     expect(
-      await JsonRules.evaluate(subRulesValid3Json, {
+      JsonRules.evaluate(subRulesValid3Json, {
         fieldA: "value",
       })
     ).toEqual(5);
@@ -296,7 +287,7 @@ describe("JsonRules engine correctly", () => {
 
   it("Evaluates a rule with sub-rules where the parent condition has a nested rule", async () => {
     expect(
-      await JsonRules.evaluate(subRulesValid2Json, {
+      JsonRules.evaluate(subRulesValid2Json, {
         Category: "Demo",
         Leverage: 500,
         CountryIso: "GB",
@@ -307,7 +298,7 @@ describe("JsonRules engine correctly", () => {
 
   it("Evaluates a rule with null values correctly - 1/2", async () => {
     expect(
-      await JsonRules.evaluate(valid10Json, {
+      JsonRules.evaluate(valid10Json, {
         foo: null,
         bar: "test",
         foo_array: ["test", null],
@@ -318,7 +309,7 @@ describe("JsonRules engine correctly", () => {
 
   it("Evaluates a rule with null values correctly - 2/2", async () => {
     expect(
-      await JsonRules.evaluate(valid10Json, {
+      JsonRules.evaluate(valid10Json, {
         foo: null,
         bar: "test",
         foo_array: ["test"],

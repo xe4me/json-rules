@@ -10,10 +10,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 2 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: -4 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 100 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 2 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -4 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 100 })).toBe(true);
       });
 
       it("should return false for odd numbers", async () => {
@@ -23,10 +23,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 3 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -5 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 99 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 3 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -5 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 99 })).toBe(false);
       });
 
       it("should return false for non-numbers", async () => {
@@ -36,14 +36,12 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "2" })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { value: true })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: [] })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: {} })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "2" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: true })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: [] })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: {} })).toBe(false);
       });
 
       it("should return false for special numeric values", async () => {
@@ -53,11 +51,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: NaN })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -Infinity })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { value: NaN })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -Infinity })).toBe(false);
       });
 
       it("should handle decimal numbers correctly", async () => {
@@ -67,9 +63,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 2.0 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 2.5 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 3.0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 2.0 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 2.5 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 3.0 })).toBe(false);
       });
     });
 
@@ -81,10 +77,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 3 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: -5 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 99 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 3 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -5 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 99 })).toBe(true);
       });
 
       it("should return false for even numbers", async () => {
@@ -94,10 +90,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 2 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -4 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 100 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 2 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -4 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 100 })).toBe(false);
       });
 
       it("should return false for non-numbers", async () => {
@@ -107,12 +103,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "3" })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { value: false })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "3" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: false })).toBe(false);
       });
 
       it("should return false for special numeric values", async () => {
@@ -122,11 +116,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: NaN })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -Infinity })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { value: NaN })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -Infinity })).toBe(false);
       });
     });
 
@@ -138,10 +130,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 0.1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 100 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 999.99 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 0.1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 100 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 999.99 })).toBe(true);
       });
 
       it("should return false for zero", async () => {
@@ -151,8 +143,8 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -0 })).toBe(false);
       });
 
       it("should return false for negative numbers", async () => {
@@ -162,9 +154,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: -1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -0.1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -100 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -0.1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -100 })).toBe(false);
       });
 
       it("should return false for non-numbers", async () => {
@@ -174,12 +166,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "1" })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { value: true })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "1" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: true })).toBe(false);
       });
 
       it("should return false for special numeric values", async () => {
@@ -189,11 +179,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: NaN })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -Infinity })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { value: NaN })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -Infinity })).toBe(false);
       });
     });
 
@@ -205,10 +193,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: -1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: -0.1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: -100 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: -999.99 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -0.1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -100 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: -999.99 })).toBe(true);
       });
 
       it("should return false for zero", async () => {
@@ -218,8 +206,8 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -0 })).toBe(false);
       });
 
       it("should return false for positive numbers", async () => {
@@ -229,9 +217,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 0.1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 100 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 0.1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 100 })).toBe(false);
       });
 
       it("should return false for non-numbers", async () => {
@@ -241,12 +229,10 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "-1" })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { value: false })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "-1" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: false })).toBe(false);
       });
 
       it("should return false for special numeric values", async () => {
@@ -256,11 +242,9 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: NaN })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: -Infinity })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { value: NaN })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: Infinity })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: -Infinity })).toBe(false);
       });
     });
   });
@@ -274,8 +258,8 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(true);
       });
 
       it("should return true for empty string", async () => {
@@ -285,7 +269,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "" })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: "" })).toBe(true);
       });
 
       it("should return true for empty array", async () => {
@@ -295,7 +279,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: [] })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: [] })).toBe(true);
       });
 
       it("should return false for zero", async () => {
@@ -305,7 +289,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(false);
       });
 
       it("should return false for false", async () => {
@@ -315,7 +299,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: false })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: false })).toBe(false);
       });
 
       it("should return false for non-empty values", async () => {
@@ -325,15 +309,15 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "hello" })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: " " })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: [1] })).toBe(false);
-        expect(
-          await JsonRules.evaluate(rule, { value: { key: "value" } })
-        ).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: {} })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: true })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "hello" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: " " })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: [1] })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: { key: "value" } })).toBe(
+          false
+        );
+        expect(JsonRules.evaluate(rule, { value: {} })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: true })).toBe(false);
       });
 
       it("should handle missing field as undefined", async () => {
@@ -343,7 +327,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, {})).toBe(true);
+        expect(JsonRules.evaluate(rule, {})).toBe(true);
       });
     });
 
@@ -355,10 +339,8 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: null })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { value: undefined })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { value: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: undefined })).toBe(false);
       });
 
       it("should return false for empty string", async () => {
@@ -368,7 +350,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: "" })).toBe(false);
       });
 
       it("should return false for empty array", async () => {
@@ -378,7 +360,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: [] })).toBe(false);
+        expect(JsonRules.evaluate(rule, { value: [] })).toBe(false);
       });
 
       it("should return true for zero", async () => {
@@ -388,7 +370,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: 0 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 0 })).toBe(true);
       });
 
       it("should return true for false", async () => {
@@ -398,7 +380,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: false })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: false })).toBe(true);
       });
 
       it("should return true for non-empty values", async () => {
@@ -408,15 +390,15 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { value: "hello" })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: " " })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: [1] })).toBe(true);
-        expect(
-          await JsonRules.evaluate(rule, { value: { key: "value" } })
-        ).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: {} })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: 1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { value: true })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: "hello" })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: " " })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: [1] })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: { key: "value" } })).toBe(
+          true
+        );
+        expect(JsonRules.evaluate(rule, { value: {} })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: 1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { value: true })).toBe(true);
       });
 
       it("should handle missing field as undefined", async () => {
@@ -426,7 +408,7 @@ describe("Advanced Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, {})).toBe(false);
+        expect(JsonRules.evaluate(rule, {})).toBe(false);
       });
     });
   });
@@ -444,7 +426,7 @@ describe("Advanced Operators", () => {
       };
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           count: 4,
           score: 85.5,
           name: "John",
@@ -452,7 +434,7 @@ describe("Advanced Operators", () => {
       ).toBe(true);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           count: 3, // odd - should fail
           score: 85.5,
           name: "John",
@@ -460,7 +442,7 @@ describe("Advanced Operators", () => {
       ).toBe(false);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           count: 4,
           score: -10, // negative - should fail
           name: "John",
@@ -468,7 +450,7 @@ describe("Advanced Operators", () => {
       ).toBe(false);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           count: 4,
           score: 85.5,
           name: "", // empty - should fail
@@ -497,15 +479,11 @@ describe("Advanced Operators", () => {
         default: "other",
       };
 
-      expect(await JsonRules.evaluate(rule, { value: 4 })).toBe(
-        "even-positive"
-      );
-      expect(await JsonRules.evaluate(rule, { value: -3 })).toBe(
-        "odd-negative"
-      );
-      expect(await JsonRules.evaluate(rule, { value: 3 })).toBe("other");
-      expect(await JsonRules.evaluate(rule, { value: -4 })).toBe("other");
-      expect(await JsonRules.evaluate(rule, { value: 0 })).toBe("other");
+      expect(JsonRules.evaluate(rule, { value: 4 })).toBe("even-positive");
+      expect(JsonRules.evaluate(rule, { value: -3 })).toBe("odd-negative");
+      expect(JsonRules.evaluate(rule, { value: 3 })).toBe("other");
+      expect(JsonRules.evaluate(rule, { value: -4 })).toBe("other");
+      expect(JsonRules.evaluate(rule, { value: 0 })).toBe("other");
     });
   });
 });

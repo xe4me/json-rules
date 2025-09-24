@@ -12,6 +12,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "badges": "jest-badges-readme",
     "test": "jest --testPathPattern=test --color --forceExit",
+    "test:watch": "jest --testPathPattern=test --color --watch",
     "prepare": "npm run build",
     "prepublishOnly": "npm run build",
     "build": "rm -rf dist && tsc",
@@ -79,7 +80,6 @@
       "node_modules/(?!variables/.*)"
     ]
   },
-  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4",
   "dependencies": {
     "validator": "^13.15.15"
   }

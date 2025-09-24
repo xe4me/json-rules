@@ -38,9 +38,8 @@ describe("Final 100% Coverage Push", () => {
 
       const criteria = { status: "active", role: "admin" };
 
-      return jsonRules.evaluate(rule, criteria, true).then((result) => {
-        expect(result).toBe(true);
-      });
+      const result = jsonRules.evaluate(rule, criteria, true);
+      expect(result).toBe(true);
     });
 
     it("should cover evaluator lines 220-237 (#isBefore, #isAfter, #isOnOrBefore, #isOnOrAfter)", () => {
@@ -78,20 +77,10 @@ describe("Final 100% Coverage Push", () => {
 
       const criteria = { date: baseDate };
 
-      return Promise.all([
-        jsonRules.evaluate(beforeRule, criteria, true).then((result) => {
-          expect(result).toBe(true);
-        }),
-        jsonRules.evaluate(afterRule, criteria, true).then((result) => {
-          expect(result).toBe(true);
-        }),
-        jsonRules.evaluate(onOrBeforeRule, criteria, true).then((result) => {
-          expect(result).toBe(true);
-        }),
-        jsonRules.evaluate(onOrAfterRule, criteria, true).then((result) => {
-          expect(result).toBe(true);
-        }),
-      ]);
+      expect(jsonRules.evaluate(beforeRule, criteria, true)).toBe(true);
+      expect(jsonRules.evaluate(afterRule, criteria, true)).toBe(true);
+      expect(jsonRules.evaluate(onOrBeforeRule, criteria, true)).toBe(true);
+      expect(jsonRules.evaluate(onOrAfterRule, criteria, true)).toBe(true);
     });
 
     it("should cover json-rules line 35 (validation path)", () => {
@@ -104,9 +93,7 @@ describe("Final 100% Coverage Push", () => {
       const criteria = { status: "active" };
 
       // Use trustRule=false to trigger validation path
-      return jsonRules.evaluate(rule, criteria, false).then((result) => {
-        expect(result).toBe(true);
-      });
+      expect(jsonRules.evaluate(rule, criteria, false)).toBe(true);
     });
 
     it("should cover validator lines 84, 386-391", () => {

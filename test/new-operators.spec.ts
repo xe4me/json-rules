@@ -12,11 +12,9 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { age: 25, score: 85 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { age: 18, score: 0 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { age: 65, score: 100 })).toBe(
-        true
-      );
+      expect(JsonRules.evaluate(rule, { age: 25, score: 85 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { age: 18, score: 0 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { age: 65, score: 100 })).toBe(true);
     });
 
     it("should return false when value is outside the range", async () => {
@@ -28,8 +26,8 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { age: 17 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { age: 66 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { age: 17 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { age: 66 })).toBe(false);
     });
 
     it("should return false when value or range is invalid", async () => {
@@ -41,9 +39,7 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { age: "not a number" })).toBe(
-        false
-      );
+      expect(JsonRules.evaluate(rule, { age: "not a number" })).toBe(false);
 
       const invalidRule: Rule = {
         conditions: {
@@ -53,7 +49,7 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(invalidRule, { age: 25 })).toBe(true);
+      expect(JsonRules.evaluate(invalidRule, { age: 25 })).toBe(true);
     });
   });
 
@@ -71,8 +67,8 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { age: 17 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { age: 66 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { age: 17 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { age: 66 })).toBe(true);
     });
 
     it("should return false when value is in the range", async () => {
@@ -88,9 +84,9 @@ describe("New Operators", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { age: 25 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { age: 18 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { age: 65 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { age: 25 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { age: 18 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { age: 65 })).toBe(false);
     });
   });
 
@@ -103,9 +99,9 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { score: 0 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { score: 100 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: 50 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: 0 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: 100 })).toBe(true);
     });
     it("should return false when value is outside the number range", async () => {
       const rule: Rule = {
@@ -115,8 +111,8 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: -1 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { score: 101 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: -1 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: 101 })).toBe(false);
     });
     it("should return false for invalid range or value", async () => {
       const rule: Rule = {
@@ -126,8 +122,8 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { score: null })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: 50 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: null })).toBe(false);
     });
   });
 
@@ -144,8 +140,8 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: -1 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { score: 101 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: -1 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { score: 101 })).toBe(true);
     });
     it("should return false when value is inside the number range", async () => {
       const rule: Rule = {
@@ -159,9 +155,9 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { score: 0 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { score: 50 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { score: 100 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: 0 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: 50 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { score: 100 })).toBe(false);
     });
   });
 
@@ -181,9 +177,9 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { eventDate: date1 })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { eventDate: date3 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { eventDate: date2 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { eventDate: date1 })).toBe(true);
+      expect(JsonRules.evaluate(rule, { eventDate: date3 })).toBe(true);
     });
     it("should return false when value is outside the date range", async () => {
       const rule: Rule = {
@@ -198,10 +194,10 @@ describe("New Operators", () => {
         },
       };
       expect(
-        await JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })
+        JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })
       ).toBe(false);
       expect(
-        await JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })
+        JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })
       ).toBe(false);
     });
     it("should return false for invalid range or value", async () => {
@@ -216,8 +212,8 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { eventDate: null })).toBe(false);
+      expect(JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { eventDate: null })).toBe(false);
     });
   });
 
@@ -238,10 +234,10 @@ describe("New Operators", () => {
         },
       };
       expect(
-        await JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })
+        JsonRules.evaluate(rule, { eventDate: new Date("2022-12-31") })
       ).toBe(true);
       expect(
-        await JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })
+        JsonRules.evaluate(rule, { eventDate: new Date("2024-01-01") })
       ).toBe(true);
     });
     it("should return false when value is inside the date range", async () => {
@@ -256,9 +252,9 @@ describe("New Operators", () => {
           ],
         },
       };
-      expect(await JsonRules.evaluate(rule, { eventDate: date1 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
-      expect(await JsonRules.evaluate(rule, { eventDate: date3 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { eventDate: date1 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { eventDate: date2 })).toBe(false);
+      expect(JsonRules.evaluate(rule, { eventDate: date3 })).toBe(false);
     });
   });
 
@@ -275,7 +271,7 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { startDate: date1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { startDate: date1 })).toBe(true);
       });
 
       it("should return false when first date is after or equal to second date", async () => {
@@ -285,12 +281,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { startDate: date3 })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { startDate: date2 })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { startDate: date3 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { startDate: date2 })).toBe(false);
       });
 
       it("should return false when values are not dates", async () => {
@@ -300,12 +292,12 @@ describe("New Operators", () => {
           },
         };
 
-        expect(
-          await JsonRules.evaluate(rule, { startDate: "2023-01-01" })
-        ).toBe(false);
-        expect(
-          await JsonRules.evaluate(rule, { startDate: 1672531200000 })
-        ).toBe(false);
+        expect(JsonRules.evaluate(rule, { startDate: "2023-01-01" })).toBe(
+          false
+        );
+        expect(JsonRules.evaluate(rule, { startDate: 1672531200000 })).toBe(
+          false
+        );
       });
     });
 
@@ -317,7 +309,7 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { endDate: date3 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { endDate: date3 })).toBe(true);
       });
 
       it("should return false when first date is before or equal to second date", async () => {
@@ -327,8 +319,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { endDate: date1 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { endDate: date2 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { endDate: date1 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { endDate: date2 })).toBe(false);
       });
     });
 
@@ -342,8 +334,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { deadline: date1 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { deadline: date2 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { deadline: date1 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { deadline: date2 })).toBe(true);
       });
 
       it("should return false when first date is after second date", async () => {
@@ -355,7 +347,7 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { deadline: date3 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { deadline: date3 })).toBe(false);
       });
     });
 
@@ -369,8 +361,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { startDate: date2 })).toBe(true);
-        expect(await JsonRules.evaluate(rule, { startDate: date3 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { startDate: date2 })).toBe(true);
+        expect(JsonRules.evaluate(rule, { startDate: date3 })).toBe(true);
       });
 
       it("should return false when first date is before second date", async () => {
@@ -382,9 +374,7 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { startDate: date1 })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { startDate: date1 })).toBe(false);
       });
     });
   });
@@ -402,7 +392,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             name: "John Doe",
             email: "admin@example.com",
           })
@@ -416,9 +406,7 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { name: "Jane Doe" })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { name: "Jane Doe" })).toBe(false);
       });
 
       it("should return false when values are not strings", async () => {
@@ -428,8 +416,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { name: 123 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { name: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { name: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { name: null })).toBe(false);
       });
     });
 
@@ -445,7 +433,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             filename: "document.pdf",
             domain: "example.com",
           })
@@ -459,9 +447,9 @@ describe("New Operators", () => {
           },
         };
 
-        expect(
-          await JsonRules.evaluate(rule, { filename: "document.txt" })
-        ).toBe(false);
+        expect(JsonRules.evaluate(rule, { filename: "document.txt" })).toBe(
+          false
+        );
       });
 
       it("should return false when values are not strings", async () => {
@@ -471,8 +459,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { filename: 123 })).toBe(false);
-        expect(await JsonRules.evaluate(rule, { filename: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { filename: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { filename: null })).toBe(false);
       });
     });
   });
@@ -494,7 +482,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             tags: ["javascript", "typescript", "react"],
             numbers: [1, 42, 99],
           })
@@ -511,7 +499,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             tags: ["javascript", "typescript", "react"],
           })
         ).toBe(false);
@@ -530,10 +518,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { tags: "javascript" })).toBe(
-          false
-        );
-        expect(await JsonRules.evaluate(rule, { tags: null })).toBe(false);
+        expect(JsonRules.evaluate(rule, { tags: "javascript" })).toBe(false);
+        expect(JsonRules.evaluate(rule, { tags: null })).toBe(false);
       });
 
       it("should work with null values", async () => {
@@ -543,12 +529,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { values: [1, null, 3] })).toBe(
-          true
-        );
-        expect(await JsonRules.evaluate(rule, { values: [1, 2, 3] })).toBe(
-          false
-        );
+        expect(JsonRules.evaluate(rule, { values: [1, null, 3] })).toBe(true);
+        expect(JsonRules.evaluate(rule, { values: [1, 2, 3] })).toBe(false);
       });
     });
 
@@ -563,7 +545,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             tags: ["javascript", "typescript", "react"],
           })
         ).toBe(true);
@@ -583,7 +565,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             tags: ["javascript", "typescript", "react"],
           })
         ).toBe(false);
@@ -602,10 +584,8 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { tags: "javascript" })).toBe(
-          true
-        );
-        expect(await JsonRules.evaluate(rule, { tags: null })).toBe(true);
+        expect(JsonRules.evaluate(rule, { tags: "javascript" })).toBe(true);
+        expect(JsonRules.evaluate(rule, { tags: null })).toBe(true);
       });
     });
   });
@@ -623,7 +603,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
             email: "user@example.com",
           })
@@ -640,7 +620,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(false);
@@ -655,12 +635,10 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { description: 123 })).toBe(
+        expect(JsonRules.evaluate(rule, { description: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { description: ["awesome"] })).toBe(
           false
         );
-        expect(
-          await JsonRules.evaluate(rule, { description: ["awesome"] })
-        ).toBe(false);
       });
     });
 
@@ -679,7 +657,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(true);
@@ -699,7 +677,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(false);
@@ -718,12 +696,10 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { description: 123 })).toBe(
+        expect(JsonRules.evaluate(rule, { description: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { description: ["awesome"] })).toBe(
           false
         );
-        expect(
-          await JsonRules.evaluate(rule, { description: ["awesome"] })
-        ).toBe(false);
       });
     });
 
@@ -742,13 +718,13 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(true);
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is a great product",
           })
         ).toBe(true);
@@ -768,7 +744,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(false);
@@ -787,12 +763,10 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { description: 123 })).toBe(
+        expect(JsonRules.evaluate(rule, { description: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { description: ["awesome"] })).toBe(
           false
         );
-        expect(
-          await JsonRules.evaluate(rule, { description: ["awesome"] })
-        ).toBe(false);
       });
     });
 
@@ -811,7 +785,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(true);
@@ -831,7 +805,7 @@ describe("New Operators", () => {
         };
 
         expect(
-          await JsonRules.evaluate(rule, {
+          JsonRules.evaluate(rule, {
             description: "This is an awesome product",
           })
         ).toBe(false);
@@ -850,12 +824,10 @@ describe("New Operators", () => {
           },
         };
 
-        expect(await JsonRules.evaluate(rule, { description: 123 })).toBe(
+        expect(JsonRules.evaluate(rule, { description: 123 })).toBe(false);
+        expect(JsonRules.evaluate(rule, { description: ["awesome"] })).toBe(
           false
         );
-        expect(
-          await JsonRules.evaluate(rule, { description: ["awesome"] })
-        ).toBe(false);
       });
     });
   });
@@ -878,7 +850,7 @@ describe("New Operators", () => {
       };
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           age: 30,
           email: "john@company.com",
           skills: ["javascript", "react", "node.js"],
@@ -887,7 +859,7 @@ describe("New Operators", () => {
       ).toBe(true);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           age: 17, // Too young
           email: "john@company.com",
           skills: ["javascript", "react", "node.js"],
@@ -912,7 +884,7 @@ describe("New Operators", () => {
       };
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           priority: "high-priority",
           score: 70,
           tags: ["normal", "review"],
@@ -920,7 +892,7 @@ describe("New Operators", () => {
       ).toBe(true);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           priority: "normal",
           score: 95,
           tags: ["normal", "review"],
@@ -928,7 +900,7 @@ describe("New Operators", () => {
       ).toBe(true);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           priority: "normal",
           score: 70,
           tags: ["normal", "urgent"],
@@ -936,7 +908,7 @@ describe("New Operators", () => {
       ).toBe(true);
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           priority: "normal",
           score: 70,
           tags: ["normal", "review"],

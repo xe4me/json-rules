@@ -29,11 +29,11 @@ export class JsonRules {
    * @param trustRule Set true to avoid validating the rule before evaluating it (faster).
    * @throws RuleError if the rule is invalid.
    */
-  async evaluate<T>(
+  evaluate<T>(
     rule: Rule,
     criteria: object | object[],
     trustRule = false
-  ): Promise<T | boolean> {
+  ): T | boolean {
     // Before we evaluate the rule, we should validate it.
     // If `trustRuleset` is set to true, we will skip validation.
     const validationResult = !trustRule && this.validate(rule);
@@ -76,11 +76,11 @@ export class JsonRules {
    * @param trustRule Set true to avoid validating the rule before evaluating it (faster).
    * @throws RuleError if the rule is invalid.
    */
-  static async evaluate<T>(
+  static evaluate<T>(
     rule: Rule,
     criteria: object | object[],
     trustRule = false
-  ): Promise<T | boolean> {
+  ): T | boolean {
     return JsonRules.#jsonRules.evaluate<T>(rule, criteria, trustRule);
   }
 

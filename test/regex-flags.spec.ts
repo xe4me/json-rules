@@ -16,7 +16,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "hello beautiful world" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -34,7 +34,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "hello beautiful world" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(false);
     });
   });
@@ -59,7 +59,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL WORLD" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -77,7 +77,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL WORLD" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(false);
     });
 
@@ -100,7 +100,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "There are 123 apples and 456 oranges" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -123,7 +123,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "world\nhello there" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
 
@@ -146,7 +146,7 @@ describe("Regex Flags Support", () => {
       };
 
       const criteria = { text: "HELLO BEAUTIFUL\nWORLD" };
-      const result = await JsonRules.evaluate(rule, criteria);
+      const result = JsonRules.evaluate(rule, criteria);
       expect(result).toBe(true);
     });
   });

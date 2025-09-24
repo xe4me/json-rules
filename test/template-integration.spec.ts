@@ -20,7 +20,7 @@ describe("Template Integration Tests", () => {
         drivingExperience: 30,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle field-to-field comparisons that fail", async () => {
@@ -41,7 +41,7 @@ describe("Template Integration Tests", () => {
         drivingExperience: 25,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(false);
+      expect(JsonRules.evaluate(rule, data)).toBe(false);
     });
 
     it("should handle nested field references", async () => {
@@ -64,7 +64,7 @@ describe("Template Integration Tests", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle equality comparisons with templates", async () => {
@@ -85,7 +85,7 @@ describe("Template Integration Tests", () => {
         requiredStatus: "active",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle inequality comparisons with templates", async () => {
@@ -106,7 +106,7 @@ describe("Template Integration Tests", () => {
         bannedStatus: "suspended",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -125,7 +125,7 @@ describe("Template Integration Tests", () => {
         firstName: "John",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle startsWith operations with templates", async () => {
@@ -146,7 +146,7 @@ describe("Template Integration Tests", () => {
         usernamePrefix: "admin",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle endsWith operations with templates", async () => {
@@ -163,7 +163,7 @@ describe("Template Integration Tests", () => {
         domainSuffix: "company.com",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -189,7 +189,7 @@ describe("Template Integration Tests", () => {
         currentDate: now,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle date range comparisons with templates", async () => {
@@ -210,7 +210,7 @@ describe("Template Integration Tests", () => {
         ageRange: [1980, 2000],
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -233,7 +233,7 @@ describe("Template Integration Tests", () => {
         requiredSkill: "javascript",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle 'in' operations with templates", async () => {
@@ -250,7 +250,7 @@ describe("Template Integration Tests", () => {
         allowedStatuses: ["active", "pending", "approved"],
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle 'contains any' operations with templates", async () => {
@@ -271,7 +271,7 @@ describe("Template Integration Tests", () => {
         keywords: ["awesome", "excellent", "fantastic"],
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -308,7 +308,7 @@ describe("Template Integration Tests", () => {
         salaryRange: [60000, 100000],
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle deeply nested template references", async () => {
@@ -334,7 +334,7 @@ describe("Template Integration Tests", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle template references in complex conditions", async () => {
@@ -359,7 +359,7 @@ describe("Template Integration Tests", () => {
         urgent: "urgent",
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle template references with sub-rules", async () => {
@@ -399,7 +399,7 @@ describe("Template Integration Tests", () => {
         minExperience: 5,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -422,7 +422,7 @@ describe("Template Integration Tests", () => {
       };
 
       // Should return false when template variable is missing
-      expect(await JsonRules.evaluate(rule, data)).toBe(false);
+      expect(JsonRules.evaluate(rule, data)).toBe(false);
     });
 
     it("should handle undefined nested template variables", async () => {
@@ -446,7 +446,7 @@ describe("Template Integration Tests", () => {
       };
 
       // Should return false when nested template variable is missing
-      expect(await JsonRules.evaluate(rule, data)).toBe(false);
+      expect(JsonRules.evaluate(rule, data)).toBe(false);
     });
 
     it("should handle template variables with null values", async () => {
@@ -463,7 +463,7 @@ describe("Template Integration Tests", () => {
         nullField: null,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
   });
 
@@ -488,7 +488,7 @@ describe("Template Integration Tests", () => {
         minExperience: 3,
       };
 
-      expect(await JsonRules.evaluate(rule, data)).toBe(true);
+      expect(JsonRules.evaluate(rule, data)).toBe(true);
     });
 
     it("should handle array of criteria with template values", async () => {
@@ -510,7 +510,7 @@ describe("Template Integration Tests", () => {
         { score: 90, passingScore: 80 },
       ];
 
-      const results = await JsonRules.evaluate(rule, multipleData);
+      const results = JsonRules.evaluate(rule, multipleData);
       expect(results).toEqual([true, false, true]);
     });
   });

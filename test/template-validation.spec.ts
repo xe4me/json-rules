@@ -448,7 +448,7 @@ describe("Template Validation Tests", () => {
       expect(validation.isValid).toBe(true);
 
       // But evaluation should return false due to missing template variable
-      const result = await JsonRules.evaluate(rule, data);
+      const result = JsonRules.evaluate(rule, data);
       expect(result).toBe(false);
     });
 
@@ -477,7 +477,7 @@ describe("Template Validation Tests", () => {
       expect(validation.isValid).toBe(true);
 
       // But evaluation should return false due to missing template variable
-      const result = await JsonRules.evaluate(rule, data);
+      const result = JsonRules.evaluate(rule, data);
       expect(result).toBe(false);
     });
   });

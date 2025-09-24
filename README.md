@@ -72,7 +72,7 @@ const rule: Rule = {
 
 // Evaluate against data
 const user = { age: 25, country: "US" };
-const result = await JsonRules.evaluate(rule, user);
+const result = JsonRules.evaluate(rule, user);
 console.log(result); // true
 ```
 
@@ -213,7 +213,7 @@ const rule: Rule = {
 };
 
 const user = { age: 25, country: "US" };
-const result = await JsonRules.evaluate(rule, user); // true
+const result = JsonRules.evaluate(rule, user); // true
 ```
 
 ### Complex Conditions
@@ -273,11 +273,11 @@ const dynamicRule: Rule = {
 ### JsonRules.evaluate()
 
 ```typescript
-static async evaluate<T>(
+static evaluate<T>(
   rule: Rule, 
   criteria: object | object[], 
   trustRule?: boolean
-): Promise<T | boolean>
+): T | boolean
 ```
 
 ### JsonRules.validate()

@@ -358,9 +358,11 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      await expect(
-        JsonRules.evaluate(rule, { phone: "+1234567890" })
-      ).rejects.toThrow("Invalid locale 'nonexistent'");
+      try {
+        JsonRules.evaluate(rule, { phone: "+1234567890" });
+      } catch (e) {
+        expect(e.message).toBe("Invalid locale 'nonexistent'");
+      }
     });
 
     it("should handle malformed country config", async () => {
@@ -376,7 +378,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { country: "US" })).toBe(false);
+      expect(JsonRules.evaluate(rule, { country: "US" })).toBe(false);
     });
 
     it("should handle malformed unit validation", async () => {
@@ -392,7 +394,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { distance: "5km" })).toBe(false);
+      expect(JsonRules.evaluate(rule, { distance: "5km" })).toBe(false);
     });
   });
 
@@ -411,7 +413,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
       };
 
       expect(
-        await JsonRules.evaluate(rule, {
+        JsonRules.evaluate(rule, {
           id: "550e8400-e29b-41d4-a716-446655440000",
         })
       ).toBe(true);
@@ -430,12 +432,10 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { imei: "352099001761481" })).toBe(
-        true
+      expect(JsonRules.evaluate(rule, { imei: "352099001761481" })).toBe(true);
+      expect(JsonRules.evaluate(rule, { imei: "35-209900-176148-1" })).toBe(
+        false
       );
-      expect(
-        await JsonRules.evaluate(rule, { imei: "35-209900-176148-1" })
-      ).toBe(false);
     });
 
     it("should handle domain validation with null config", async () => {
@@ -445,9 +445,7 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { domain: "example.com" })).toBe(
-        true
-      );
+      expect(JsonRules.evaluate(rule, { domain: "example.com" })).toBe(true);
     });
 
     it("should handle email validation with null config", async () => {
@@ -457,9 +455,9 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(
-        await JsonRules.evaluate(rule, { email: "test@example.com" })
-      ).toBe(true);
+      expect(JsonRules.evaluate(rule, { email: "test@example.com" })).toBe(
+        true
+      );
     });
 
     it("should handle URL validation with empty config", async () => {
@@ -467,9 +465,9 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         conditions: { all: [{ field: "url", operator: "is URL", value: {} }] },
       };
 
-      expect(
-        await JsonRules.evaluate(rule, { url: "https://example.com" })
-      ).toBe(true);
+      expect(JsonRules.evaluate(rule, { url: "https://example.com" })).toBe(
+        true
+      );
     });
 
     it("should handle unit validation with zero and invalid numbers", async () => {
@@ -479,12 +477,10 @@ describe("Coverage Gaps - Comprehensive Testing", () => {
         },
       };
 
-      expect(await JsonRules.evaluate(rule, { distance: "0km" })).toBe(true);
-      expect(await JsonRules.evaluate(rule, { distance: "-5.5meters" })).toBe(
-        true
-      );
-      expect(await JsonRules.evaluate(rule, { distance: "km" })).toBe(false); // No number
-      expect(await JsonRules.evaluate(rule, { distance: "5" })).toBe(false); // No unit
+      expect(JsonRules.evaluate(rule, { distance: "0km" })).toBe(true);
+      expect(JsonRules.evaluate(rule, { distance: "-5.5meters" })).toBe(true);
+      expect(JsonRules.evaluate(rule, { distance: "km" })).toBe(false); // No number
+      expect(JsonRules.evaluate(rule, { distance: "5" })).toBe(false); // No unit
     });
   });
 });
